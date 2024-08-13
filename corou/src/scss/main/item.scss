@@ -1,0 +1,38 @@
+.itemWrapper {
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 2fr 4fr;
+  gap: 0;
+  align-items: center;
+}
+
+.num {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  background-color: antiquewhite;
+}
+
+.itemImg {
+  background-color: aqua;
+}
+
+.itemInfo {
+  background-color: blanchedalmond;
+  p {
+    margin: 0;
+    &:first-child {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    &:nth-child(2) {
+      color: #666;
+      margin-bottom: 8px;
+    }
+    &:last-child {
+      color: #f00;
+      font-weight: bold;
+    }
+  }
+}
