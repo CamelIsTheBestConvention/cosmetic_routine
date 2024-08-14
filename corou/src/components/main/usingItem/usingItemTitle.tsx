@@ -16,7 +16,6 @@ export default UsingItemTitle;
 
 const UsingItemTitleWrapper = styled.div`
   width: 100%;
-  margin-bottom: 20px;
 `;
 
 const TitleWrapper = styled.div`
@@ -25,7 +24,7 @@ const TitleWrapper = styled.div`
   border-bottom: 2px solid #ffa4e4;
 
   h2 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     margin-bottom: 5px;
   }
