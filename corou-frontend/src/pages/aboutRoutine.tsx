@@ -1,4 +1,5 @@
 import DropdownFilter from "../components/about/dropdownFilter";
+import FilterList from "../components/about/FilterList";
 import SkinFilter from "../components/about/skinFilter";
 import AboutHeader from "../components/common/aboutHeader";
 
@@ -8,6 +9,7 @@ const AboutRoutine: React.FC = () => {
       <AboutHeader />
       <SkinFilter />
       <DropdownFilter />
+      <FilterList />
     </>
   );
 };

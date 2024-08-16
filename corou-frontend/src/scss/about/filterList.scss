@@ -1,0 +1,131 @@
+.filterListWrapper {
+  width: 100%;
+  margin-top: 20px;
+  //   background-color: aqua;
+}
+
+.filterBtn {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+  margin-right: 20px;
+  font-size: 12px;
+
+  div {
+    margin-right: 10px;
+    line-height: 1.7;
+  }
+}
+
+.itemListWrapper {
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px 0;
+  //   background-color: aliceblue;
+}
+
+.itemListTitle {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.itemListFirstTitle {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  font-weight: bold;
+
+  img {
+    width: 20px;
+  }
+}
+
+.itemListSecondTitle {
+  width: 95%;
+  margin: 0 auto;
+  display: flex;
+  font-size: 14px;
+  font-weight: bold;
+
+  img {
+    width: 15px;
+    margin-right: 8px;
+  }
+
+  span {
+    color: #909090;
+    font-weight: lighter;
+  }
+}
+
+.itemListContent {
+  width: 100%;
+  margin: 20px auto 0 auto;
+  display: flex;
+}
+
+.contentImg {
+  width: 45%;
+  height: 140px;
+  border: 3px solid #ffa4e4;
+  border-radius: 13px;
+  margin-right: 20px;
+  img {
+    width: 100%;
+  }
+}
+
+.contentInfo {
+  width: 70%;
+  height: 140px;
+
+  span {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  .selectFilter {
+    display: flex;
+    font-size: 14px;
+    margin-top: 5px;
+    color: #848484;
+
+    div {
+      border: 1px solid #c9c9c9;
+      padding: 0 10px;
+      border-radius: 10px;
+      margin-right: 5px;
+    }
+  }
+}
+
+.contentTag {
+  width: 100%;
+  margin-top: 40px;
+
+  ul {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 0;
+    margin-left: 15px;
+
+    li {
+      margin-right: 20px;
+      font-size: 14px;
+      color: #616161;
+    }
+  }
+}
+
+.contentPrice {
+  font-size: 15px;
+  color: #929292;
+
+  span {
+    font-size: 20px;
+    font-weight: 700;
+    color: black;
+  }
+}
