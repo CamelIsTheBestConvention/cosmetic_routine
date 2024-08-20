@@ -1,0 +1,52 @@
+.loginInputForm {
+  width: 55%;
+  margin: 50px auto;
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.loginInput {
+  border: 3px solid rgba(255, 164, 228, 0.5);
+  border-radius: 13px;
+  padding: 10px 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+.pwVisible {
+  font-size: 12px;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.forgotPw {
+  margin-top: 10px;
+
+  font-size: 10px;
+  text-align: center;
+  color: #848484;
+
+  span {
+    font-weight: 700;
+    margin-left: 5px;
+    text-decoration: underline;
+  }
+}
+
+.loginBtn {
+  background-color: rgba(255, 164, 228, 0.7);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 0;
+  margin-top: 20px;
+  outline: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+}
