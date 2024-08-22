@@ -1,21 +1,36 @@
-import styled from "styled-components";
+import React, { useState } from "react";
 import "../../scss/login/emailLogin.scss";
+import CommonInput from "../common/commonInput";
+import PwVisible from "../common/pwVisible";
+
+// interface EmailLoginProps {
+//   typeValue: string;
+//   placeholderValue: string;
+//   value: string;
+//   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+// }
 
 const EmailLoginBox: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
     <>
       <div className="loginInputForm">
         <form action="">
-          <input className="loginInput" type="email" placeholder="이메일" />
-          <input
-            className="loginInput"
-            type="password"
-            placeholder="비밀번호"
+          <CommonInput
+            typeValue="email"
+            placeholderValue="이메일"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <div className="pwVisible">
-            <input type="checkbox" />
-            <span>비밀번호 표시</span>
-          </div>
+          <CommonInput
+            typeValue="password"
+            placeholderValue="비밀번호"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <PwVisible />
           <span className="forgotPw">
             비밀번호를 잊으셨나요? <span>비밀번호 재설정</span>
           </span>

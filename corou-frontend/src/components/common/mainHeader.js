@@ -15,7 +15,7 @@ const MainHeader = () => {
 export default MainHeader;
 
 const SearchWrapper = styled.div`
-  width: 40%;
+  width: 30%;
   min-width: 430px;
   position: fixed;
   top: 0;

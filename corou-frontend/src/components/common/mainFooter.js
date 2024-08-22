@@ -27,7 +27,7 @@ const MainFooter = () => {
 export default MainFooter;
 
 const FooterWrapper = styled.div`
-  width: 40%;
+  width: 30%;
   min-width: 430px;
   border-top: 3px solid #d9d9d9;
   position: fixed;

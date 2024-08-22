@@ -5,7 +5,7 @@ import LoginTitle from "../components/login/loginTitle";
 const EmailLogin: React.FC = () => {
   return (
     <>
-      <BackHeader />
+      <BackHeader onBack={""} />
       <LoginTitle />
       <EmailLoginBox />
     </>

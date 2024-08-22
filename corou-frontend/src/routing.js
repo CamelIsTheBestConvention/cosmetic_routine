@@ -4,6 +4,7 @@ import Main from "./pages/main";
 import AboutRoutine from "./pages/aboutRoutine";
 import SocialLogin from "./pages/socialLogin";
 import EmailLogin from "./pages/emailLogin";
+import Signup from "./pages/signup";
 
 function Routing() {
   return (
@@ -14,6 +15,7 @@ function Routing() {
           <Route exact path="/about" element={<AboutRoutine />} />
           <Route exact path="/login" element={<SocialLogin />} />
           <Route exact path="/login/email" element={<EmailLogin />} />
+          <Route exact path="/signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
     </TotalWrapper>

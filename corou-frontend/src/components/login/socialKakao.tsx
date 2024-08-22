@@ -25,14 +25,14 @@ const KakaoBtn = styled.button`
   border: none;
   border-radius: 7px;
   background-color: #fce436;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: bold;
-  padding: 10px 0;
+  padding: 15px 0;
   position: relative;
   cursor: pointer;
 
   img {
-    width: 10px;
+    width: 15px;
     position: absolute;
     left: 5%;
     top: 40%;

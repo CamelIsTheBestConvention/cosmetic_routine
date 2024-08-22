@@ -6,7 +6,7 @@ import SocialKakao from "../components/login/socialKakao";
 const SocialLogin: React.FC = () => {
   return (
     <>
-      <BackHeader />
+      <BackHeader onBack={""} />
       <LoginTitle />
       <SocialKakao />
       <OtherBtn />
