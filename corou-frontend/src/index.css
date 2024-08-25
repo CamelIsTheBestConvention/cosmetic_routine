@@ -1,0 +1,18 @@
+@font-face {
+  font-family: "Pretendard-Black";
+  src: url("./fonts/pretendard/Pretendard-Regular.ttf") format("truetype");
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Pretendard-Black";
+
+  overflow-y: scroll; /* 스크롤 바 숨기기 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

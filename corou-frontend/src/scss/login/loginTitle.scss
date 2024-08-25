@@ -1,0 +1,25 @@
+@font-face {
+  font-family: "kaisei";
+  src: url("../../fonts/kaisei/KaiseiHarunoUmi-Regular.ttf") format("truetype");
+}
+
+.loginTitleWrapper {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 20%;
+}
+
+.logo {
+  font-family: "kaisei";
+  font-size: 40px;
+  font-weight: 700;
+  color: #ff4eca;
+}
+
+.catchphrase {
+  margin-top: 10px;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+}
