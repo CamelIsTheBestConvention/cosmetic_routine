@@ -6,7 +6,7 @@ import AboutHeader from "../components/common/aboutHeader";
 const AboutRoutine: React.FC = () => {
   return (
     <>
-      <AboutHeader />
+      <AboutHeader Title={"루틴"} />
       <SkinFilter />
       <DropdownFilter />
       <FilterList />
