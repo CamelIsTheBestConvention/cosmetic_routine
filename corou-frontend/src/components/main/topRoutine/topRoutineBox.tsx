@@ -15,7 +15,7 @@ const TopRoutineBox: React.FC = () => {
 export default TopRoutineBox;
 
 const TopRoutineBanner = styled.div`
-  width: 100vw;
+  width: 1920px;
   margin: 20px 0;
   display: flex;
   justify-content: flex-start;

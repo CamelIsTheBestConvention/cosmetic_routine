@@ -1,0 +1,23 @@
+.detailInfoWrapper {
+  width: 90%;
+  margin: 0 auto;
+
+  h4 {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+
+  .detailInfoReview {
+    display: flex;
+
+    img {
+      width: 20px;
+    }
+
+    span {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+}

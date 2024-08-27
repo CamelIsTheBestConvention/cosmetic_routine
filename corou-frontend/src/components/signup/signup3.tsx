@@ -6,7 +6,7 @@ import CommonInput from "../common/commonInput";
 import { useState } from "react";
 import CommonCheckBox from "./commonCheckbox";
 import CommonRadioBox from "./commonRadiobox";
-import CompleteBtn from "./completeBtn";
+import CompleteBtn from "../common/completeBtn";
 import PageCount from "../common/pageCount";
 import PageGuide from "../common/pageGuide";
 
@@ -62,7 +62,7 @@ const Signup3: React.FC = () => {
             <CommonCheckBox label="등등" />
             <CommonCheckBox label="등등등" />
           </TroubleBox>
-          <CompleteBtn />
+          <CompleteBtn text="저장" />
         </SignupBox>
       </Signup3Wrapper>
     </>
