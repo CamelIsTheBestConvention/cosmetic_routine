@@ -6,7 +6,9 @@ import CommonInput from "../common/commonInput";
 import { useState } from "react";
 import CommonCheckBox from "./commonCheckbox";
 import CommonRadioBox from "./commonRadiobox";
-import CompleteBtn from "./completeBtn";
+import CompleteBtn from "../common/completeBtn";
+import PageCount from "../common/pageCount";
+import PageGuide from "../common/pageGuide";
 
 const Signup3: React.FC = () => {
   const [nickname, setNickname] = useState("");
@@ -15,8 +17,8 @@ const Signup3: React.FC = () => {
     <>
       <Signup3Wrapper>
         <SignupBox>
-          <SignupCount count="3" />
-          <SignupGuide text="태어난 연도를 알려주세요" />
+          <PageCount count="3" />
+          <PageGuide text="태어난 연도를 알려주세요" />
           <CommonInput
             typeValue="text"
             placeholderValue="예) 1995"
@@ -60,7 +62,7 @@ const Signup3: React.FC = () => {
             <CommonCheckBox label="등등" />
             <CommonCheckBox label="등등등" />
           </TroubleBox>
-          <CompleteBtn />
+          <CompleteBtn text="저장" />
         </SignupBox>
       </Signup3Wrapper>
     </>

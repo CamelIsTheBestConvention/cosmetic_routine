@@ -1,0 +1,52 @@
+.profileWrapper {
+  width: 70%;
+  margin: 20px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ffa4e4;
+
+  button {
+    width: 40%;
+    margin: 20px auto;
+    border: none;
+    border-radius: 10px;
+    background-color: rgba(255, 164, 228, 0.5);
+    font-size: 15px;
+    padding: 5px 10px;
+  }
+}
+
+.profileImg {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  div {
+    width: 88px;
+    height: 88px;
+    margin: 0 auto;
+    border: 1.5px solid #ffa4e4;
+    border-radius: 50%;
+  }
+
+  p {
+    font-size: 20px;
+    text-align: center;
+  }
+}
+
+.selectFilter {
+  width: 70%;
+  margin: 0 auto;
+  display: grid;
+  text-align: center;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+
+  div {
+    font-size: 14px;
+    border: 1px solid #c9c9c9;
+    color: #848484;
+    border-radius: 10px;
+  }
+}
