@@ -5,6 +5,8 @@ import SignupGuide from "./signupGuide";
 import CommonInput from "../common/commonInput";
 import NextBtn from "./nextBtn";
 import { useState } from "react";
+import PageCount from "../common/pageCount";
+import PageGuide from "../common/pageGuide";
 
 interface NextProps {
   onNext: () => void;
@@ -17,8 +19,8 @@ const Signup2: React.FC<NextProps> = ({ onNext }) => {
     <>
       <Signup2Wrapper>
         <SignupBox>
-          <SignupCount count="2" />
-          <SignupGuide text="닉네임을 설정해주세요" />
+          <PageCount count="2"/>
+          <PageGuide text="닉네임을 설정해주세요" />
           <NicknameBox>
             <CommonInput
               typeValue="text"

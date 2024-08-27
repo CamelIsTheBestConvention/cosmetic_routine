@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import BackHeader from "./backHeader";
 
-const AboutHeader = ({ Title }) => {
+const AboutHeader = ({ Title, onBack }) => {
   return (
     <>
       <AboutHeaderWrapper>
-        <BackHeader onBack={""} />
+        <BackHeader onBack={onBack} />
         <h2>{Title}</h2>
       </AboutHeaderWrapper>
     </>

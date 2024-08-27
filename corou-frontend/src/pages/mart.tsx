@@ -5,9 +5,13 @@ import MartList from "../components/mart/martList";
 import PriceList from "../components/mart/priceList";
 
 const Mart: React.FC = () => {
+  const handleBack = () => {
+    return 
+  }
+
   return (
     <>
-      <AboutHeader Title={"장바구니"} />
+      <AboutHeader Title={"장바구니"} onBack={handleBack} />
       <MartList />
       <PriceList />
       <Caution />
