@@ -2,8 +2,6 @@ import styled from "styled-components";
 import BackHeader from "../common/backHeader";
 import CommonInput from "../common/commonInput";
 import NextBtn from "./nextBtn";
-import SignupCount from "./signupCount";
-import SignupGuide from "./signupGuide";
 import PwVisible from "../common/pwVisible";
 import React, { useState } from "react";
 import PageCount from "../common/pageCount";

@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import BackHeader from "../common/backHeader";
-import SignupCount from "./signupCount";
 import SignupGuide from "./signupGuide";
 import CommonInput from "../common/commonInput";
 import { useState } from "react";
-import CommonCheckBox from "./commonCheckbox";
-import CommonRadioBox from "./commonRadiobox";
+import CommonCheckBox from "../common/commonCheckbox";
+import CommonRadioBox from "../common/commonRadiobox";
 import CompleteBtn from "../common/completeBtn";
 import PageCount from "../common/pageCount";
 import PageGuide from "../common/pageGuide";

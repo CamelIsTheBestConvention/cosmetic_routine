@@ -9,6 +9,7 @@ import Mypage from "./pages/mypage";
 import Mart from "./pages/mart";
 import DetailRoutine from "./pages/detailRoutine";
 import AddRoutine from "./pages/addRoutine";
+import Ranking from "./pages/ranking";
 
 function Routing() {
   return (
@@ -24,6 +25,7 @@ function Routing() {
           <Route exact path="/mart" element={<Mart />} />
           <Route exact path="/detail" element={<DetailRoutine />} />
           <Route exact path="/add" element={<AddRoutine />} />
+          <Route exact path="/ranking" element={<Ranking />} />
         </Routes>
       </BrowserRouter>
     </TotalWrapper>

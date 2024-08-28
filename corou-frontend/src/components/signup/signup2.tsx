@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import BackHeader from "../common/backHeader";
-import SignupCount from "./signupCount";
-import SignupGuide from "./signupGuide";
 import CommonInput from "../common/commonInput";
 import NextBtn from "./nextBtn";
 import { useState } from "react";
@@ -19,7 +17,7 @@ const Signup2: React.FC<NextProps> = ({ onNext }) => {
     <>
       <Signup2Wrapper>
         <SignupBox>
-          <PageCount count="2"/>
+          <PageCount count="2" />
           <PageGuide text="닉네임을 설정해주세요" />
           <NicknameBox>
             <CommonInput
