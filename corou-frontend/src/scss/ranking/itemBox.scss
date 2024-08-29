@@ -1,0 +1,52 @@
+.rankingItemBox {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 20px 0;
+  padding: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.rankingNum {
+  font-size: 20px;
+  margin: 0 10px;
+}
+
+.rankingInfoBox {
+  display: flex;
+}
+
+.rankingImg {
+  width: 60px;
+  height: 60px;
+  border: 1px solid black;
+  margin: auto 10px auto 0;
+}
+
+.rankingInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemName {
+  font-size: 14px;
+  color: #848484;
+  margin-bottom: -8px;
+
+  span {
+    color: black;
+  }
+}
+
+.itemPrice {
+  font-size: 13px;
+  color: #848484;
+  margin-top: 10px;
+
+  span {
+    font-size: 15px;
+    color: black;
+  }
+}
