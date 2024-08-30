@@ -6,6 +6,8 @@ import SignupCount from "./signupCount";
 import SignupGuide from "./signupGuide";
 import PwVisible from "../common/pwVisible";
 import React, { useState } from "react";
+import PageCount from "../common/pageCount";
+import PageGuide from "../common/pageGuide";
 
 interface NextProps {
   onNext: () => void;
@@ -20,8 +22,8 @@ const Signup1: React.FC<NextProps> = ({ onNext }) => {
     <>
       <Signup1Wrapper>
         <SignupBox>
-          <SignupCount count="1" />
-          <SignupGuide text="이메일과 비밀번호를 입력해주세요." />
+          <PageCount count="1" />
+          <PageGuide text="이메일과 비밀번호를 입력해주세요." />
           <EmailBox>
             <CommonInput
               typeValue="email"

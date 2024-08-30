@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState } from "react";
-import { options } from "./Data";
+import { options } from "../../data/Data";
 
 const OtherFilter = () => {
   const [checkedItems, setCheckedItems] = useState([]);

@@ -5,6 +5,10 @@ import AboutRoutine from "./pages/aboutRoutine";
 import SocialLogin from "./pages/socialLogin";
 import EmailLogin from "./pages/emailLogin";
 import Signup from "./pages/signup";
+import Mypage from "./pages/mypage";
+import Mart from "./pages/mart";
+import DetailRoutine from "./pages/detailRoutine";
+import AddRoutine from "./pages/addRoutine";
 
 function Routing() {
   return (
@@ -16,6 +20,10 @@ function Routing() {
           <Route exact path="/login" element={<SocialLogin />} />
           <Route exact path="/login/email" element={<EmailLogin />} />
           <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/mypage" element={<Mypage />} />
+          <Route exact path="/mart" element={<Mart />} />
+          <Route exact path="/detail" element={<DetailRoutine />} />
+          <Route exact path="/add" element={<AddRoutine />} />
         </Routes>
       </BrowserRouter>
     </TotalWrapper>

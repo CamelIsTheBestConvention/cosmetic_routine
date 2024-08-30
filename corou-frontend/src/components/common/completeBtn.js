@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-const CompleteBtn = () => {
+const CompleteBtn = ({ text }) => {
   return (
     <>
-      <CompleteBtnCss>저장</CompleteBtnCss>
+      <CompleteBtnCss>{text}</CompleteBtnCss>
     </>
   );
 };

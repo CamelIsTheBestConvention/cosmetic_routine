@@ -3,7 +3,7 @@ import sortFilter from "../../img/sort.png";
 import goodOff from "../../img/goodOff.png";
 import goodOn from "../../img/goodOn.png";
 import star from "../../img/star.png";
-import { items } from "./Data";
+import { items } from "../../data/Data";
 
 const FilterList: React.FC = () => {
   return (
