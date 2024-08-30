@@ -1,20 +1,58 @@
 import styled from "styled-components";
-import BackHeader from "../common/backHeader";
 import CommonInput from "../common/commonInput";
 import NextBtn from "./nextBtn";
 import PwVisible from "../common/pwVisible";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageCount from "../common/pageCount";
 import PageGuide from "../common/pageGuide";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setEmail,
+  setPassword,
+  setPasswordConfirm,
+} from "../../redux/slice/signupSlice";
+import { RootState } from "../../redux/store";
 
 interface NextProps {
   onNext: () => void;
 }
 
 const Signup1: React.FC<NextProps> = ({ onNext }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
+  const dispatch = useDispatch();
+
+  const email = useSelector((state: RootState) => state.signup.email);
+  const password = useSelector((state: RootState) => state.signup.password);
+  const passwordConfirm = useSelector(
+    (state: RootState) => state.signup.passwordConfirm
+  );
+
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
+  const [passwordLengthValid, setPasswordLengthValid] = useState(false);
+  const [passwordComplexityValid, setPasswordComplexityValid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+  const passwordLengthRegex = /.{8,}$/;
+  const passwordComplexityRegex =
+    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+
+  useEffect(() => {
+    const isEmailValid = emailRegex.test(email);
+    const isPasswordLengthValid = passwordLengthRegex.test(password);
+    const isPasswordComplexityValid = passwordComplexityRegex.test(password);
+    const isPasswordConfirmed = password === passwordConfirm;
+
+    setEmailValid(isEmailValid);
+    setPasswordLengthValid(isPasswordLengthValid);
+    setPasswordComplexityValid(isPasswordComplexityValid);
+    setIsFormValid(
+      isEmailValid &&
+        isPasswordLengthValid &&
+        isPasswordComplexityValid &&
+        isPasswordConfirmed
+    );
+  }, [email, password, passwordConfirm]);
 
   return (
     <>
@@ -22,32 +60,34 @@ const Signup1: React.FC<NextProps> = ({ onNext }) => {
         <SignupBox>
           <PageCount count="1" />
           <PageGuide text="이메일과 비밀번호를 입력해주세요." />
-          <EmailBox>
-            <CommonInput
-              typeValue="email"
-              placeholderValue="이메일"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <EmailCheck>√ 8자리 이상</EmailCheck>
-            <EmailCheck>
-              √ 대문자, 소문자, 숫자, 특수문자 중 2개 이상
-            </EmailCheck>
-          </EmailBox>
           <CommonInput
-            typeValue="password"
+            typeValue="email"
+            placeholderValue="이메일"
+            value={email}
+            onChange={(e) => dispatch(setEmail(e.target.value))}
+          />
+          <InputCheck valid={emailValid}>√ 이메일 확인</InputCheck>
+          <CommonInput
+            typeValue={showPassword ? "text" : "password"}
             placeholderValue="비밀번호"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => dispatch(setPassword(e.target.value))}
           />
-          <PwVisible />
+          <InputCheck valid={passwordLengthValid}>√ 8자리 이상</InputCheck>
+          <InputCheck valid={passwordComplexityValid}>
+            √ 영문, 숫자, 특수문자 포함
+          </InputCheck>
           <CommonInput
-            typeValue="password"
+            typeValue={showPassword ? "text" : "password"}
             placeholderValue="비밀번호 확인"
             value={passwordConfirm}
-            onChange={(e) => setPasswordConfirm(e.target.value)}
+            onChange={(e) => dispatch(setPasswordConfirm(e.target.value))}
           />
-          <NextBtn onClick={onNext} />
+          <InputCheck valid={password === passwordConfirm}>
+            √ 비밀번호 동일
+          </InputCheck>
+          <PwVisible onToggle={setShowPassword} />
+          <NextBtn onClick={onNext} disabled={!isFormValid} />
         </SignupBox>
       </Signup1Wrapper>
     </>
@@ -66,14 +106,10 @@ const SignupBox = styled.div`
   margin: 50px auto;
 `;
 
-const EmailBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 10px 0;
-`;
-
-const EmailCheck = styled.div`
+const InputCheck = styled.div<{ valid: boolean }>`
   font-size: 11px;
   margin-left: 10px;
+  margin-bottom: 5px;
   color: #c9c9c9;
+  color: ${(props) => (props.valid ? "green" : "#c9c9c9")};
 `;

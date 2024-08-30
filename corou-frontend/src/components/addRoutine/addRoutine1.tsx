@@ -27,7 +27,7 @@ const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
           value={grade}
           onChange={(e) => setGrade(e.target.value)}
         />
-        <NextBtn onClick={onNext} />
+        <NextBtn onClick={onNext} disabled={false} />
       </AddRoutine1Wrapper>
     </>
   );
