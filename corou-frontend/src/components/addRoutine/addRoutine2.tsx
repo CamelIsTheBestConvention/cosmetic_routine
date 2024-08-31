@@ -209,7 +209,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
           <span>
             종합 <span>₩ 000,000</span>
           </span>
-          <NextBtn onClick={onNext} />
+          <NextBtn onClick={onNext} disabled={false} />
         </div>
       </RoutinePriceWrapper>
     </>

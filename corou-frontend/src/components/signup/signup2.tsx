@@ -1,44 +1,59 @@
 import styled from "styled-components";
-import BackHeader from "../common/backHeader";
-import SignupCount from "./signupCount";
-import SignupGuide from "./signupGuide";
 import CommonInput from "../common/commonInput";
 import NextBtn from "./nextBtn";
 import { useState } from "react";
 import PageCount from "../common/pageCount";
 import PageGuide from "../common/pageGuide";
+import { useDispatch, useSelector } from "react-redux";
+import { setNickname } from "../../redux/slice/signupSlice";
+import { RootState } from "../../redux/store";
 
 interface NextProps {
   onNext: () => void;
 }
 
 const Signup2: React.FC<NextProps> = ({ onNext }) => {
-  const [nickname, setNickname] = useState("");
+  const dispatch = useDispatch();
+  const nickname = useSelector((state: RootState) => state.signup.nickname);
+  const [nicknameValid, setNicknameValid] = useState<boolean | null>(null);
+
+  const handleNicknameCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    dispatch(setNickname(value));
+
+    if (value.length <= 10) {
+      setNicknameValid(true);
+    } else {
+      setNicknameValid(false);
+    }
+  };
 
   return (
     <>
       <Signup2Wrapper>
         <SignupBox>
-          <PageCount count="2"/>
+          <PageCount count="2" />
           <PageGuide text="닉네임을 설정해주세요" />
           <NicknameBox>
             <CommonInput
               typeValue="text"
               placeholderValue="닉네임"
               value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
+              onChange={handleNicknameCheck}
             />
-            <NickCheckWrapper>
-              <NicknameCheck>사용할 수 있는 닉네임이에요</NicknameCheck>
-              <span>0/10</span>
-            </NickCheckWrapper>
-            <NickCheckWrapper>
-              <NicknameCheck>사용할 수 없는 닉네임이에요</NicknameCheck>
-              <span>10/10</span>
-            </NickCheckWrapper>
+            {nicknameValid !== null && (
+              <NickCheckWrapper>
+                <NicknameCheck valid={nicknameValid}>
+                  {nicknameValid
+                    ? "사용할 수 있는 닉네임이에요"
+                    : "사용할 수 없는 닉네임이에요"}
+                </NicknameCheck>
+                <span>{nickname.length}/10</span>
+              </NickCheckWrapper>
+            )}
             <RandomCreate>랜덤 생성</RandomCreate>
           </NicknameBox>
-          <NextBtn onClick={onNext} />
+          <NextBtn onClick={onNext} disabled={!nicknameValid} />
         </SignupBox>
       </Signup2Wrapper>
     </>
@@ -63,10 +78,10 @@ const NicknameBox = styled.div`
   margin: 10px 0;
 `;
 
-const NicknameCheck = styled.div`
+const NicknameCheck = styled.div<{ valid: boolean }>`
   font-size: 11px;
   margin-left: 10px;
-  color: #585858;
+  color: ${(props) => (props.valid ? "green" : "red")};
 `;
 
 const NickCheckWrapper = styled.div`
