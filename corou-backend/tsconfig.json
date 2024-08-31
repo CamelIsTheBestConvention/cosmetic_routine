@@ -10,7 +10,14 @@
       "allowJs": true,
       "checkJs": true,
       "outDir": "./dist",
-      "rootDir": "./src"
+      "rootDir": "./src",
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true
     },
-    "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts"]
+    "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts"],
+    "exclude": ["node_modules"]
   }
+
+  

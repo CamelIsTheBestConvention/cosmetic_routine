@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import express from 'express';
 import bodyParser from 'body-parser';
 import routes from './routes/routes';
@@ -8,3 +9,4 @@ app.use(bodyParser.json());
 app.use('/api', routes);
 
 export default app;
+
