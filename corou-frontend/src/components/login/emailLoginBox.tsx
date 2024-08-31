@@ -13,6 +13,7 @@ import PwVisible from "../common/pwVisible";
 const EmailLoginBox: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <>
@@ -25,12 +26,12 @@ const EmailLoginBox: React.FC = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <CommonInput
-            typeValue="password"
+            typeValue={showPassword ? "text" : "password"}
             placeholderValue="비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <PwVisible />
+          <PwVisible onToggle={setShowPassword} />
           <span className="forgotPw">
             비밀번호를 잊으셨나요? <span>비밀번호 재설정</span>
           </span>

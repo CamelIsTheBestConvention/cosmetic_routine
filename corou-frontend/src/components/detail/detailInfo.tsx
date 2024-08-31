@@ -1,18 +1,22 @@
-import Star from "../../img/star.png";
 import "../../scss/detail/detailInfo.scss";
+import DetailProfile from "./detailProfile";
+import DetailTitle from "./detailTitle";
+import DetailCheck from "./detailCheck";
+import DetailTag from "./detailTag";
+import DetailGrade from "./detailGrade";
+import DetailBtnBox from "./detailBtnBox";
 
 const DetailInfo: React.FC = () => {
   return (
     <>
       <div className="detailInfoWrapper">
         <h4>꿀광피부 루틴</h4>
-        <div className="detailInfoReview">
-          <img src={Star} alt="평점" />
-          <span>
-            4.9 <span>(1,192)</span>
-          </span>
-          <span>리뷰 조회</span>
-        </div>
+        <DetailTitle />
+        <DetailProfile />
+        <DetailCheck />
+        <DetailTag />
+        <DetailGrade />
+        <DetailBtnBox />
       </div>
     </>
   );
