@@ -28,7 +28,7 @@ export class User {
     @JoinColumn({ name: 'user_key' })
     routines!: Routine[];
 
-    @OneToMany(() => Address, address => address.user)
+    @OneToMany(() => Address, (address) => address.user)
     @JoinColumn({ name: 'user_key' })
     addresses!: Address[];
 
@@ -36,3 +36,5 @@ export class User {
     @JoinColumn({ name: 'user_key' })
     itemOrders!: ItemOrder[];
 }
+
+// caching_sha2_password <--- npm un mysql // npm i mysql2@latest ?????????????? 

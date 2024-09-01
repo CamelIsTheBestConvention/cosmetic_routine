@@ -19,4 +19,19 @@ export class UserController {
             res.status(400).json({ message: error.message });
         }
     }
+    async loginUser(req: Request, res: Response): Promise<void> {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            res.status(400).json({ message: '모든 항목을 입력해주세요.' });
+            return;
+        }
+
+        try {
+            const user = await userService.loginUser(email, password);
+            res.status(200).json(user);
+        } catch (error: any) {
+            res.status(400).json({ message: error.message });
+        }
+    }
 }

@@ -85,4 +85,3 @@ CREATE TABLE review (
         (item_key IS NULL AND routine_key IS NOT NULL)
     )
 );
-

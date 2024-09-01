@@ -32,7 +32,7 @@ export class Address {
     @Column({ type: 'varchar', length: 255 })
     is_default!: 'Y' | 'N';
 
-    @ManyToOne(() => User, user => user.addresses)
+    @ManyToOne(() => User, (user) => user.addresses)
     @JoinColumn({ name: 'user_key' })
     user!: User;
 
