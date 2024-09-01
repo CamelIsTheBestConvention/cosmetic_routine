@@ -1,3 +1,14 @@
+CREATE TABLE user(
+	user_key INT AUTO_INCREMENT PRIMARY KEY,
+	email VARCHAR(255) NOT NULL UNIQUE,
+	password VARCHAR(255) NOT NULL,
+	username VARCHAR(255) NOT NULL,
+	birth_date DATE NOT
+	gender CHAR(1)  
+);
+
+
+
 CREATE TABLE item (
 	`item_key`	INT AUTO_INCREMENT PRIMARY KEY,
 	`item_name`	VARCHAR(255)	NOT NULL,
@@ -41,11 +52,13 @@ CREATE TABLE routine_tag_relation (
 );
 
 CREATE TABLE routine_detail (
-    step_number INT NOT NULL,
+    step_number INT,
 	routine_key INT,
 	item_key INT,
-	user_key INT,
 	step_name VARCHAR(255) NOT NULL,
+	FOREIGN KEY(routine_key) REFERENCES routine(routine_key),
+	FOREIGN KEY(item_key) REFERENCES item(item_key),
+	PRIMARY KEY (step_number, routine_key)
 );
 
 CREATE TABLE cart (
@@ -53,4 +66,22 @@ CREATE TABLE cart (
 	`user_key`	INT	NOT NULL,
 	`count`	INT,
 	`purchase_price`	INT
+);
+
+CREATE TABLE review (
+	review_key INT AUTO_INCREMENT PRIMARY KEY,
+	user_key INT,
+    item_key INT,
+    routine_key INT,	
+	review_type CHAR(1) CHECK(review_type IN ('I', 'R')), 
+    review_content VARCHAR(255),
+	review_at DATE, 
+	rating INT, 
+	FOREIGN KEY(user_key) REFERENCES user(user_key),
+	    FOREIGN KEY (item_key) REFERENCES item(item_key),
+    FOREIGN KEY (routine_key) REFERENCES routine(routine_key),
+    CHECK (
+        (item_key IS NOT NULL AND routine_key IS NULL) OR
+        (item_key IS NULL AND routine_key IS NOT NULL)
+    )
 );
