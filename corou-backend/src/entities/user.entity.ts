@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinColumn } from 'typeorm';
 import { Routine } from './routine.entity';
 import { Address } from './address.entity';
+import { Review } from './review.entity';
 import { ItemOrder } from './item-order.entity';
 
 @Entity('user')
@@ -35,6 +36,10 @@ export class User {
     @OneToMany(() => ItemOrder, itemOrder => itemOrder.user)
     @JoinColumn({ name: 'user_key' })
     itemOrders!: ItemOrder[];
+
+    @OneToMany(() => Review, review => review.user)
+    @JoinColumn({ name: 'user_key' })
+    reviews!: Review[];
 }
 
 // caching_sha2_password <--- npm un mysql // npm i mysql2@latest ?????????????? 
