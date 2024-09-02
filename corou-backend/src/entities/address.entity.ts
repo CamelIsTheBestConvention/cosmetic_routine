@@ -29,7 +29,7 @@ export class Address {
     @Column({ type: 'varchar', length: 255 })
     request!: string;
 
-    @Column({ type: 'varchar', length: 255 })
+    @Column({ type: 'varchar', length: 1 })
     is_default!: 'Y' | 'N';
 
     @ManyToOne(() => User, (user) => user.addresses)

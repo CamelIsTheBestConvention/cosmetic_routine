@@ -4,7 +4,7 @@ import { Routine } from "../entities/routine.entity";
 export class RoutineService {
     private routineRepository = AppDataSource.getRepository(Routine);
 
-    // 루틴 생성
+    // 루틴 등록
     async createRoutine(user_key: number, routine_name: string, steps: number): Promise<Routine> {
         const newRoutine = this.routineRepository.create({
             user_key,
