@@ -1,10 +1,27 @@
 import styled from "styled-components";
 
-const CommonCheckBox = ({ label }: { label: string }) => {
+interface checkBoxType {
+  label: string;
+  value: string | number;
+  checked: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const CommonCheckBox: React.FC<checkBoxType> = ({
+  label,
+  value,
+  checked,
+  onChange,
+}) => {
   return (
     <>
       <Label>
-        <HiddenCheckbox type="checkbox" />
+        <HiddenCheckbox
+          type="checkbox"
+          value={value}
+          checked={checked}
+          onChange={onChange}
+        />
         <CheckboxText>{label}</CheckboxText>
       </Label>
     </>

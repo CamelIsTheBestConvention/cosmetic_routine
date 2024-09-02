@@ -21,7 +21,7 @@ function Routing() {
           <Route exact path="/about" element={<AboutRoutine />} />
           <Route exact path="/login" element={<SocialLogin />} />
           <Route exact path="/login/email" element={<EmailLogin />} />
-          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/register" element={<Signup />} />
           <Route exact path="/mypage" element={<Mypage />} />
           <Route exact path="/mart" element={<Mart />} />
           <Route exact path="/detail" element={<DetailRoutine />} />

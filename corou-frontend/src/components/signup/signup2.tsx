@@ -7,6 +7,7 @@ import PageGuide from "../common/pageGuide";
 import { useDispatch, useSelector } from "react-redux";
 import { setNickname } from "../../redux/slice/signupSlice";
 import { RootState } from "../../redux/store";
+import { animals, colors } from "../../data/Data";
 
 interface NextProps {
   onNext: () => void;
@@ -19,13 +20,24 @@ const Signup2: React.FC<NextProps> = ({ onNext }) => {
 
   const handleNicknameCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    const isValid = /^[a-zA-Z0-9가-힣]*$/.test(value);
+
     dispatch(setNickname(value));
 
-    if (value.length <= 10) {
+    if (value.length <= 10 && value.length > 0 && isValid) {
       setNicknameValid(true);
     } else {
       setNicknameValid(false);
     }
+  };
+
+  const handleRandomNickname = () => {
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+    const randomNickname = `${randomColor}${randomAnimal}`;
+
+    dispatch(setNickname(randomNickname));
+    setNicknameValid(true);
   };
 
   return (
@@ -51,7 +63,9 @@ const Signup2: React.FC<NextProps> = ({ onNext }) => {
                 <span>{nickname.length}/10</span>
               </NickCheckWrapper>
             )}
-            <RandomCreate>랜덤 생성</RandomCreate>
+            <RandomCreate onClick={handleRandomNickname}>
+              랜덤 생성
+            </RandomCreate>
           </NicknameBox>
           <NextBtn onClick={onNext} disabled={!nicknameValid} />
         </SignupBox>

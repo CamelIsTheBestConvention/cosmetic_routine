@@ -21,7 +21,7 @@ const AddRoutine3: React.FC = () => {
         <PageGuide text="태그를 등록해주세요" />
         <CommonTextarea value={tag.join(", ")} onChange={tagChange} />
         <span>스페이스 또는 쉼표(,)로 구분해주세요</span>
-        <CompleteBtn text="등록" />
+        {/* <CompleteBtn text="등록" onClick={onClick} /> */}
       </AddRoutine3Wrapper>
     </>
   );

@@ -14,17 +14,17 @@ export default CategoryBox;
 
 const CategoryBoxWrapper = styled.div`
   width: 20%;
-  padding: 5px 0;
+  /* padding: 5px 0; */
   display: flex;
   flex-direction: column;
 
   img {
-    width: 25px;
+    width: 20px;
     margin: 0 auto;
   }
 
   p {
     text-align: center;
-    font-size: 13px;
+    font-size: 12px;
   }
 `;

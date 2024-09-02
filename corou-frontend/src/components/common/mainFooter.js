@@ -38,7 +38,7 @@ const FooterWrapper = styled.div`
 
 const FooterCategory = styled.div`
   width: 100%;
-  margin-top: 10px;
+  margin-top: 5px;
   display: flex;
   justify-content: space-around;
 `;
