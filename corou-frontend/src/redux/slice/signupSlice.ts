@@ -5,6 +5,11 @@ interface SignupState {
   password: string;
   passwordConfirm: string;
   nickname: string;
+  birth: string;
+  gender: string;
+  skinType: number;
+  color: number;
+  trouble: number[];
 }
 
 const initialState: SignupState = {
@@ -12,6 +17,11 @@ const initialState: SignupState = {
   password: "",
   passwordConfirm: "",
   nickname: "",
+  birth: "",
+  gender: "",
+  skinType: 0,
+  color: 0,
+  trouble: [],
 };
 
 const signupSlice = createSlice({
@@ -30,9 +40,33 @@ const signupSlice = createSlice({
     setNickname: (state, action: PayloadAction<string>) => {
       state.nickname = action.payload;
     },
+    setBirth: (state, action: PayloadAction<string>) => {
+      state.birth = action.payload;
+    },
+    setGender: (state, action: PayloadAction<string>) => {
+      state.gender = action.payload;
+    },
+    setSkinType: (state, action: PayloadAction<number>) => {
+      state.skinType = action.payload;
+    },
+    setColor: (state, action: PayloadAction<number>) => {
+      state.color = action.payload;
+    },
+    setTrouble: (state, action: PayloadAction<number[]>) => {
+      state.trouble = action.payload;
+    },
   },
 });
 
-export const { setEmail, setPassword, setPasswordConfirm, setNickname } =
-  signupSlice.actions;
+export const {
+  setEmail,
+  setPassword,
+  setPasswordConfirm,
+  setNickname,
+  setBirth,
+  setGender,
+  setSkinType,
+  setColor,
+  setTrouble,
+} = signupSlice.actions;
 export default signupSlice.reducer;

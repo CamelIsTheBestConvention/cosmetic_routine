@@ -1,10 +1,27 @@
 import styled from "styled-components";
 
-const CommonRadioBox = ({ label, name }: { label: string; name: string }) => {
+interface radioBoxType {
+  label: string;
+  name: string;
+  value: string | number;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const CommonRadioBox: React.FC<radioBoxType> = ({
+  label,
+  name,
+  value,
+  onChange,
+}) => {
   return (
     <>
       <Label>
-        <HiddenRadioButton type="radio" name={name} />
+        <HiddenRadioButton
+          type="radio"
+          name={name}
+          value={value}
+          onChange={onChange}
+        />
         <RadioButtonText>{label}</RadioButtonText>
       </Label>
     </>
