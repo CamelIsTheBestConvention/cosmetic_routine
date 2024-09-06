@@ -1,13 +1,23 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const OtherBtn = () => {
+  const navigate = useNavigate();
+
+  const handleMoveRegister = () => {
+    navigate("/register");
+  };
+  const handleMoveEmailLogin = () => {
+    navigate("/login/email");
+  };
+
   return (
     <>
       <>
         <OtherBtnWrapper>
-          <Btn>이메일 회원가입</Btn>
+          <Btn onClick={handleMoveRegister}>이메일 회원가입</Btn>
           <Slash> | </Slash>
-          <Btn>이메일 로그인</Btn>
+          <Btn onClick={handleMoveEmailLogin}>이메일 로그인</Btn>
         </OtherBtnWrapper>
       </>
     </>

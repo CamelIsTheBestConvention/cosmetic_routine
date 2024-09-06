@@ -1,11 +1,15 @@
 import "../../scss/detail/detailInfo.scss";
 
-const DetailTag: React.FC = () => {
+interface detailTag {
+  tag: string[];
+}
+
+const DetailTag: React.FC<detailTag> = ({ tag }) => {
   return (
     <>
       <div className="detailTagWrapper">
         <ul>
-          <li>태그1</li>
+          <li>{tag}</li>
           <li>태그2</li>
           <li>태그3</li>
           <li>태그4</li>

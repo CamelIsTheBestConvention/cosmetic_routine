@@ -1,12 +1,21 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const TopRoutineTitle: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/about");
+  };
+
   return (
     <>
       <TopRoutineTitleWrapper>
         <TitleWrapper>
           <h2>TOP 10 루틴</h2>
-          <span>더보기 →</span>
+          <span onClick={handleNavigate}>
+            더보기 <span>→</span>
+          </span>
         </TitleWrapper>
       </TopRoutineTitleWrapper>
     </>
@@ -34,5 +43,10 @@ const TitleWrapper = styled.div`
     margin: auto 0;
     margin-bottom: 5px;
     font-size: 12px;
+    cursor: pointer;
+
+    &:hover {
+      color: black;
+    }
   }
 `;

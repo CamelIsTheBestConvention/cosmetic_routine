@@ -3,7 +3,7 @@ import "../../scss/login/emailLogin.scss";
 import CommonInput from "../common/commonInput";
 import PwVisible from "../common/pwVisible";
 import axios from "axios";
-import jwt_decode, { JwtPayload } from "jwt-decode";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 interface MyTokenPayload extends JwtPayload {
   exp: number;
@@ -32,9 +32,7 @@ const EmailLoginBox: React.FC = () => {
       console.log("로그인 성공", response.data);
 
       const token = response.data.token;
-      const decodedToken = (
-        jwt_decode as unknown as (token: string) => MyTokenPayload
-      )(token);
+      const decodedToken = jwtDecode<MyTokenPayload>(token);
       const expirationTime = decodedToken.exp * 1000;
 
       sessionStorage.setItem("authToken", token);

@@ -4,16 +4,51 @@ import cartLogo from "../../img/cart.png";
 import itemLogo from "../../img/item.png";
 import homeLogo from "../../img/home.png";
 import mypageLogo from "../../img/mypage.png";
+import { useNavigate } from "react-router-dom";
 
 const MainFooter = () => {
+  const navigate = useNavigate();
+
+  const handleMoveItem = () => {
+    navigate("/ranking");
+  };
+
+  const handleMoveHome = () => {
+    navigate("/");
+  };
+
+  const handleMoveOrder = () => {
+    navigate("/order");
+  };
+
+  const handleMoveMypage = () => {
+    navigate("/mypage");
+  };
+
   return (
     <>
       <FooterWrapper>
         <FooterCategory>
-          <CategoryBox imgName={itemLogo} alt="제품" title="제품" />
-          <CategoryBox imgName={homeLogo} alt="홈" title="홈" />
-          <CategoryBox imgName={cartLogo} alt="장바구니" title="장바구니" />
           <CategoryBox
+            onClick={handleMoveItem}
+            imgName={itemLogo}
+            alt="제품"
+            title="제품"
+          />
+          <CategoryBox
+            onClick={handleMoveHome}
+            imgName={homeLogo}
+            alt="홈"
+            title="홈"
+          />
+          <CategoryBox
+            onClick={handleMoveOrder}
+            imgName={cartLogo}
+            alt="장바구니"
+            title="장바구니"
+          />
+          <CategoryBox
+            onClick={handleMoveMypage}
             imgName={mypageLogo}
             alt="마이페이지"
             title="마이페이지"
@@ -39,6 +74,7 @@ const FooterWrapper = styled.div`
 const FooterCategory = styled.div`
   width: 100%;
   margin-top: 5px;
+  margin-bottom: -5px;
   display: flex;
   justify-content: space-around;
 `;

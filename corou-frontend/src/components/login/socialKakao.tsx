@@ -1,11 +1,20 @@
 import styled from "styled-components";
 import kakaoIcon from "../../img/kakao.png";
+import React, { useEffect } from "react";
 
 const SocialKakao: React.FC = () => {
+  const REST_API_KEY = process.env.REACT_APP_KAKAO_KEY;
+  const REDIRECT_URI = "http://localhost:3001/kakao/oauth";
+  const kakaoLink = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+  const loginHandler = () => {
+    window.location.href = kakaoLink;
+  };
+
   return (
     <>
       <KakaoBtnWrapper>
-        <KakaoBtn>
+        <KakaoBtn onClick={loginHandler}>
           <img src={kakaoIcon} alt="kakaoIcon" />
           카카오로 시작하기
         </KakaoBtn>

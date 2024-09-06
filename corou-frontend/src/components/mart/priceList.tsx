@@ -1,6 +1,14 @@
 import "../../scss/mart/priceList.scss";
 
-const PriceList: React.FC = () => {
+interface itemPrice {
+  price: number;
+}
+
+interface itemListData {
+  itemList: itemPrice[];
+}
+
+const PriceList: React.FC<itemListData> = ({ itemList }) => {
   return (
     <>
       <div className="priceListWrapper">
@@ -8,7 +16,7 @@ const PriceList: React.FC = () => {
           <h3>구매 금액</h3>
           <div>
             <span>상품 금액</span>
-            <span>0원</span>
+            {/* <span>{itemList[0].price}원</span> */}
           </div>
           <div>
             <span>할인 금액</span>
@@ -21,7 +29,7 @@ const PriceList: React.FC = () => {
 
           <div>
             <span>총 구매 금액</span>
-            <span>0원</span>
+            {/* <span>{itemList[0].price}원</span> */}
           </div>
           <div>
             <span>적립혜택 예상</span>

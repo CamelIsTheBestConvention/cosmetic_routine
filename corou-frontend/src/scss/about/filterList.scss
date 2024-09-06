@@ -1,6 +1,7 @@
 .filterListWrapper {
   width: 100%;
   margin-top: 20px;
+  position: relative;
   //   background-color: aqua;
 }
 
@@ -127,5 +128,32 @@
     font-size: 20px;
     font-weight: 700;
     color: black;
+  }
+}
+
+.addRoutineBtn {
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  background-color: #ffa4e4;
+  position: sticky;
+  float: right;
+  margin-right: 3%;
+  bottom: 10%;
+  font-size: 65px;
+  color: white;
+  cursor: pointer;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-15%);
   }
 }

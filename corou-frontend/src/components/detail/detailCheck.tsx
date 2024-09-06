@@ -2,12 +2,16 @@ import Star from "../../img/star.png";
 import "../../scss/detail/detailInfo.scss";
 import CommonTag from "../common/commonTag";
 
-const DetailCheck: React.FC = () => {
+interface detailCheckData {
+  check: string[];
+}
+
+const DetailCheck: React.FC<detailCheckData> = ({ check }) => {
   return (
     <>
       <div className="detailCheckWrapper">
-        <CommonTag tagName="건성" />
-        <CommonTag tagName="남성" />
+        <CommonTag tagName={check} />
+        <CommonTag tagName={check} />
       </div>
     </>
   );

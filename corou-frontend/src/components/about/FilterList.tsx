@@ -4,8 +4,15 @@ import goodOff from "../../img/goodOff.png";
 import goodOn from "../../img/goodOn.png";
 import star from "../../img/star.png";
 import { items } from "../../data/Data";
+import { useNavigate } from "react-router-dom";
 
 const FilterList: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleAddRoutine = () => {
+    navigate("/add");
+  };
+
   return (
     <>
       <div className="filterListWrapper">
@@ -57,6 +64,9 @@ const FilterList: React.FC = () => {
             </div>
           </div>
         ))}
+        <div className="addRoutineBtn" onClick={handleAddRoutine}>
+          <span>+</span>
+        </div>
       </div>
     </>
   );
