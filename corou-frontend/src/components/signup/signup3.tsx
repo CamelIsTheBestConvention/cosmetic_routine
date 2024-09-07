@@ -88,9 +88,8 @@ const Signup3: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      const formattedBirth = new Date(
-        birth.slice(0, 4) + "-" + birth.slice(4, 6) + "-" + birth.slice(6, 8)
-      );
+      const formattedBirth =
+        birth.slice(0, 4) + "-" + birth.slice(4, 6) + "-" + birth.slice(6, 8);
 
       const userData = {
         email: email,

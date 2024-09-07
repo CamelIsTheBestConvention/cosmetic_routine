@@ -4,6 +4,7 @@ import cartLogo from "../../img/cart.png";
 import itemLogo from "../../img/item.png";
 import homeLogo from "../../img/home.png";
 import mypageLogo from "../../img/mypage.png";
+import routineLogo from "../../img/routine.png";
 import { useNavigate } from "react-router-dom";
 
 const MainFooter = () => {
@@ -11,6 +12,10 @@ const MainFooter = () => {
 
   const handleMoveItem = () => {
     navigate("/ranking");
+  };
+
+  const handleMoveRoutine = () => {
+    navigate("/about");
   };
 
   const handleMoveHome = () => {
@@ -34,6 +39,12 @@ const MainFooter = () => {
             imgName={itemLogo}
             alt="제품"
             title="제품"
+          />
+          <CategoryBox
+            onClick={handleMoveRoutine}
+            imgName={routineLogo}
+            alt="루틴"
+            title="루틴"
           />
           <CategoryBox
             onClick={handleMoveHome}
