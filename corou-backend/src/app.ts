@@ -1,13 +1,15 @@
 import 'reflect-metadata';
 import express from 'express';
+// import { AppDataSource, initializeDatabase } from './config/ormconfig';
+// import { container } from 'tsyringe';
+// import { UserController } from './controllers/user.controller';
+// import userRouter from './routes/user.router';
 import bodyParser from 'body-parser';
-import routes from './routes/routes';
+
+// initializeDatabase();
 
 const app = express();
-
 app.use(bodyParser.json());
-app.use('/api', routes);
-
 
 export default app;
 
