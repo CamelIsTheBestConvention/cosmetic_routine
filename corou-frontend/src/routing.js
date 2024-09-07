@@ -12,11 +12,13 @@ import AddRoutine from "./pages/addRoutine";
 import Ranking from "./pages/ranking";
 import RankingDetail from "./pages/rankingDetail";
 import Redirection from "./pages/redirection";
+import ScrollToTop from "./components/common/scrollToTop";
 
 function Routing() {
   return (
     <TotalWrapper>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route exact path="/" element={<Main />} />
           <Route exact path="/about" element={<AboutRoutine />} />
