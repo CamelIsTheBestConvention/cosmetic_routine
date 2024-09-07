@@ -1,12 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import DropdownFilter from "../components/about/dropdownFilter";
 import FilterList from "../components/about/FilterList";
 import SkinFilter from "../components/about/skinFilter";
 import AboutHeader from "../components/common/aboutHeader";
+import MainFooter from "../components/common/mainFooter";
 
 const AboutRoutine: React.FC = () => {
+  const navigate = useNavigate();
+
   const handleBack = () => {
-    return 
-  }
+    navigate(-1);
+  };
 
   return (
     <>
@@ -14,6 +18,7 @@ const AboutRoutine: React.FC = () => {
       <SkinFilter />
       <DropdownFilter />
       <FilterList />
+      <MainFooter />
     </>
   );
 };

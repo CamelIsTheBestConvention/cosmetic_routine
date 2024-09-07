@@ -11,6 +11,7 @@ import DetailRoutine from "./pages/detailRoutine";
 import AddRoutine from "./pages/addRoutine";
 import Ranking from "./pages/ranking";
 import RankingDetail from "./pages/rankingDetail";
+import Redirection from "./pages/redirection";
 
 function Routing() {
   return (
@@ -23,11 +24,12 @@ function Routing() {
           <Route exact path="/login/email" element={<EmailLogin />} />
           <Route exact path="/register" element={<Signup />} />
           <Route exact path="/mypage" element={<Mypage />} />
-          <Route exact path="/mart" element={<Mart />} />
+          <Route exact path="/order" element={<Mart />} />
           <Route exact path="/detail" element={<DetailRoutine />} />
           <Route exact path="/add" element={<AddRoutine />} />
           <Route exact path="/ranking" element={<Ranking />} />
           <Route exact path="/ranking/detail" element={<RankingDetail />} />
+          <Route exact path="/kakao/oauth" element={<Redirection />} />
         </Routes>
       </BrowserRouter>
     </TotalWrapper>

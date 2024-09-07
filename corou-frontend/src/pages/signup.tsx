@@ -4,8 +4,10 @@ import Signup2 from "../components/signup/signup2";
 import Signup3 from "../components/signup/signup3";
 import BackHeader from "../components/common/backHeader";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup: React.FC = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
 
   const handleNext = () => {
@@ -17,6 +19,8 @@ const Signup: React.FC = () => {
   const handleBack = () => {
     if (step > 1) {
       setStep(step - 1);
+    } else {
+      navigate(-1);
     }
   };
 
