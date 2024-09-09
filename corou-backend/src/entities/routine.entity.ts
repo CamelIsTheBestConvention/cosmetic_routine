@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { User } from './user.entity';  // Import the User entity
 import { Review } from './review.entity';
+import { RoutineDetail } from './routine-detail.entity';
 
 @Entity('routine')
 export class Routine {
@@ -17,11 +18,7 @@ export class Routine {
     @Column({ type: 'int' })
     steps!: number;
 
-    @ManyToOne(() => User, user => user.routines)
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'user_key' })
     user!: User;
-
-    @OneToMany(() => Routine, routine => routine.reviews)
-    @JoinColumn({ name: 'routine_key' })
-    reviews!: Review[];
 }
