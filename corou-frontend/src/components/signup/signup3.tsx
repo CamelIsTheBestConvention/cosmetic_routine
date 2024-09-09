@@ -11,9 +11,9 @@ import PageGuide from "../common/pageGuide";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import {
-  setBirth,
+  setBirth_date,
   setGender,
-  setTrouble,
+  setAttributes,
   setSkinType,
   setColor,
 } from "../../redux/slice/signupSlice";
@@ -23,22 +23,22 @@ const Signup3: React.FC = () => {
   const dispatch = useDispatch();
   const email = useSelector((state: RootState) => state.signup.email);
   const password = useSelector((state: RootState) => state.signup.password);
-  const nickname = useSelector((state: RootState) => state.signup.nickname);
-  const birth = useSelector((state: RootState) => state.signup.birth);
+  const username = useSelector((state: RootState) => state.signup.username);
+  const birth_date = useSelector((state: RootState) => state.signup.birth_date);
   const gender = useSelector((state: RootState) => state.signup.gender);
   const skinType = useSelector((state: RootState) => state.signup.skinType);
   const color = useSelector((state: RootState) => state.signup.color);
-  const trouble = useSelector((state: RootState) => state.signup.trouble);
+  const attributes = useSelector((state: RootState) => state.signup.attributes);
 
   const isFormValid = () => {
-    return birth.length == 8 && !!gender && !!skinType && color !== null;
+    return birth_date.length == 8 && !!gender && !!skinType && color !== null;
   };
 
   const handleBirthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
 
     if (/^\d*$/.test(inputValue) && inputValue.length <= 8) {
-      dispatch(setBirth(inputValue));
+      dispatch(setBirth_date(inputValue));
     }
   };
 
@@ -48,25 +48,25 @@ const Signup3: React.FC = () => {
 
   const handleSkinTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
-    const updatedTrouble = trouble.filter((item) => item < 1 || item > 5);
+    const updatedTrouble = attributes.filter((item) => item < 1 || item > 5);
     const newTrouble = [...updatedTrouble, value];
     const sorted = [...newTrouble].sort((a, b) => a - b);
 
     dispatch(setSkinType(value));
-    dispatch(setTrouble(sorted));
+    dispatch(setAttributes(sorted));
     console.log(sorted);
   };
 
   const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
-    const updatedTrouble = trouble.filter(
+    const updatedTrouble = attributes.filter(
       (item) => !(item >= 6 && item <= 9) && item !== 0
     );
     const newTrouble = [...updatedTrouble, value];
     const sorted = [...newTrouble].sort((a, b) => a - b);
 
     dispatch(setColor(value));
-    dispatch(setTrouble(sorted));
+    dispatch(setAttributes(sorted));
     console.log(sorted);
   };
 
@@ -74,30 +74,34 @@ const Signup3: React.FC = () => {
     const value = parseInt(e.target.value);
     let updateValue;
 
-    if (trouble.includes(value)) {
-      updateValue = trouble.filter((item) => item !== value);
+    if (attributes.includes(value)) {
+      updateValue = attributes.filter((item) => item !== value);
     } else {
-      updateValue = [...trouble, value];
+      updateValue = [...attributes, value];
     }
 
     const sorted = [...updateValue].sort((a, b) => a - b);
 
-    dispatch(setTrouble(sorted));
+    dispatch(setAttributes(sorted));
     console.log(updateValue);
   };
 
   const handleSubmit = async () => {
     try {
       const formattedBirth =
-        birth.slice(0, 4) + "-" + birth.slice(4, 6) + "-" + birth.slice(6, 8);
+        birth_date.slice(0, 4) +
+        "-" +
+        birth_date.slice(4, 6) +
+        "-" +
+        birth_date.slice(6, 8);
 
       const userData = {
         email: email,
         password: password,
-        nickname: nickname,
-        birth: formattedBirth,
+        username: username,
+        birth_date: formattedBirth,
         gender: gender,
-        trouble: trouble,
+        attributes: attributes,
       };
 
       const response = await axios.post("/api/user/register", userData);
@@ -117,7 +121,7 @@ const Signup3: React.FC = () => {
           <CommonInput
             typeValue="text"
             placeholderValue="예) 19950101"
-            value={birth}
+            value={birth_date}
             onChange={handleBirthChange}
           />
           <SignupGuide text="성별을 선택해주세요" />
@@ -219,55 +223,55 @@ const Signup3: React.FC = () => {
             <CommonCheckBox
               label="아토피"
               value={10}
-              checked={trouble.includes(10)}
+              checked={attributes.includes(10)}
               onChange={handleTroubleChange}
             />
             <CommonCheckBox
               label="여드름"
               value={11}
-              checked={trouble.includes(11)}
+              checked={attributes.includes(11)}
               onChange={handleTroubleChange}
             />
             <CommonCheckBox
               label="민감성"
               value={12}
-              checked={trouble.includes(12)}
+              checked={attributes.includes(12)}
               onChange={handleTroubleChange}
             />
             <CommonCheckBox
               label="홍조"
               value={13}
-              checked={trouble.includes(13)}
+              checked={attributes.includes(13)}
               onChange={handleTroubleChange}
             />
             <CommonCheckBox
               label="각질"
               value={14}
-              checked={trouble.includes(14)}
+              checked={attributes.includes(14)}
               onChange={handleTroubleChange}
             />
             <CommonCheckBox
               label="속건조"
               value={15}
-              checked={trouble.includes(15)}
+              checked={attributes.includes(15)}
               onChange={handleTroubleChange}
             />
             <CommonCheckBox
               label="등"
               value={16}
-              checked={trouble.includes(16)}
+              checked={attributes.includes(16)}
               onChange={handleTroubleChange}
             />
             <CommonCheckBox
               label="등등"
               value={17}
-              checked={trouble.includes(17)}
+              checked={attributes.includes(17)}
               onChange={handleTroubleChange}
             />
             <CommonCheckBox
               label="등등등"
               value={18}
-              checked={trouble.includes(18)}
+              checked={attributes.includes(18)}
               onChange={handleTroubleChange}
             />
           </TroubleBox>

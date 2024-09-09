@@ -5,13 +5,20 @@ import PageGuide from "../common/pageGuide";
 import CommonInput from "../common/commonInput";
 import { useState } from "react";
 import NextBtn from "../signup/nextBtn";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { setForRoutine, setGrade } from "../../redux/slice/addRoutineSlice";
 
 interface NextProps {
   onNext: () => void;
 }
 
 const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
-  const [grade, setGrade] = useState("");
+  const dispatch = useDispatch();
+  const forRoutine = useSelector(
+    (state: RootState) => state.addRoutine.forRoutine
+  );
+  const grade = useSelector((state: RootState) => state.addRoutine.grade);
 
   return (
     <>
@@ -25,7 +32,7 @@ const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
           typeValue="text"
           placeholderValue="예) 3"
           value={grade}
-          onChange={(e) => setGrade(e.target.value)}
+          onChange={(e) => dispatch(setGrade(Number(e.target.value)))}
         />
         <NextBtn onClick={onNext} disabled={false} />
       </AddRoutine1Wrapper>

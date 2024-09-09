@@ -5,7 +5,7 @@ import { useState } from "react";
 import PageCount from "../common/pageCount";
 import PageGuide from "../common/pageGuide";
 import { useDispatch, useSelector } from "react-redux";
-import { setNickname } from "../../redux/slice/signupSlice";
+import { setUsername } from "../../redux/slice/signupSlice";
 import { RootState } from "../../redux/store";
 import { animals, colors } from "../../data/Data";
 
@@ -15,19 +15,19 @@ interface NextProps {
 
 const Signup2: React.FC<NextProps> = ({ onNext }) => {
   const dispatch = useDispatch();
-  const nickname = useSelector((state: RootState) => state.signup.nickname);
-  const [nicknameValid, setNicknameValid] = useState<boolean | null>(null);
+  const username = useSelector((state: RootState) => state.signup.username);
+  const [usernameValid, setUsernameValid] = useState<boolean | null>(null);
 
   const handleNicknameCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const isValid = /^[a-zA-Z0-9가-힣]*$/.test(value);
 
-    dispatch(setNickname(value));
+    dispatch(setUsername(value));
 
     if (value.length <= 10 && value.length > 0 && isValid) {
-      setNicknameValid(true);
+      setUsernameValid(true);
     } else {
-      setNicknameValid(false);
+      setUsernameValid(false);
     }
   };
 
@@ -36,8 +36,8 @@ const Signup2: React.FC<NextProps> = ({ onNext }) => {
     const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
     const randomNickname = `${randomColor}${randomAnimal}`;
 
-    dispatch(setNickname(randomNickname));
-    setNicknameValid(true);
+    dispatch(setUsername(randomNickname));
+    setUsernameValid(true);
   };
 
   return (
@@ -50,24 +50,24 @@ const Signup2: React.FC<NextProps> = ({ onNext }) => {
             <CommonInput
               typeValue="text"
               placeholderValue="닉네임"
-              value={nickname}
+              value={username}
               onChange={handleNicknameCheck}
             />
-            {nicknameValid !== null && (
+            {usernameValid !== null && (
               <NickCheckWrapper>
-                <NicknameCheck valid={nicknameValid}>
-                  {nicknameValid
+                <NicknameCheck valid={usernameValid}>
+                  {usernameValid
                     ? "사용할 수 있는 닉네임이에요"
                     : "사용할 수 없는 닉네임이에요"}
                 </NicknameCheck>
-                <span>{nickname.length}/10</span>
+                <span>{username.length}/10</span>
               </NickCheckWrapper>
             )}
             <RandomCreate onClick={handleRandomNickname}>
               랜덤 생성
             </RandomCreate>
           </NicknameBox>
-          <NextBtn onClick={onNext} disabled={!nicknameValid} />
+          <NextBtn onClick={onNext} disabled={!usernameValid} />
         </SignupBox>
       </Signup2Wrapper>
     </>
