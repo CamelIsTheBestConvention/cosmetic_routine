@@ -12,12 +12,13 @@ import {
   setPasswordConfirm,
 } from "../../redux/slice/signupSlice";
 import { RootState } from "../../redux/store";
+import axios from "axios";
 
 interface NextProps {
-  onNext: () => void;
+  onStepChange: (step: number) => void;
 }
 
-const Signup1: React.FC<NextProps> = ({ onNext }) => {
+const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
   const dispatch = useDispatch();
 
   const email = useSelector((state: RootState) => state.signup.email);
@@ -31,6 +32,8 @@ const Signup1: React.FC<NextProps> = ({ onNext }) => {
   const [passwordLengthValid, setPasswordLengthValid] = useState(false);
   const [passwordComplexityValid, setPasswordComplexityValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [emailCheck, setEmailCheck] = useState<null | boolean>(null);
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
   const passwordLengthRegex = /.{8,}$/;
@@ -53,6 +56,37 @@ const Signup1: React.FC<NextProps> = ({ onNext }) => {
         isPasswordConfirmed
     );
   }, [email, password, passwordConfirm]);
+
+  const handleEmailCheck = async () => {
+    try {
+      const response = await axios.get(`${backPort}/api/check/${email}`);
+
+      const message = response.data.message;
+
+      if (message == "이미 사용중인 이메일입니다.") {
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error("이메일 중복 확인 중 오류 발생", error);
+      return true;
+    }
+  };
+
+  const handleNext = async () => {
+    if (!isFormValid) return;
+
+    const emailExists = await handleEmailCheck();
+
+    if (emailExists) {
+      setEmailCheck(false);
+      alert("이미 사용중인 이메일입니다.");
+    } else {
+      setEmailCheck(true);
+      onStepChange(2);
+    }
+  };
 
   return (
     <>
@@ -87,7 +121,7 @@ const Signup1: React.FC<NextProps> = ({ onNext }) => {
             √ 비밀번호 동일
           </InputCheck>
           <PwVisible onToggle={setShowPassword} />
-          <NextBtn onClick={onNext} disabled={!isFormValid} />
+          <NextBtn onClick={handleNext} disabled={!isFormValid} />
         </SignupBox>
       </Signup1Wrapper>
     </>
