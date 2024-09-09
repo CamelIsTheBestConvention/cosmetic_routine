@@ -30,6 +30,8 @@ const Signup3: React.FC = () => {
   const color = useSelector((state: RootState) => state.signup.color);
   const attributes = useSelector((state: RootState) => state.signup.attributes);
 
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
+
   const isFormValid = () => {
     return birth_date.length == 8 && !!gender && !!skinType && color !== null;
   };
@@ -104,10 +106,22 @@ const Signup3: React.FC = () => {
         attributes: attributes,
       };
 
-      const response = await axios.post("/api/user/register", userData);
+      console.log(userData);
 
+      const response = await axios.post(
+        `${backPort}/api/user/register`,
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      alert("회원가입 성공");
       console.log("회원가입 성공", response.data);
     } catch (error) {
+      alert("회원가입 실패");
       console.log("회원가입 실패", error);
     }
   };

@@ -17,6 +17,8 @@ const EmailLoginBox: React.FC = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -27,8 +29,9 @@ const EmailLoginBox: React.FC = () => {
       };
 
       console.log(userData);
+      console.log(backPort);
 
-      const response = await axios.post("/api/user/login", userData);
+      const response = await axios.post(`${backPort}/api/user/login`, userData);
       console.log("로그인 성공", response.data);
 
       const token = response.data.token;

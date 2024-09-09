@@ -11,10 +11,11 @@ interface userProfile {
 
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<userProfile | null>(null);
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
 
   useEffect(() => {
     axios
-      .get("/api/user/self")
+      .get(`${backPort}/api/user/self`)
       .then((response) => {
         setProfile(response.data);
       })
