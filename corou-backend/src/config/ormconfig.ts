@@ -9,6 +9,7 @@ import { Address } from '../entities/address.entity';
 import { Routine } from '../entities/routine.entity';
 import { Item } from '../entities/item.entity';
 import { SkinAttribute } from '../entities/skin-attribute.entity';
+import { UserSkinRelation } from '../entities/user-skin-relation.entity';
 import { ItemOrder } from '../entities/item-order.entity';
 import { OrderDetail } from '../entities/order-detail.entity';
 import { Review } from '../entities/review.entity';
@@ -31,7 +32,7 @@ export const AppDataSource = new DataSource({
     database: DB_DATABASE,
     synchronize: false,
     logging: false,
-    entities: [User, Address, Routine, Item, SkinAttribute, ItemOrder, OrderDetail, Review],
+    entities: [User, Address, Routine, Item, SkinAttribute, UserSkinRelation, ItemOrder, OrderDetail, Review],
     // entities: [
     // 'src/entities/*.ts'
     // ]
@@ -49,6 +50,7 @@ export const initializeDatabase = async () => {
             { name: REPOSITORY_TOKENS.RoutineRepository, entity: Routine },
             { name: REPOSITORY_TOKENS.ItemRepository, entity: Item },
             { name: REPOSITORY_TOKENS.SkinAttributeRepository, entity: SkinAttribute },
+            { name: REPOSITORY_TOKENS.UserSkinRelationRepository, entity: UserSkinRelation },
             { name: REPOSITORY_TOKENS.ItemOrderRepository, entity: ItemOrder },
             { name: REPOSITORY_TOKENS.OrderDetailRepository, entity: OrderDetail },
             { name: REPOSITORY_TOKENS.ReviewRepository, entity: Review },
