@@ -25,15 +25,15 @@ export class RoutineService {
         return await this.routineRepository.save(newRoutine);
     }
     // 모든 루틴 조회
-    async getAllRoutines(user_key: number): Promise<Routine[]> {
-        const routines = await this.routineRepository.find({ where: { user_key } });
+    async getAllRoutines(): Promise<Routine[]> {
+        const routines = await this.routineRepository.find();
         if (!routines) {
             throw new Error('해당 유저의 루틴을 찾을 수 없습니다.');
         }
         return routines;
     }
     // 루틴 조회
-    async getRoutine(routine_key: number): Promise<Routine> {
+    async getRoutineByKey(routine_key: number): Promise<Routine> {
         const routine = await this.routineRepository.findOneBy({ routine_key });
         if (!routine) {
             throw new Error('해당 루틴을 찾을 수 없습니다.');

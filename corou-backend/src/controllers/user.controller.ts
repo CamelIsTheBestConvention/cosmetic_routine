@@ -3,6 +3,7 @@ import { injectable } from 'tsyringe';
 import { UserService } from '../services/user.service';
 import { AddressService } from '../services/address.service';
 import { UserSkinRelationService } from '../services/user-skin-relation.service';
+import { generateToken } from '../utils/jwt.utils';
 
 @injectable()
 export class UserController {
@@ -59,7 +60,9 @@ export class UserController {
 
         try {
             const user = await this.userService.loginUser(email, password);
-            res.status(200).json(user);
+            const token = generateToken({ user_key: user.user_key });
+
+            res.status(200).json({ token, user: { user_key: user.user_key, username: user.username } });
         } catch (error: any) {
             res.status(400).json({ message: error.message });
         }
@@ -101,6 +104,17 @@ export class UserController {
         const { user_key } = req.params;
         try {
             const address = await this.addressService.getAllAddress(Number(user_key));
+            res.status(200).json(address);
+        } catch (error: any) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+
+    async updateAddress(req: Request, res: Response): Promise<void> {
+        const { user_key } = req.params;
+        const { name, addr, addr_detail, zip, tel, request, is_default } = req.body;
+        try {
+            const address = await this.addressService.updateAddress(Number(user_key), name, addr, addr_detail, zip, tel, request, is_default);
             res.status(200).json(address);
         } catch (error: any) {
             res.status(400).json({ message: error.message });

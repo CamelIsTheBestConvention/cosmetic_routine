@@ -9,11 +9,11 @@ export class ItemOrder {
     @PrimaryGeneratedColumn()
     order_key!: number;
 
-    @Column()
-    user_key!: number;
+    // @Column()
+    // user_key!: number;
 
-    @Column()
-    address_key!: number;
+    // @Column()
+    // address_key!: number;
 
     @Column({ type: 'date' })
     order_at!: Date;
