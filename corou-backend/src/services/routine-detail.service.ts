@@ -15,7 +15,7 @@ export class RoutineDetailService {
 
     // 루틴 단계 생성
     async createRoutineDetail(routine_key: number, item_key: number, step_name: string, description: string): Promise<RoutineDetail> {
-        const routine = await this.routineService.getRoutine(routine_key);
+        const routine = await this.routineService.getRoutineByKey(routine_key);
         if (!routine) {
             throw new Error('해당 루틴을 찾을 수 없습니다.');
         }

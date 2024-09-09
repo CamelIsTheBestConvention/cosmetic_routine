@@ -15,8 +15,8 @@ export class SkinAttributeService {
     }
 
     // 피부속성 조회 by key
-    async getSkinAttributeByKey(attr_key: number): Promise<SkinAttribute[]> {
-        const skinAttribute = await this.skinAttributeRepository.find({ where: { attr_key } });
+    async getSkinAttributeByKey(attr_key: number): Promise<SkinAttribute> {
+        const skinAttribute = await this.skinAttributeRepository.findOneBy({ attr_key });
         if (!skinAttribute) {
             throw new Error('피부속성을 찾을 수 없습니다.');
         }

@@ -9,9 +9,8 @@ export class Routine {
     @PrimaryGeneratedColumn()
     routine_key!: number;
 
-    @Column()
-    user_key!: number;
-
+    // @Column()
+    // user_key!: number;
     @Column({ type: 'varchar', length: 255 })
     routine_name!: string;
 
