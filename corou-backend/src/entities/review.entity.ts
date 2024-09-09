@@ -12,10 +12,10 @@ export class Review {
     @Column()
     user_key!: number;
 
-    @Column()
+    @Column({ nullable: true })
     routine_key?: number;
 
-    @Column()
+    @Column({ nullable: true })
     item_key?: number;
 
     @Column({ type: 'varchar', length: 1 })
@@ -30,15 +30,15 @@ export class Review {
     @Column({ type: 'int' })
     rating!: number;
 
-    @ManyToOne(() => User, user => user.reviews)
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'user_key' })
     user!: User;
 
-    @ManyToOne(() => Routine, routine => routine.reviews)
+    @ManyToOne(() => Routine)
     @JoinColumn({ name: 'routine_key' })
-    routine!: Routine;
+    routine?: Routine;
 
-    @ManyToOne(() => Item, item => item.reviews)
+    @ManyToOne(() => Item)
     @JoinColumn({ name: 'item_key' })
-    item!: Item;
+    item?: Item;
 }

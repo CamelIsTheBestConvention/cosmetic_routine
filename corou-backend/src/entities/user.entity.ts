@@ -26,20 +26,15 @@ export class User {
     gender!: 'M' | 'F';
 
     @OneToMany(() => Routine, routine => routine.user)
-    @JoinColumn({ name: 'user_key' })
-    routines!: Routine[];
+    routines?: Routine[];
 
     @OneToMany(() => Address, (address) => address.user)
-    @JoinColumn({ name: 'user_key' })
-    addresses!: Address[];
+    addresses?: Address[];
 
     @OneToMany(() => ItemOrder, itemOrder => itemOrder.user)
-    @JoinColumn({ name: 'user_key' })
-    itemOrders!: ItemOrder[];
+    itemOrders?: ItemOrder[];
 
     @OneToMany(() => Review, review => review.user)
-    @JoinColumn({ name: 'user_key' })
-    reviews!: Review[];
+    reviews?: Review[];
 }
 
-// caching_sha2_password <--- npm un mysql // npm i mysql2@latest ?????????????? 

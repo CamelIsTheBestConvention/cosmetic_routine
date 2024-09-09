@@ -1,9 +1,14 @@
-import { AppDataSource } from '../config/ormconfig';
+import { Repository, DataSource } from 'typeorm';
+import { REPOSITORY_TOKENS } from '../config/constants';
 import { User } from '../entities/user.entity';
+import { injectable, inject } from 'tsyringe';
 
-
+@injectable()
 export class UserService {
-    private userRepository = AppDataSource.getRepository(User);
+
+    constructor(
+        @inject(REPOSITORY_TOKENS.UserRepository) private userRepository: Repository<User>
+    ) { }
 
     // 사용자 생성
     async createUser(email: string, password: string, username: string, birth_date: Date, gender: 'M' | 'F'): Promise<User> {
@@ -26,8 +31,16 @@ export class UserService {
         });
         return await this.userRepository.save(newUser);
     }
+    // 닉네임 중복 확인
+    async checkUsername(username: string): Promise<boolean> {
+        const user = await this.userRepository.findOneBy({ username });
+        if (user) {
+            return true;
+        }
+        return false;
+    }
     // 사용자 로그인
-    async loginUser(email: string, password: string) {
+    async loginUser(email: string, password: string): Promise<User> {
         const user = await this.userRepository.findOneBy({ email });
         if (!user) {
             throw new Error('해당 이메일로 가입된 계정이 없습니다.');
@@ -48,7 +61,7 @@ export class UserService {
         return users;
     }
     // 사용자 정보 조회
-    async getUser(user_key: number): Promise<User> {
+    async getUserByKey(user_key: number): Promise<User> {
         const user = await this.userRepository.findOneBy({ user_key });
         if (!user) {
             throw new Error('해당 유저를 찾을 수 없습니다.');
@@ -58,3 +71,5 @@ export class UserService {
     }
 }
 
+// const userRepository = AppDataSource.getRepository(User);
+// const userService = new UserService(userRepository);

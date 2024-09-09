@@ -1,13 +1,24 @@
-import { AppDataSource } from "../config/ormconfig";
+import { Repository } from 'typeorm';
 import { Routine } from "../entities/routine.entity";
+import { UserService } from "./user.service";
+import { injectable, inject } from 'tsyringe';
 
+@injectable()
 export class RoutineService {
-    private routineRepository = AppDataSource.getRepository(Routine);
+
+    constructor(
+        @inject('RoutineRepository') private routineRepository: Repository<Routine>,
+        @inject('UserService') private userService: UserService
+    ) { }
 
     // 루틴 등록
     async createRoutine(user_key: number, routine_name: string, steps: number): Promise<Routine> {
+        const user = await this.userService.getUserByKey(user_key);
+        if (!user) {
+            throw new Error('해당 유저를 찾을 수 없습니다.');
+        }
         const newRoutine = this.routineRepository.create({
-            user_key,
+            user,
             routine_name,
             steps
         });
@@ -48,3 +59,4 @@ export class RoutineService {
         return await this.routineRepository.remove(routine);
     }
 }
+
