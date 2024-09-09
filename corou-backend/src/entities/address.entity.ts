@@ -8,9 +8,6 @@ export class Address {
     @PrimaryGeneratedColumn()
     address_key!: number;
 
-    @Column()
-    user_key!: number;
-
     @Column({ type: 'varchar', length: 255 })
     name!: string;
 

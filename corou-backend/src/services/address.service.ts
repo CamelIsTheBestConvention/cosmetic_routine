@@ -1,24 +1,25 @@
 import { Repository } from 'typeorm';
-// import { AppDataSource } from '../config/ormconfig';
 import { Address } from '../entities/address.entity';
 import { UserService } from './user.service';
 import { injectable, inject } from 'tsyringe';
+import { REPOSITORY_TOKENS } from '../config/constants';
 
 @injectable()
 export class AddressService {
     constructor(
-        @inject('UserService') private userService: UserService,
-        @inject('AddressRepository') private addressRepository: Repository<Address>
+        private userService: UserService,
+        @inject(REPOSITORY_TOKENS.UserRepository) private addressRepository: Repository<Address>
     ) { }
 
     // 사용자 주소 추가 
     async addAddress(user_key: number, name: string, addr: string, addr_detail: string, zip: string, tel: string, request: string, is_default: 'Y' | 'N'): Promise<Address> {
-        const user = await this.userService.getUserByKey(user_key);
-        if (!user) {
+        const foundUser = await this.userService.getUserByKey(user_key);
+        console.log('Fetched user: x', foundUser);
+        if (!foundUser) {
             throw new Error('해당 유저를 찾을 수 없습니다.');
         }
         const newAddress = this.addressRepository.create({
-            user,
+            user: foundUser,
             name,
             addr,
             addr_detail,
@@ -27,6 +28,11 @@ export class AddressService {
             request,
             is_default
         });
+        console.log('New address object before save:', JSON.stringify(newAddress, null, 2));
+        console.log('User object in the new address:', JSON.stringify(newAddress.user, null, 2));
+
+        console.log('New address object before save:', newAddress);
+        console.log('User object in the new address:', newAddress.user);
         return await this.addressRepository.save(newAddress);
     }
 

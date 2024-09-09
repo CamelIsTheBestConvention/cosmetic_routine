@@ -105,9 +105,6 @@ const Signup3: React.FC = () => {
         gender: gender,
         attributes: attributes,
       };
-
-      console.log(userData);
-
       const response = await axios.post(
         `${backPort}/api/user/register`,
         userData,
