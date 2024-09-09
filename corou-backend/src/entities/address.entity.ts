@@ -32,13 +32,7 @@ export class Address {
     @Column({ type: 'varchar', length: 1 })
     is_default!: 'Y' | 'N';
 
-    @ManyToOne(() => User, (user) => user.addresses)
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'user_key' })
     user!: User;
-
-    @OneToOne(() => User, user => user.itemOrders)
-    @JoinColumn({ name: 'item_order_key' })
-    itemOrder!: ItemOrder;
 }
-
-

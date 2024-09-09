@@ -7,7 +7,7 @@ import { Address } from './address.entity';
 @Entity('item_order')
 export class ItemOrder {
     @PrimaryGeneratedColumn()
-    item_order_key!: number;
+    order_key!: number;
 
     @Column()
     user_key!: number;
@@ -24,11 +24,11 @@ export class ItemOrder {
     @Column({ type: 'int' })
     price_total!: number;
 
-    @ManyToOne(() => User, user => user.itemOrders)
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'user_key' })
     user!: User;
 
-    @OneToOne(() => Address, address => address.itemOrder)
+    @ManyToOne(() => Address)
     @JoinColumn({ name: 'address_key' })
     address!: Address;
 }

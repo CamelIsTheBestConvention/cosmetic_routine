@@ -1,10 +1,11 @@
-import express from 'express';
-import userRouter from './user.router';
+import { Express } from 'express';
+import { setupUserRouter } from './user.router';
+// import routineRouter from './routine.router';
+// Import other routers as needed
 
-const router = express.Router();
+export function setupRoutes(app: Express) {
+    app.use('/api/user', setupUserRouter());
 
-router.use('/user', userRouter);
-// router.use('/routine', routineRouter);
-// router.use('/item', itemRouter);
-
-export default router;
+    // app.use('/api/routine', routineRouter);
+    // Add other routers here
+}

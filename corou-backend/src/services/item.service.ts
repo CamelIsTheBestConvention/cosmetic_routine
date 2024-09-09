@@ -1,9 +1,12 @@
-import { AppDataSource } from '../config/ormconfig';
+import { Repository } from 'typeorm';
+// import { AppDataSource } from '../config/ormconfig';
 import { Item } from '../entities/item.entity';
+import { injectable, inject } from 'tsyringe';
 
+@injectable()
 export class ItemService {
-    private itemRepository = AppDataSource.getRepository(Item);
-
+    constructor(@inject('ItemRepository') private itemRepository: Repository<Item>) {
+    }
     // 상품 등록 
     async createItem(item_name: string, item_price: number, description: string, category: string): Promise<Item> {
         const newItem = this.itemRepository.create({
@@ -12,6 +15,9 @@ export class ItemService {
             description,
             category
         });
+        if (!newItem) {
+            throw new Error('상품 등록 실패');
+        }
         return await this.itemRepository.save(newItem);
     }
     // 모든 상품 조회
@@ -20,7 +26,6 @@ export class ItemService {
         if (!items) {
             throw new Error('상품 정보를 불러올 수 없습니다.');
         }
-
         return items;
     }
     // 상품 조회
@@ -43,5 +48,4 @@ export class ItemService {
         item.category = category;
         return await this.itemRepository.save(item);
     }
-
 }
