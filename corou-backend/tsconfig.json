@@ -14,7 +14,7 @@
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
       "experimentalDecorators": true,
-      "emitDecoratorMetadata": true
+      "emitDecoratorMetadata": true,
     },
     "include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts"],
     "exclude": ["node_modules"]
