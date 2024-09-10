@@ -44,6 +44,8 @@ export const initializeDatabase = async () => {
         await AppDataSource.initialize();
         console.log('Database connection established successfully');
 
+        container.registerInstance(DataSource, AppDataSource);
+
         const repositories = [
             { name: REPOSITORY_TOKENS.UserRepository, entity: User },
             { name: REPOSITORY_TOKENS.AddressRepository, entity: Address },

@@ -1,6 +1,7 @@
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { Routine } from "../entities/routine.entity";
 import { UserService } from "./user.service";
+import { RoutineDetailService } from './routine-detail.service';
 import { injectable, inject } from 'tsyringe';
 
 @injectable()
@@ -8,21 +9,44 @@ export class RoutineService {
 
     constructor(
         @inject('RoutineRepository') private routineRepository: Repository<Routine>,
-        @inject('UserService') private userService: UserService
+        private userService: UserService,
+        private routineDetailService: RoutineDetailService,
+        private dataSource: DataSource
     ) { }
 
     // 루틴 등록
-    async createRoutine(user_key: number, routine_name: string, steps: number): Promise<Routine> {
+    async createRoutine(
+        user_key: number,
+        routine_name: string,
+        steps: number,
+        details: Array<{
+            item_key: number;
+            step_name: string;
+            description: string;
+        }>
+    ): Promise<Routine> {
         const user = await this.userService.getUserByKey(user_key);
         if (!user) {
             throw new Error('해당 유저를 찾을 수 없습니다.');
         }
-        const newRoutine = this.routineRepository.create({
-            user,
-            routine_name,
-            steps
+        return this.dataSource.transaction(async transactionalEntityManager => {
+            const newRoutine = await transactionalEntityManager.save(Routine, {
+                user,
+                routine_name,
+                steps
+            });
+
+            for (const detail of details) {
+                await this.routineDetailService.createRoutineDetail(
+                    newRoutine.routine_key,
+                    detail.item_key,
+                    detail.step_name,
+                    detail.description,
+                    transactionalEntityManager
+                );
+            }
+            return newRoutine;
         });
-        return await this.routineRepository.save(newRoutine);
     }
     // 모든 루틴 조회
     async getAllRoutines(): Promise<Routine[]> {
@@ -52,11 +76,17 @@ export class RoutineService {
     }
     // 루틴 삭제
     async deleteRoutine(routine_key: number): Promise<Routine> {
-        const routine = await this.routineRepository.findOneBy({ routine_key });
-        if (!routine) {
-            throw new Error('해당 루틴을 찾을 수 없습니다.');
-        }
-        return await this.routineRepository.remove(routine);
+        return this.dataSource.transaction(async transactionalEntityManager => {
+            const routine = await transactionalEntityManager.findOne(Routine, {
+                where: { routine_key },
+                relations: ['routineDetails']
+            });
+            if (!routine) {
+                throw new Error('해당 루틴을 찾을 수 없습니다.');
+            }
+            await transactionalEntityManager.remove(routine);
+            return routine;
+        });
     }
 }
 

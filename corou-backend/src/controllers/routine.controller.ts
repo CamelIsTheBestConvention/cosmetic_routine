@@ -33,10 +33,7 @@ export class RoutineController {
         const decoded = verifyToken(token);
         const user_key = decoded.user_key;
         try {
-            const routine = await this.routineService.createRoutine(user_key, routine_name, steps);
-            for (const detail of details) {
-                await this.routineDetailService.createRoutineDetail(routine.routine_key, detail.item_key, detail.step_name, detail.description);
-            }
+            const routine = await this.routineService.createRoutine(user_key, routine_name, steps, details);
             res.status(201).json(routine);
         } catch (error) {
             res.status(500).json({ message: '루틴 생성에 실패했습니다.' });
@@ -80,6 +77,28 @@ export class RoutineController {
             res.status(200).json(routine);
         } catch (error) {
             res.status(500).json({ message: '루틴 삭제에 실패했습니다.' });
+        }
+    }
+
+    async updateRoutineDetail(req: Request, res: Response): Promise<void> {
+        const { step_number, item_key, step_name, description } = req.body;
+        const routine_key = req.params.routine_key;
+        try {
+            const routineDetail = await this.routineDetailService.updateRoutineDetail(Number(routine_key), step_number, item_key, step_name, description);
+            res.status(200).json(routineDetail);
+        } catch (error) {
+            res.status(500).json({ message: '루틴 단계 수정에 실패했습니다.' });
+        }
+    }
+
+    async deleteRoutineDetail(req: Request, res: Response): Promise<void> {
+        const { step_number } = req.body;
+        const routine_key = req.params.routine_key;
+        try {
+            const routineDetail = await this.routineDetailService.deleteRoutineDetail(Number(routine_key), step_number);
+            res.status(200).json(routineDetail);
+        } catch (error) {
+            res.status(500).json({ message: '루틴 단계 삭제에 실패했습니다.' });
         }
     }
 }
