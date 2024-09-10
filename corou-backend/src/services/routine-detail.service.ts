@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Repository, EntityManager } from 'typeorm';
 // import { AppDataSource } from '../config/ormconfig';
 import { RoutineDetail } from '../entities/routine-detail.entity';
 import { RoutineService } from './routine.service';
@@ -9,31 +9,23 @@ import { injectable, inject } from 'tsyringe';
 export class RoutineDetailService {
     constructor(
         @inject('RoutineDetailRepository') private routineDetailRepository: Repository<RoutineDetail>,
-        @inject('RoutineService') private routineService: RoutineService,
-        @inject('ItemService') private itemService: ItemService
+        // private routineService: RoutineService,
+        private itemService: ItemService
     ) { }
 
     // 루틴 단계 생성
-    async createRoutineDetail(routine_key: number, item_key: number, step_name: string, description: string): Promise<RoutineDetail> {
-        const routine = await this.routineService.getRoutineByKey(routine_key);
-        if (!routine) {
-            throw new Error('해당 루틴을 찾을 수 없습니다.');
-        }
+    async createRoutineDetail(routine_key: number, item_key: number, step_name: string, description: string, transactionalEntityManager: EntityManager): Promise<RoutineDetail> {
         const item = await this.itemService.getItem(item_key);
         if (!item) {
             throw new Error('해당 아이템을 찾을 수 없습니다.');
         }
-
-        const newRoutineDetail = this.routineDetailRepository.create({
-            routine,
+        const routineDetail = this.routineDetailRepository.create({
+            routine: { routine_key },
             item,
             step_name,
             description
         });
-        if (!newRoutineDetail) {
-            throw new Error('루틴 상세 정보를 등록할 수 없습니다.');
-        }
-        return await this.routineDetailRepository.save(newRoutineDetail);
+        return transactionalEntityManager.save(RoutineDetail, routineDetail);
     }
 
     // 루틴 상세 조회
