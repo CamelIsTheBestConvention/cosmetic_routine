@@ -10,12 +10,11 @@ export class UserController {
     constructor(
         private userService: UserService,
         private addressService: AddressService,
-        private userSkinRelationService: UserSkinRelationService
+        // private userSkinRelationService: UserSkinRelationService
     ) { }
 
     async createUser(req: Request, res: Response): Promise<void> {
-        const { email, password, username, birth_date, gender } = req.body;
-        const { attributes } = req.body;
+        const { email, password, username, birth_date, gender, attributes } = req.body;
 
         if (!email || !password || !username || !birth_date || !gender) {
             console.log('missing fields:', email, password, username, birth_date, gender);
@@ -29,14 +28,16 @@ export class UserController {
         }
 
         try {
-            const newUser = await this.userService.createUser(email, password, username, new Date(birth_date), gender);
-            const user_key = newUser.user_key;
+            const newUser = await this.userService.createUser(
+                email,
+                password,
+                username,
+                new Date(birth_date),
+                gender,
+                attributes
+            );
 
-            for (const attr_key of attributes) {
-                await this.userSkinRelationService.addUserSkinRelation(user_key, attr_key)
-            }
-
-            res.status(201).json({ message: '회원가입 성공' });
+            res.status(201).json({ message: '회원가입 성공', user_key: newUser.user_key });
         } catch (error: any) {
             res.status(400).json({ message: error.message });
         }
