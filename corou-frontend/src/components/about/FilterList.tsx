@@ -5,22 +5,57 @@ import goodOn from "../../img/goodOn.png";
 import star from "../../img/star.png";
 import { items } from "../../data/Data";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const FilterList: React.FC = () => {
   const navigate = useNavigate();
+  const [sortedItems, setSortedItems] = useState(items);
+  const [sortOrder, setSortOrder] = useState("priceAsc");
 
   const handleAddRoutine = () => {
     navigate("/add");
+  };
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOrder = e.target.value;
+    setSortOrder(selectedOrder);
+
+    const sortedArray = [...items];
+
+    switch (selectedOrder) {
+      case "priceAsc":
+        sortedArray.sort((a, b) => a.price - b.price);
+        break;
+      case "priceDesc":
+        sortedArray.sort((a, b) => b.price - a.price);
+        break;
+      case "ratingAsc":
+        sortedArray.sort((a, b) => a.rating - b.rating);
+        break;
+      case "ratingDesc":
+        sortedArray.sort((a, b) => b.rating - a.rating);
+        break;
+      default:
+        break;
+    }
+
+    setSortedItems(sortedArray);
   };
 
   return (
     <>
       <div className="filterListWrapper">
         <div className="filterBtn">
-          <div>
-            정렬 순: <span>가격</span>
+          <div style={{ display: "flex" }}>
+            정렬 순:{" "}
+            <select value={sortOrder} onChange={handleSortChange}>
+              <option value="priceAsc">가격 오름차순</option>
+              <option value="priceDesc">가격 내림차순</option>
+              <option value="ratingAsc">평점 오름차순</option>
+              <option value="ratingDesc">평점 내림차순</option>
+            </select>
           </div>
-          <img src={sortFilter} alt="" />
+          {/* <img src={sortFilter} alt="" /> */}
         </div>
         {items.map((item, index) => (
           <div className="itemListWrapper" key={index}>

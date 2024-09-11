@@ -10,10 +10,8 @@ const Signup: React.FC = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
 
-  const handleNext = () => {
-    if (step < 3) {
-      setStep(step + 1);
-    }
+  const handleStepChange = (newStep: number) => {
+    setStep(newStep);
   };
 
   const handleBack = () => {
@@ -28,8 +26,8 @@ const Signup: React.FC = () => {
     <>
       <SignupWrapper>
         <BackHeader onBack={handleBack} />
-        {step === 1 && <Signup1 onNext={handleNext} />}
-        {step === 2 && <Signup2 onNext={handleNext} />}
+        {step === 1 && <Signup1 onStepChange={handleStepChange} />}
+        {step === 2 && <Signup2 onStepChange={handleStepChange} />}
         {step === 3 && <Signup3 />}
       </SignupWrapper>
     </>

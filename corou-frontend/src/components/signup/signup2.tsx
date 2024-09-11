@@ -8,15 +8,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUsername } from "../../redux/slice/signupSlice";
 import { RootState } from "../../redux/store";
 import { animals, colors } from "../../data/Data";
+import axios from "axios";
 
 interface NextProps {
-  onNext: () => void;
+  onStepChange: (step: number) => void;
 }
 
-const Signup2: React.FC<NextProps> = ({ onNext }) => {
+const Signup2: React.FC<NextProps> = ({ onStepChange }) => {
   const dispatch = useDispatch();
   const username = useSelector((state: RootState) => state.signup.username);
   const [usernameValid, setUsernameValid] = useState<boolean | null>(null);
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
 
   const handleNicknameCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -38,6 +40,36 @@ const Signup2: React.FC<NextProps> = ({ onNext }) => {
 
     dispatch(setUsername(randomNickname));
     setUsernameValid(true);
+  };
+
+  const handleNicknameDuplicationCheck = async () => {
+    try {
+      const response = await axios.get(
+        `${backPort}/api/user/check/${username}`
+      );
+      const message = response.data.message;
+
+      if (message === "이미 사용중인 닉네임입니다.") {
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error("닉네임 중복 확인 중 오류", error);
+      return true;
+    }
+  };
+
+  const handleNext = async () => {
+    if (!usernameValid) return;
+
+    const isDuplicated = await handleNicknameDuplicationCheck();
+
+    if (isDuplicated) {
+      alert("이미 사용중인 닉네임입니다.");
+    } else {
+      onStepChange(3);
+    }
   };
 
   return (
@@ -67,7 +99,7 @@ const Signup2: React.FC<NextProps> = ({ onNext }) => {
               랜덤 생성
             </RandomCreate>
           </NicknameBox>
-          <NextBtn onClick={onNext} disabled={!usernameValid} />
+          <NextBtn onClick={handleNext} disabled={!usernameValid} />
         </SignupBox>
       </Signup2Wrapper>
     </>
