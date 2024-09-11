@@ -2,15 +2,26 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import { options } from "../../data/Data";
 
-const OtherFilter = () => {
-  const [checkedItems, setCheckedItems] = useState([]);
+interface OtherFilterProps {
+  onCheckedChange: (checkedItems: number[]) => void;
+}
 
-  const handleCheckboxChange = (e) => {
-    const value = e.target.value;
+const OtherFilter: React.FC<OtherFilterProps> = ({ onCheckedChange }) => {
+  const [checkedItems, setCheckedItems] = useState<number[]>([]);
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+
     if (checkedItems.includes(value)) {
-      setCheckedItems(checkedItems.filter((item) => item !== value));
+      const updatedItems = checkedItems
+        .filter((item) => item !== value)
+        .sort((a, b) => a - b);
+      setCheckedItems(updatedItems);
+      onCheckedChange(updatedItems);
     } else {
-      setCheckedItems([...checkedItems, value]);
+      const updatedItems = [...checkedItems, value].sort((a, b) => a - b);
+      setCheckedItems(updatedItems);
+      onCheckedChange(updatedItems);
     }
   };
 
@@ -18,11 +29,11 @@ const OtherFilter = () => {
     <>
       <FilterWrapper>
         {options.map((option, index) => (
-          <Label key={index} isChecked={checkedItems.includes(option)}>
+          <Label key={index} isChecked={checkedItems.includes(index + 1)}>
             <input
               type="checkbox"
-              value={option}
-              checked={checkedItems.includes(option)}
+              value={index + 1}
+              checked={checkedItems.includes(index + 1)}
               onChange={handleCheckboxChange}
             />
             {option}
@@ -41,7 +52,7 @@ const FilterWrapper = styled.div`
   padding: 10px;
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ isChecked: boolean }>`
   width: 60px;
   padding: 2px 0;
   cursor: pointer;
