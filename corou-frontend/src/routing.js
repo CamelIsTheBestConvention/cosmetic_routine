@@ -29,8 +29,8 @@ function Routing() {
           <Route exact path="/order" element={<Mart />} />
           <Route exact path="/detail" element={<DetailRoutine />} />
           <Route exact path="/add" element={<AddRoutine />} />
-          <Route exact path="/ranking" element={<Ranking />} />
-          <Route exact path="/ranking/detail" element={<RankingDetail />} />
+          <Route exact path="/item" element={<Ranking />} />
+          <Route exact path="/item/:id" element={<RankingDetail />} />
           <Route exact path="/kakao/oauth" element={<Redirection />} />
         </Routes>
       </BrowserRouter>

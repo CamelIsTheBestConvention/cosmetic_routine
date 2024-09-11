@@ -1,9 +1,15 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const RankingMainFilter: React.FC = () => {
-  const [select, setSelect] = useState<string>("");
+interface RankingMainFilterProps {
+  select: string;
+  setSelect: (filter: string) => void;
+}
 
+const RankingMainFilter: React.FC<RankingMainFilterProps> = ({
+  select,
+  setSelect,
+}) => {
   const handleSelect = (filter: string) => {
     setSelect(filter);
   };

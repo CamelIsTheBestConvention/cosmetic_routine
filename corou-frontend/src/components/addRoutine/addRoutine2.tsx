@@ -65,17 +65,17 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
     }
   };
 
-  const handleProductSelect = (
-    index: number,
-    productName: string,
-    productPrice: string
-  ) => {
-    const updatedItems = [...allRoutineItems];
-    updatedItems[index] = { ...updatedItems[index], itemName: productName };
-    setAllRoutineItems(updatedItems);
-    dispatch(setRoutineItem(updatedItems[index]));
-    setSearchResults([]);
-  };
+  // const handleProductSelect = (
+  //   index: number,
+  //   productName: string,
+  //   productPrice: string
+  // ) => {
+  //   const updatedItems = [...allRoutineItems];
+  //   updatedItems[index] = { ...updatedItems[index], itemName: productName };
+  //   setAllRoutineItems(updatedItems);
+  //   dispatch(setRoutineItem(updatedItems[index]));
+  //   setSearchResults([]);
+  // };
 
   const isButtonDisabled = allRoutineItems.every(
     (item) =>

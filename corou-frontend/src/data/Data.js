@@ -87,3 +87,29 @@ export const animals = [
   "코뿔소",
   "하마",
 ];
+
+export const categoryFilters = [
+  "로션",
+  "크림",
+  "토너",
+  "에센스",
+  "앰플",
+  "선크림",
+  "린스",
+  "파우더",
+  "립밤",
+];
+
+export const skinFilters = [
+  "건성",
+  "지성",
+  "중성",
+  "복합성",
+  "민감성",
+  "여드름",
+  "아토피",
+  "등등",
+  "등등등",
+];
+
+export const ageFilters = ["10대", "20대", "30대", "40대+"];

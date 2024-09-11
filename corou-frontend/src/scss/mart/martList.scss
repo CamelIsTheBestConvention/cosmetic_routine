@@ -68,3 +68,26 @@
     margin-top: 20px;
   }
 }
+
+.notItemWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 30px 0;
+
+  div {
+    width: 110px;
+    margin: 0 auto;
+
+    img {
+      width: 110px;
+    }
+  }
+
+  p {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #848484;
+  }
+}
