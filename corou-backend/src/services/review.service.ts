@@ -9,10 +9,10 @@ import { injectable, inject } from 'tsyringe';
 @injectable()
 export class ReviewService {
     constructor(
-        @inject('ReviewRepository') private reviewRepository: Repository<Review>,
-        @inject('UserService') private userService: UserService,
-        @inject('ItemService') private itemService: ItemService,
-        @inject('RoutineService') private routineService: RoutineService
+        private reviewRepository: Repository<Review>,
+        private userService: UserService,
+        private itemService: ItemService,
+        private routineService: RoutineService
     ) { }
 
     // 리뷰 등록
@@ -46,6 +46,14 @@ export class ReviewService {
             throw new Error('해당 상품의 리뷰를 찾을 수 없습니다.');
         }
         return reviews;
+    }
+
+    async deleteReview(review_key: number): Promise<void> {
+        const review = await this.reviewRepository.findOneBy({ review_key });
+        if (!review) {
+            throw new Error('해당 리뷰를 찾을 수 없습니다.');
+        }
+        await this.reviewRepository.delete(review_key);
     }
 }
 

@@ -29,7 +29,7 @@ export class ItemService {
         return items;
     }
     // 상품 조회
-    async getItem(item_key: number): Promise<Item> {
+    async getItemByKey(item_key: number): Promise<Item> {
         const item = await this.itemRepository.findOneBy({ item_key });
         if (!item) {
             throw new Error('해당 아이템을 찾을 수 없습니다.');
