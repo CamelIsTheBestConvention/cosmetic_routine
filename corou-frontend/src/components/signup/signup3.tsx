@@ -119,7 +119,7 @@ const Signup3: React.FC = () => {
 
       alert("회원가입 성공");
       console.log("회원가입 성공", response.data);
-      navigate("/login");
+      navigate("/login/email");
     } catch (error) {
       alert("회원가입 실패");
       console.log("회원가입 실패", error);

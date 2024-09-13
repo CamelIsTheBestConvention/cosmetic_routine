@@ -49,7 +49,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
     setAllRoutineItems(updatedItems);
     dispatch(setRoutineItem(updatedItems[index]));
 
-    if (key === "itemName" && value.length > 2) {
+    if (key === "name" && value.length > 2) {
       searchItemData(value);
     }
   };
@@ -77,12 +77,15 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
   //   setSearchResults([]);
   // };
 
-  const isButtonDisabled = allRoutineItems.every(
-    (item) =>
-      item.order.trim() !== "" &&
-      item.description.trim() !== "" &&
-      item.itemName.trim() !== ""
-  );
+  // const isButtonDisabled = allRoutineItems.every(
+  //   (item) =>
+  //     typeof item.name === "string" &&
+  //     item.name.trim() !== "" &&
+  //     typeof item.description === "string" &&
+  //     item.description.trim() !== "" &&
+  //     typeof item.itemKey === "number" &&
+  //     item.itemKey.trim() !== ""
+  // );
 
   return (
     <>
@@ -95,9 +98,9 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
               <CommonInput
                 typeValue="text"
                 placeholderValue="예) 세안"
-                value={item.order}
+                value={item.name}
                 onChange={(e) =>
-                  handleRoutineItemChange(index, "order", e.target.value)
+                  handleRoutineItemChange(index, "name", e.target.value)
                 }
               />
             </RoutineGradeTitle>
@@ -113,9 +116,9 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
               <CommonInput
                 typeValue="text"
                 placeholderValue="제품명"
-                value={item.itemName}
+                value={item.itemKey}
                 onChange={(e) =>
-                  handleRoutineItemChange(index, "itemName", e.target.value)
+                  handleRoutineItemChange(index, "itemKey", e.target.value)
                 }
               />
               {searchResults.length > 0 && (
@@ -142,7 +145,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
           <span>
             종합 <span>₩ {totalPrice.toLocaleString()}</span>
           </span>
-          <NextBtn onClick={onNext} disabled={!isButtonDisabled} />
+          <NextBtn onClick={onNext} disabled={false} />
         </div>
       </RoutinePriceWrapper>
     </>

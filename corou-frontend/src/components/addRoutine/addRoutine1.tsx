@@ -16,6 +16,7 @@ import {
   setGrade,
 } from "../../redux/slice/addRoutineSlice";
 import CommonCheckBox from "../common/commonCheckbox";
+import CommonRadioBox from "../common/commonRadiobox";
 
 interface NextProps {
   onNext: () => void;
@@ -24,17 +25,57 @@ interface NextProps {
 const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
   const dispatch = useDispatch();
   const title = useSelector((state: RootState) => state.addRoutine.title);
-  // const forRoutine = useSelector(
-  //   (state: RootState) => state.addRoutine.forRoutine
-  // );
+  const gender = useSelector((state: RootState) => state.addRoutine.gender);
+  const skin = useSelector((state: RootState) => state.addRoutine.skin);
+  const age = useSelector((state: RootState) => state.addRoutine.age);
+  const problem = useSelector((state: RootState) => state.addRoutine.problem);
   const grade = useSelector((state: RootState) => state.addRoutine.grade);
 
-  // const handleCheckedChange = (newCheckedItems: number[]) => {
-  //   dispatch(setForRoutine(newCheckedItems));
-  // };
+  const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    let updateGender = [...gender];
+
+    if (updateGender.includes(value)) {
+      updateGender = updateGender.filter((e) => e !== value);
+    } else {
+      updateGender.push(value);
+    }
+
+    dispatch(setGender(updateGender));
+  };
+
+  const handleSkinTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+    dispatch(setSkin(value));
+
+    console.log(skin);
+  };
+
+  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+    dispatch(setAge(value));
+
+    console.log(age);
+  };
+
+  const handleProblemChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+    let updateProblem = [...problem];
+
+    if (updateProblem.includes(value)) {
+      updateProblem = updateProblem.filter((e) => e !== value);
+    } else {
+      updateProblem.push(value);
+    }
+
+    updateProblem.sort((a, b) => a - b);
+
+    dispatch(setProblem(updateProblem));
+
+    console.log(problem);
+  };
 
   const isButtonDisabled = () => {
-    // return !title || forRoutine.length === 0 || grade <= 0;
     return !title || grade <= 0;
   };
 
@@ -50,21 +91,122 @@ const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
           onChange={(e) => dispatch(setTitle(e.target.value))}
         />
         <PageGuide text="누구를 위한 루틴인가요?" />
-        {/* <OtherFilter onCheckedChange={handleCheckedChange} /> */}
+        <DuplicateCheck>중복 체크 가능</DuplicateCheck>
         <GenderBox>
-          {/* <CommonCheckBox
-            label="gender"
+          <CommonCheckBox
+            label="남성"
+            checked={gender.includes("M")}
             value="M"
-            checked={false}
-            onChange={""}
+            onChange={handleGenderChange}
           />
           <CommonCheckBox
-            label="gender"
+            label="여성"
+            checked={gender.includes("F")}
             value="F"
-            checked={false}
-            onChange={""}
-          /> */}
+            onChange={handleGenderChange}
+          />
         </GenderBox>
+        <DuplicateCheck>중복 체크 불가능</DuplicateCheck>
+        <SkinBox1>
+          <CommonRadioBox
+            label="건성"
+            name="skin"
+            value={1}
+            onChange={handleSkinTypeChange}
+          />
+          <CommonRadioBox
+            label="중성"
+            name="skin"
+            value={2}
+            onChange={handleSkinTypeChange}
+          />
+          <CommonRadioBox
+            label="지성"
+            name="skin"
+            value={3}
+            onChange={handleSkinTypeChange}
+          />
+        </SkinBox1>
+        <SkinBox2>
+          <CommonRadioBox
+            label="복합성"
+            name="skin"
+            value={4}
+            onChange={handleSkinTypeChange}
+          />
+          <CommonRadioBox
+            label="수부지"
+            name="skin"
+            value={5}
+            onChange={handleSkinTypeChange}
+          />
+        </SkinBox2>
+        <DuplicateCheck>중복 체크 불가능</DuplicateCheck>
+        <AgeBox>
+          <CommonRadioBox
+            label="10대"
+            name="age"
+            value={10}
+            onChange={handleAgeChange}
+          />
+          <CommonRadioBox
+            label="20대"
+            name="age"
+            value={20}
+            onChange={handleAgeChange}
+          />
+          <CommonRadioBox
+            label="30대"
+            name="age"
+            value={30}
+            onChange={handleAgeChange}
+          />
+          <CommonRadioBox
+            label="40대+"
+            name="age"
+            value={40}
+            onChange={handleAgeChange}
+          />
+        </AgeBox>
+        <DuplicateCheck>중복 체크 가능</DuplicateCheck>
+        <ProblemBox>
+          <CommonCheckBox
+            label="아토피"
+            value={10}
+            checked={problem.includes(10)}
+            onChange={handleProblemChange}
+          />
+          <CommonCheckBox
+            label="여드름"
+            value={11}
+            checked={problem.includes(11)}
+            onChange={handleProblemChange}
+          />
+          <CommonCheckBox
+            label="민감성"
+            value={12}
+            checked={problem.includes(12)}
+            onChange={handleProblemChange}
+          />
+          <CommonCheckBox
+            label="홍조"
+            value={13}
+            checked={problem.includes(13)}
+            onChange={handleProblemChange}
+          />
+          <CommonCheckBox
+            label="각질"
+            value={14}
+            checked={problem.includes(14)}
+            onChange={handleProblemChange}
+          />
+          <CommonCheckBox
+            label="속건조"
+            value={15}
+            checked={problem.includes(15)}
+            onChange={handleProblemChange}
+          />
+        </ProblemBox>
         <PageGuide text="몇개의 단계로 이루어져 있나요?" />
         <ItemGrade>제품 개수</ItemGrade>
         <CommonInput
@@ -98,4 +240,39 @@ const GenderBox = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
+`;
+
+const SkinBox1 = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+`;
+
+const SkinBox2 = styled.div`
+  width: 72%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+`;
+
+const AgeBox = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 5px;
+`;
+
+const DuplicateCheck = styled.span`
+  color: #848484;
+  font-size: 13px;
+  margin: 0 0 5px 0;
+`;
+
+const ProblemBox = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
 `;

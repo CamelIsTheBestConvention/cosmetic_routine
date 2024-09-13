@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface RoutineItem {
-  order: string;
+  name: string;
   description: string;
-  itemName: string;
+  itemKey: number;
 }
 
 interface addRoutineState {
   title: string;
-  gender: string;
+  gender: string[];
   skin: number;
   age: number;
   problem: number[];
@@ -19,7 +19,7 @@ interface addRoutineState {
 
 const initialState: addRoutineState = {
   title: "",
-  gender: "",
+  gender: [],
   skin: 0,
   age: 10,
   problem: [],
@@ -35,7 +35,7 @@ const addRoutineSlice = createSlice({
     setTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
-    setGender: (state, action: PayloadAction<string>) => {
+    setGender: (state, action: PayloadAction<string[]>) => {
       state.gender = action.payload;
     },
     setSkin: (state, action: PayloadAction<number>) => {
