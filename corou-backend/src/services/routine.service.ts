@@ -7,6 +7,7 @@ import { RoutineDetailService } from './routine-detail.service';
 import { RoutineSkinRelationService } from './routine-skin-relation.service';
 import { TagService } from './tag.service';
 import { RoutineTagRelationService } from './routine-tag-relation.service';
+// import { SkinAttributeService } from './skin-attribute.service';
 
 @injectable()
 export class RoutineService {
@@ -70,11 +71,13 @@ export class RoutineService {
                     transactionalEntityManager
                 );
             }
+            console.log(tags);
             const tagKeys = [];
             for (const tag of tags) {
                 const tagKey = await this.tagService.createTag(tag);
                 tagKeys.push(tagKey);
             }
+            console.log(tagKeys);
             for (const tagKey of tagKeys) {
                 await this.routineTagRelationService.addRoutineTagRelation(
                     newRoutine.routine_key,
@@ -82,6 +85,7 @@ export class RoutineService {
                     transactionalEntityManager
                 );
             }
+            console.log('루틴 태그 등록 완료')
             return newRoutine;
         });
     }

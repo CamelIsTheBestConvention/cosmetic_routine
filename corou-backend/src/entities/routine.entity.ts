@@ -3,6 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMan
 import { User } from './user.entity';  // Import the User entity
 import { Review } from './review.entity';
 import { RoutineDetail } from './routine-detail.entity';
+import { RoutineSkinRelation } from './routine-skin-relation.entity';
 
 @Entity('routine')
 export class Routine {
@@ -24,4 +25,7 @@ export class Routine {
     @ManyToOne(() => User)
     @JoinColumn({ name: 'user_key' })
     user!: User;
+
+    // @OneToMany(() => RoutineSkinRelation, relation => relation.routine, { cascade: true })
+    // user_skin_relations?: RoutineSkinRelation[];
 }

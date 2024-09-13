@@ -16,6 +16,7 @@ export class RoutineDetail {
 
     @Column({ type: `varchar`, length: 255 })
     step_name!: string;
+
     @Column({ type: `varchar`, length: 255 })
     description?: string;
 

@@ -20,7 +20,7 @@ export class RoutineDetailService {
             throw new Error('해당 아이템을 찾을 수 없습니다.');
         }
         const routineDetail = this.routineDetailRepository.create({
-            routine: { routine_key },
+            routine_key,
             item,
             step_name,
             description

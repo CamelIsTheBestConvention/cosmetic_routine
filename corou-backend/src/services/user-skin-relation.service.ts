@@ -24,14 +24,4 @@ export class UserSkinRelationService {
         });
         return transactionalEntityManager.save(UserSkinRelation, relation);
     }
-    // async addUserSkinRelation(user_key: number, attr_key: number): Promise<void> {
-    //     const user = await this.userService.getUserByKey(user_key);
-    //     const attribute = await this.skinAttributeService.getSkinAttributeByKey(attr_key);
-    //     const userSkinRelation = this.userSkinRelationRepository.create({
-    //         user,
-    //         attribute
-    //     });
-
-    //     await this.userSkinRelationRepository.save(userSkinRelation);
-    // }
 }

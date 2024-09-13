@@ -1,21 +1,27 @@
 import { AppDataSource } from "../config/ormconfig";
 import { Tag } from "../entities/tag.entity";
 import { injectable, inject } from 'tsyringe';
+import { Repository, EntityManager } from "typeorm";
+import { REPOSITORY_TOKENS } from "../config/constants";
 
 @injectable()
 export class TagService {
-    private tagRepository = AppDataSource.getRepository(Tag);
+    constructor(
+        @inject(REPOSITORY_TOKENS.TagRepository) private tagRepository: Repository<Tag>,
+    ) { }
 
-    // 태그 등록 (admin)
     async createTag(tag_name: string): Promise<number> {
         const tagExists = await this.tagRepository.findOne({ where: { tag_name } })
         if (tagExists) {
+            console.log(tagExists);
             return tagExists.tag_key;
+        } else {
+            const newTag = this.tagRepository.create({
+                tag_name
+            });
+            const savedTag = await this.tagRepository.save(newTag);
+            return savedTag.tag_key;
         }
-        const newTag = this.tagRepository.create({
-            tag_name
-        });
-        return newTag.tag_key;
     }
 
     // 피부속성 조회 by key

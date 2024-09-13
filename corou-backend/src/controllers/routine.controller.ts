@@ -13,8 +13,8 @@ export class RoutineController {
 
     async createRoutine(req: Request, res: Response): Promise<void> {
         const { routine_name, steps, for_gender, for_skin, for_age, for_problem } = req.body.main;
-        const details = req.body.detail;
-        const tags = req.body.tag;
+        const details = req.body.details;
+        const tags = req.body.tags;
 
         // body = {
         //     main: {
