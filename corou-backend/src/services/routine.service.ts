@@ -4,6 +4,9 @@ import { injectable, inject } from 'tsyringe';
 import { Routine } from "../entities/routine.entity";
 import { UserService } from "./user.service";
 import { RoutineDetailService } from './routine-detail.service';
+import { RoutineSkinRelationService } from './routine-skin-relation.service';
+import { TagService } from './tag.service';
+import { RoutineTagRelationService } from './routine-tag-relation.service';
 
 @injectable()
 export class RoutineService {
@@ -12,6 +15,9 @@ export class RoutineService {
         @inject(REPOSITORY_TOKENS.RoutineRepository) private routineRepository: Repository<Routine>,
         private userService: UserService,
         private routineDetailService: RoutineDetailService,
+        private routineSkinRelationService: RoutineSkinRelationService,
+        private routineTagRelationService: RoutineTagRelationService,
+        private tagService: TagService,
         private dataSource: DataSource
     ) { }
 
@@ -20,11 +26,16 @@ export class RoutineService {
         user_key: number,
         routine_name: string,
         steps: number,
+        for_gender: 'M' | 'F' | 'A',
+        for_skin: number,
+        for_age: number,
+        for_problem: Array<string>,
         details: Array<{
             item_key: number;
             step_name: string;
             description: string;
-        }>
+        }>,
+        tags: Array<string>
     ): Promise<Routine> {
         const user = await this.userService.getUserByKey(user_key);
         if (!user) {
@@ -34,15 +45,40 @@ export class RoutineService {
             const newRoutine = await transactionalEntityManager.save(Routine, {
                 user,
                 routine_name,
-                steps
+                steps,
+                for_gender,
+                for_age,
             });
-
+            await this.routineSkinRelationService.addRoutineSkinRelation(
+                newRoutine.routine_key,
+                for_skin,
+                transactionalEntityManager
+            );
+            for (const problem of for_problem) {
+                await this.routineSkinRelationService.addRoutineSkinRelation(
+                    newRoutine.routine_key,
+                    Number(problem),
+                    transactionalEntityManager
+                );
+            }
             for (const detail of details) {
                 await this.routineDetailService.createRoutineDetail(
                     newRoutine.routine_key,
                     detail.item_key,
                     detail.step_name,
                     detail.description,
+                    transactionalEntityManager
+                );
+            }
+            const tagKeys = [];
+            for (const tag of tags) {
+                const tagKey = await this.tagService.createTag(tag);
+                tagKeys.push(tagKey);
+            }
+            for (const tagKey of tagKeys) {
+                await this.routineTagRelationService.addRoutineTagRelation(
+                    newRoutine.routine_key,
+                    tagKey,
                     transactionalEntityManager
                 );
             }
