@@ -1,12 +1,14 @@
 import { Repository } from 'typeorm';
-// import { AppDataSource } from '../config/ormconfig';
+import { REPOSITORY_TOKENS } from '../config/constants';
 import { Item } from '../entities/item.entity';
 import { injectable, inject } from 'tsyringe';
 
 @injectable()
 export class ItemService {
-    constructor(@inject('ItemRepository') private itemRepository: Repository<Item>) {
-    }
+    constructor(
+        @inject(REPOSITORY_TOKENS.ItemRepository)
+        private itemRepository: Repository<Item>
+    ) { }
     // 상품 등록 
     async createItem(item_name: string, item_price: number, description: string, category: string): Promise<Item> {
         const newItem = this.itemRepository.create({
@@ -29,7 +31,7 @@ export class ItemService {
         return items;
     }
     // 상품 조회
-    async getItem(item_key: number): Promise<Item> {
+    async getItemByKey(item_key: number): Promise<Item> {
         const item = await this.itemRepository.findOneBy({ item_key });
         if (!item) {
             throw new Error('해당 아이템을 찾을 수 없습니다.');

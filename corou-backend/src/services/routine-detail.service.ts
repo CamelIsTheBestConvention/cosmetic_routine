@@ -1,5 +1,5 @@
 import { Repository, EntityManager } from 'typeorm';
-// import { AppDataSource } from '../config/ormconfig';
+import { REPOSITORY_TOKENS } from '../config/constants';
 import { RoutineDetail } from '../entities/routine-detail.entity';
 import { RoutineService } from './routine.service';
 import { ItemService } from './item.service';
@@ -8,14 +8,14 @@ import { injectable, inject } from 'tsyringe';
 @injectable()
 export class RoutineDetailService {
     constructor(
-        @inject('RoutineDetailRepository') private routineDetailRepository: Repository<RoutineDetail>,
+        @inject(REPOSITORY_TOKENS.RoutineDetailRepository) private routineDetailRepository: Repository<RoutineDetail>,
         // private routineService: RoutineService,
         private itemService: ItemService
     ) { }
 
     // 루틴 단계 생성
     async createRoutineDetail(routine_key: number, item_key: number, step_name: string, description: string, transactionalEntityManager: EntityManager): Promise<RoutineDetail> {
-        const item = await this.itemService.getItem(item_key);
+        const item = await this.itemService.getItemByKey(item_key);
         if (!item) {
             throw new Error('해당 아이템을 찾을 수 없습니다.');
         }
@@ -45,7 +45,7 @@ export class RoutineDetailService {
         }
 
         if (item_key !== routineDetail.item.item_key) {
-            const item = await this.itemService.getItem(item_key);
+            const item = await this.itemService.getItemByKey(item_key);
             if (!item) {
                 throw new Error('해당 아이템을 찾을 수 없습니다.');
             }
