@@ -13,6 +13,12 @@
     background-color: rgba(255, 164, 228, 0.5);
     font-size: 15px;
     padding: 5px 10px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+      background-color: rgba(255, 164, 228, 0.8);
+    }
   }
 }
 
