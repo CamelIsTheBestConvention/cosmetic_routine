@@ -17,7 +17,7 @@ const BannerBox: React.FC = () => {
 export default BannerBox;
 
 const BannerBoxWrapper = styled.div`
-  width: 300px;
+  min-width: 300px;
   height: 400px;
   border: 3px solid #ffa4e4;
   border-radius: 20px;

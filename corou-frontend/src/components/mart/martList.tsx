@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../../scss/mart/martList.scss";
+import notItem from "../../img/notItem.png";
 
 interface itemData {
   id: number;
@@ -39,7 +40,12 @@ const MartList: React.FC<itemListData> = ({ itemList }) => {
             </label>
           </div>
         ) : (
-          <div>제품 정보가 없습니다.</div>
+          <div className="notItemWrapper">
+            <div>
+              <img src={notItem} alt="제품 정보가 없습니다." />
+            </div>
+            <p>제품 정보가 없습니다.</p>
+          </div>
         )}
       </div>
     </>
