@@ -9,13 +9,17 @@ export class Routine {
     @PrimaryGeneratedColumn()
     routine_key!: number;
 
-    // @Column()
-    // user_key!: number;
     @Column({ type: 'varchar', length: 255 })
     routine_name!: string;
 
     @Column({ type: 'int' })
     steps!: number;
+
+    @Column({ type: 'char', length: 1 })
+    for_gender!: 'M' | 'F' | 'A';
+
+    @Column({ type: 'int' })
+    for_age!: number;
 
     @ManyToOne(() => User)
     @JoinColumn({ name: 'user_key' })

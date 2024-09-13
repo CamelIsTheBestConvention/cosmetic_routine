@@ -26,6 +26,12 @@
   },
   "scripts": {
     "start": "ts-node src/server.ts",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "typeorm": "typeorm-ts-node-commonjs -d src/config/ormconfig.ts",
+    "migration:generate": "npm run typeorm migration:generate",
+    "migration:run": "npm run typeorm migration:run",
+    "migration:revert": "npm run typeorm migration:revert",
+    "schema:sync": "npm run typeorm schema:sync",
+    "schema:drop": "npm run typeorm schema:drop"
   }
 }
