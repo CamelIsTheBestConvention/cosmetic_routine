@@ -144,12 +144,14 @@ const Signup3: React.FC = () => {
               label="남자"
               name="gender"
               value="M"
+              checked={gender === "M"}
               onChange={handleGenderChange}
             />
             <CommonRadioBox
               label="여자"
               name="gender"
               value="W"
+              checked={gender === "W"}
               onChange={handleGenderChange}
             />
           </GenderBox>
@@ -159,18 +161,21 @@ const Signup3: React.FC = () => {
               label="건성"
               name="skin"
               value={1}
+              checked={skinType === 1}
               onChange={handleSkinTypeChange}
             />
             <CommonRadioBox
               label="중성"
               name="skin"
               value={2}
+              checked={skinType === 2}
               onChange={handleSkinTypeChange}
             />
             <CommonRadioBox
               label="지성"
               name="skin"
               value={3}
+              checked={skinType === 3}
               onChange={handleSkinTypeChange}
             />
           </SkinBox1>
@@ -179,12 +184,14 @@ const Signup3: React.FC = () => {
               label="복합성"
               name="skin"
               value={4}
+              checked={skinType === 4}
               onChange={handleSkinTypeChange}
             />
             <CommonRadioBox
               label="수부지"
               name="skin"
               value={5}
+              checked={skinType === 5}
               onChange={handleSkinTypeChange}
             />
           </SkinBox2>
@@ -194,24 +201,28 @@ const Signup3: React.FC = () => {
               label="봄웜톤"
               name="color"
               value={6}
+              checked={color === 6}
               onChange={handleColorChange}
             />
             <CommonRadioBox
               label="여름쿨톤"
               name="color"
               value={7}
+              checked={color === 7}
               onChange={handleColorChange}
             />
             <CommonRadioBox
               label="가을웜톤"
               name="color"
               value={8}
+              checked={color === 8}
               onChange={handleColorChange}
             />
             <CommonRadioBox
               label="겨울쿨톤"
               name="color"
               value={9}
+              checked={color === 9}
               onChange={handleColorChange}
             />
           </ColorBox1>
@@ -219,7 +230,8 @@ const Signup3: React.FC = () => {
             <CommonRadioBox
               label="잘 모르겠어요.."
               name="color"
-              value={0}
+              value={100}
+              checked={color === 100}
               onChange={handleColorChange}
             />
           </ColorBox2>

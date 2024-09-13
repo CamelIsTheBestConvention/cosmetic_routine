@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import OtherFilter from "../about/otherFilter";
 import PageCount from "../common/pageCount";
 import PageGuide from "../common/pageGuide";
 import CommonInput from "../common/commonInput";
@@ -47,15 +46,11 @@ const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
   const handleSkinTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     dispatch(setSkin(value));
-
-    console.log(skin);
   };
 
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     dispatch(setAge(value));
-
-    console.log(age);
   };
 
   const handleProblemChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,14 +64,13 @@ const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
     }
 
     updateProblem.sort((a, b) => a - b);
-
     dispatch(setProblem(updateProblem));
-
-    console.log(problem);
   };
 
   const isButtonDisabled = () => {
-    return !title || grade <= 0;
+    return (
+      !title || gender.length === 0 || skin === 0 || age === 0 || grade <= 0
+    );
   };
 
   return (
@@ -112,18 +106,21 @@ const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
             label="건성"
             name="skin"
             value={1}
+            checked={skin === 1}
             onChange={handleSkinTypeChange}
           />
           <CommonRadioBox
             label="중성"
             name="skin"
             value={2}
+            checked={skin === 2}
             onChange={handleSkinTypeChange}
           />
           <CommonRadioBox
             label="지성"
             name="skin"
             value={3}
+            checked={skin === 3}
             onChange={handleSkinTypeChange}
           />
         </SkinBox1>
@@ -132,12 +129,14 @@ const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
             label="복합성"
             name="skin"
             value={4}
+            checked={skin === 4}
             onChange={handleSkinTypeChange}
           />
           <CommonRadioBox
             label="수부지"
             name="skin"
             value={5}
+            checked={skin === 5}
             onChange={handleSkinTypeChange}
           />
         </SkinBox2>
@@ -147,24 +146,28 @@ const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
             label="10대"
             name="age"
             value={10}
+            checked={age === 10}
             onChange={handleAgeChange}
           />
           <CommonRadioBox
             label="20대"
             name="age"
             value={20}
+            checked={age === 20}
             onChange={handleAgeChange}
           />
           <CommonRadioBox
             label="30대"
             name="age"
             value={30}
+            checked={age === 30}
             onChange={handleAgeChange}
           />
           <CommonRadioBox
             label="40대+"
             name="age"
             value={40}
+            checked={age === 40}
             onChange={handleAgeChange}
           />
         </AgeBox>
@@ -210,10 +213,15 @@ const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
         <PageGuide text="몇개의 단계로 이루어져 있나요?" />
         <ItemGrade>제품 개수</ItemGrade>
         <CommonInput
-          typeValue="number"
+          typeValue="text"
           placeholderValue="예) 3"
           value={grade}
-          onChange={(e) => dispatch(setGrade(Number(e.target.value)))}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d*$/.test(value)) {
+              dispatch(setGrade(Number(value)));
+            }
+          }}
         />
         <NextBtn onClick={onNext} disabled={isButtonDisabled()} />
       </AddRoutine1Wrapper>
