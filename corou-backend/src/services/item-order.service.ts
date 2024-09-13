@@ -9,8 +9,8 @@ import { injectable, inject } from 'tsyringe';
 export class ItemOrderService {
     constructor(
         @inject('ItemOrderRepository') private itemOrderRepository: Repository<ItemOrder>,
-        @inject('UserService') private userService: UserService,
-        @inject('AddressService') private addressService: AddressService
+        private userService: UserService,
+        private addressService: AddressService
     ) { }
 
     // 주문 생성
