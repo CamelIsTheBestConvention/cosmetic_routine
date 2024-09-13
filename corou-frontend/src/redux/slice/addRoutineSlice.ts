@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface RoutineItem {
-  name: string;
+  step_name: string;
   description: string;
-  itemKey: number;
+  item_key: number;
 }
 
 interface addRoutineState {
@@ -24,7 +24,7 @@ const initialState: addRoutineState = {
   age: 10,
   problem: [],
   grade: 1,
-  routineItem: [],
+  routineItem: new Array(1).fill({ name: "", description: "", itemKey: 0 }),
   tag: [],
 };
 
@@ -50,8 +50,11 @@ const addRoutineSlice = createSlice({
     setGrade: (state, action: PayloadAction<number>) => {
       state.grade = action.payload;
     },
-    setRoutineItem: (state, action: PayloadAction<RoutineItem>) => {
-      state.routineItem.push(action.payload);
+    setRoutineItem: (
+      state,
+      action: PayloadAction<{ index: number; item: RoutineItem }>
+    ) => {
+      state.routineItem[action.payload.index] = action.payload.item;
     },
     setTag: (state, action: PayloadAction<string[]>) => {
       state.tag = action.payload;

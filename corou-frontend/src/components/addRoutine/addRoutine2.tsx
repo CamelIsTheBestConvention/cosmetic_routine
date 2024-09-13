@@ -19,7 +19,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
     (state: RootState) => state.addRoutine.routineItem
   );
   const [allRoutineItems, setAllRoutineItems] = useState(
-    new Array(grade).fill({ order: "", description: "", itemName: "" })
+    new Array(grade).fill({ step_name: "", description: "", item_key: 0 })
   );
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -27,7 +27,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
 
   useEffect(() => {
     setAllRoutineItems(
-      new Array(grade).fill({ order: "", description: "", itemName: "" })
+      new Array(grade).fill({ step_name: "", description: "", item_key: 0 })
     );
   }, [grade]);
 
@@ -41,17 +41,27 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
 
   const handleRoutineItemChange = (
     index: number,
-    key: keyof (typeof routineItems)[0],
+    key: keyof (typeof allRoutineItems)[0],
     value: string
   ) => {
+    const updatedItem = { ...allRoutineItems[index], [key]: value };
     const updatedItems = [...allRoutineItems];
-    updatedItems[index] = { ...updatedItems[index], [key]: value };
-    setAllRoutineItems(updatedItems);
-    dispatch(setRoutineItem(updatedItems[index]));
+    updatedItems[index] = updatedItem;
 
-    if (key === "name" && value.length > 2) {
+    setAllRoutineItems(updatedItems);
+
+    if (key === "item_key" && value.length > 2) {
       searchItemData(value);
     }
+    dispatch(setRoutineItem({ index, item: updatedItem }));
+  };
+
+  const handleInputBlur = (
+    index: number,
+    key: keyof (typeof allRoutineItems)[0],
+    value: string
+  ) => {
+    handleRoutineItemChange(index, key, value);
   };
 
   const searchItemData = async (query: string) => {
@@ -77,15 +87,10 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
   //   setSearchResults([]);
   // };
 
-  // const isButtonDisabled = allRoutineItems.every(
-  //   (item) =>
-  //     typeof item.name === "string" &&
-  //     item.name.trim() !== "" &&
-  //     typeof item.description === "string" &&
-  //     item.description.trim() !== "" &&
-  //     typeof item.itemKey === "number" &&
-  //     item.itemKey.trim() !== ""
-  // );
+  const isButtonDisabled = allRoutineItems.some(
+    (item) =>
+      !item.step_name.trim() || !item.description.trim() || !item.item_key
+  );
 
   return (
     <>
@@ -98,9 +103,12 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
               <CommonInput
                 typeValue="text"
                 placeholderValue="예) 세안"
-                value={item.name}
+                value={item.step_name}
                 onChange={(e) =>
-                  handleRoutineItemChange(index, "name", e.target.value)
+                  handleRoutineItemChange(index, "step_name", e.target.value)
+                }
+                onBlur={(e) =>
+                  handleInputBlur(index, "step_name", e.target.value)
                 }
               />
             </RoutineGradeTitle>
@@ -111,6 +119,9 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
               onChange={(e) =>
                 handleRoutineItemChange(index, "description", e.target.value)
               }
+              onBlur={(e) =>
+                handleInputBlur(index, "description", e.target.value)
+              }
             />
             <ItemSearchWrapper>
               <CommonInput
@@ -118,20 +129,17 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
                 placeholderValue="제품명"
                 value={item.itemKey}
                 onChange={(e) =>
-                  handleRoutineItemChange(index, "itemKey", e.target.value)
+                  handleRoutineItemChange(index, "item_key", e.target.value)
+                }
+                onBlur={(e) =>
+                  handleInputBlur(index, "item_key", e.target.value)
                 }
               />
               {searchResults.length > 0 && (
                 <SearchResults>
                   {searchResults.map((product, productIndex) => (
-                    <ProductItem
-                      key={productIndex}
-                      // onClick={
-                      //   () => handleProductSelect(index, product.name, product.price);
-                      // }
-                    >
-                      {/* <span>{product.name}</span>
-                      <span>₩ {product.price}</span> */}
+                    <ProductItem key={productIndex}>
+                      {/* Render search results here */}
                     </ProductItem>
                   ))}
                 </SearchResults>

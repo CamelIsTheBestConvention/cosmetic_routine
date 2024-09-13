@@ -39,21 +39,26 @@ const AddRoutine3: React.FC = () => {
 
   const handleSubmit = async () => {
     setIsSubmit(true);
+
+    const requestBody = {
+      main: {
+        routine_name: title,
+        steps: grade,
+        for_gender: gender,
+        for_skin: skin,
+        for_age: age,
+        for_problem: problem,
+      },
+      details: routineItem,
+      tags: tag,
+    };
+
+    console.log("요청할 body 데이터:", requestBody);
+
     try {
       const response = await axios.post(
         `${backPort}/api/routine`,
-        {
-          main: {
-            routine_name: title,
-            steps: grade,
-            for_gender: gender,
-            for_skin: skin,
-            for_age: age,
-            for_problem: problem,
-          },
-          details: routineItem,
-          tags: tag,
-        },
+        requestBody,
         {
           headers: {
             Authorization: `Bearer ${token}`,
