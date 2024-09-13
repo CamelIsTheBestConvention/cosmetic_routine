@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "../../scss/mypage/profile.scss";
 import CommonTag from "../common/commonTag";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface userProfile {
   nickname: string;
@@ -12,6 +13,7 @@ interface userProfile {
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<userProfile | null>(null);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -24,6 +26,10 @@ const Profile: React.FC = () => {
         setProfile(null);
       });
   }, []);
+
+  const moveProfileEdit = () => {
+    navigate("/mypage/profileEdit");
+  };
 
   return (
     <>
@@ -49,7 +55,7 @@ const Profile: React.FC = () => {
             <CommonTag key={index} tagName={item} />
           ))}
         </div>
-        <button>프로필 수정</button>
+        <button onClick={moveProfileEdit}>프로필 수정</button>
       </div>
     </>
   );

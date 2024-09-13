@@ -21,6 +21,7 @@ const SearchWrapper = styled.div`
   top: 0;
   padding-top: 20px;
   background-color: white;
+  z-index: 10;
 `;
 
 const Search = styled.div`

@@ -1,22 +1,35 @@
 import ReviewPoint from "../common/reviewPoint";
 import "../../scss/ranking/itemBox.scss";
 
-const ItemBox: React.FC = () => {
+interface ItemBoxProps {
+  item: {
+    brand: string;
+    itemName: string;
+    price: number;
+    imageUrl: string;
+    reviewPoint: number;
+    reviewCount: number;
+  };
+  rank: number;
+  onClick: () => void;
+}
+
+const ItemBox: React.FC<ItemBoxProps> = ({ item, rank, onClick }) => {
   return (
     <>
-      <div className="rankingItemBox">
-        <div className="rankingNum">1</div>
+      <div className="rankingItemBox" onClick={onClick}>
+        <div className="rankingNum">{rank}</div>
         <div className="rankingInfoBox">
           <div className="rankingImg">
-            <img src="" alt="" />
+            <img src={item.imageUrl} alt={`${item.itemName} 이미지`} />
           </div>
           <div className="rankingInfo">
             <span className="itemName">
-              브랜드 <span>제품이름</span>
+              {item.brand} <span>{item.itemName}</span>
             </span>
             <ReviewPoint />
             <span className="itemPrice">
-              정가 <span>24,000원</span>
+              정가 <span>{item.price}원</span>
               /50ml
             </span>
           </div>

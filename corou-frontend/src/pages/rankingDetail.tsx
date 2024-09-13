@@ -2,21 +2,62 @@ import styled from "styled-components";
 import BackHeader from "../components/common/backHeader";
 import Lotion from "../img/화장품1.jpg";
 import MainFooter from "../components/common/mainFooter";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
-const RankingDetail: React.FC = () => {
+interface ItemDetails {
+  itemName: string;
+  price: string;
+  volume: string;
+  imageUrl: string;
+  effect: string;
+}
+
+const RankingDetail: React.FC<ItemDetails> = () => {
+  const { id } = useParams<{ id: string }>();
+  const [itemDetails, setItemDetails] = useState<ItemDetails | null>(null);
+
+  const navigate = useNavigate();
+
+  const handleBackPage = () => {
+    navigate(-1);
+  };
+
+  useEffect(() => {
+    const fetchItemDetails = async () => {
+      try {
+        const response = await axios.get(`/api/items/${id}`);
+        setItemDetails(response.data);
+      } catch (error) {
+        console.error("Error fetching item details:", error);
+      }
+    };
+
+    if (id) {
+      fetchItemDetails();
+    }
+  }, [id]);
+
+  if (!itemDetails) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       <RankingDetailWrapper>
-        <BackHeader onBack={""} />
+        <BackHeader onBack={handleBackPage} />
         <DetailItemBox>
           <ItemImg>
-            <img src={Lotion} alt="" />
+            <img src={itemDetails.imageUrl} alt={itemDetails.itemName} />
           </ItemImg>
           <ItemInfo>
-            <h3>제품 이름</h3>
+            <h3>{itemDetails.itemName}</h3>
             <ItemPrice>
               <span>정가</span>
-              <span>18,000원 / 80ml</span>
+              <span>
+                {itemDetails.price}원 / {itemDetails.volume}ml
+              </span>
             </ItemPrice>
             <ItemEffect>제품 효과 박스</ItemEffect>
           </ItemInfo>

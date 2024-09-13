@@ -3,66 +3,86 @@ import BannerBox from "./bannerBox";
 import { useEffect, useRef, useState } from "react";
 
 const TopRoutineBox: React.FC = () => {
-  const bannerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const topRoutineRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (bannerRef.current) {
-      setIsDragging(true);
-      setStartX(e.pageX - bannerRef.current.offsetLeft);
-      setScrollLeft(bannerRef.current.scrollLeft);
-    }
+    setIsDragging(true);
+    setStartX(e.pageX - (topRoutineRef.current?.offsetLeft || 0));
+    setScrollLeft(topRoutineRef.current?.scrollLeft || 0);
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (isDragging && bannerRef.current) {
-      const x = e.pageX - bannerRef.current.offsetLeft;
-      const walk = (x - startX) * 2; // Adjust scroll speed
-      bannerRef.current.scrollLeft = scrollLeft - walk;
-    }
+  const handleMouseLeave = () => {
+    setIsDragging(false);
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
   };
 
-  useEffect(() => {
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - (topRoutineRef.current?.offsetLeft || 0);
+    const walk = (x - startX) * 2; // scroll-fast
+    if (topRoutineRef.current) {
+      topRoutineRef.current.scrollLeft = scrollLeft - walk;
+    }
+  };
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+  useEffect(() => {
+    const handleMouseUpGlobal = () => {
+      setIsDragging(false);
     };
-  }, [isDragging]);
+
+    document.addEventListener("mouseup", handleMouseUpGlobal);
+    return () => {
+      document.removeEventListener("mouseup", handleMouseUpGlobal);
+    };
+  }, []);
 
   return (
-    <TopRoutineBanner ref={bannerRef} onMouseDown={handleMouseDown}>
-      <BannerBox />
-      <BannerBox />
-      <BannerBox />
-    </TopRoutineBanner>
+    <OutBox
+      ref={topRoutineRef}
+      onMouseDown={handleMouseDown}
+      onMouseLeave={handleMouseLeave}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
+    >
+      <TopRoutineBanner>
+        <BannerBox />
+        <BannerBox />
+        <BannerBox />
+      </TopRoutineBanner>
+    </OutBox>
   );
 };
 
 export default TopRoutineBox;
 
-const TopRoutineBanner = styled.div`
-  width: max-content;
-  margin: 20px 0;
+const OutBox = styled.div`
+  width: 100%;
   overflow-x: auto;
+  margin: 20px 0;
   position: relative;
-  display: flex;
-  justify-content: flex-start;
-  cursor: grab;
-
-  &:active {
-    cursor: grabbing;
-  }
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  user-select: none;
+`;
+
+const TopRoutineBanner = styled.div`
+  width: max-content;
+  display: flex;
+  justify-content: flex-start;
+  cursor: grab;
+  position: relative;
+
+  &:active {
+    cursor: grabbing;
   }
 `;

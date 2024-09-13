@@ -16,4 +16,8 @@ const BackBtnWrapper = styled.div`
   left: 5%;
   font-size: 20px;
   top: 10px;
+
+  div {
+    cursor: pointer;
+  }
 `;

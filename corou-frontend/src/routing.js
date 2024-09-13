@@ -13,6 +13,7 @@ import Ranking from "./pages/ranking";
 import RankingDetail from "./pages/rankingDetail";
 import Redirection from "./pages/redirection";
 import ScrollToTop from "./components/common/scrollToTop";
+import ProfileEdit from "./pages/profileEdit";
 
 function Routing() {
   return (
@@ -26,11 +27,12 @@ function Routing() {
           <Route exact path="/login/email" element={<EmailLogin />} />
           <Route exact path="/register" element={<Signup />} />
           <Route exact path="/mypage" element={<Mypage />} />
+          <Route exact path="/mypage/profileEdit" element={<ProfileEdit />} />
           <Route exact path="/order" element={<Mart />} />
           <Route exact path="/detail" element={<DetailRoutine />} />
           <Route exact path="/add" element={<AddRoutine />} />
-          <Route exact path="/ranking" element={<Ranking />} />
-          <Route exact path="/ranking/detail" element={<RankingDetail />} />
+          <Route exact path="/item" element={<Ranking />} />
+          <Route exact path="/item/:id" element={<RankingDetail />} />
           <Route exact path="/kakao/oauth" element={<Redirection />} />
         </Routes>
       </BrowserRouter>
