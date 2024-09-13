@@ -59,7 +59,7 @@ const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
 
   const handleEmailCheck = async () => {
     try {
-      const response = await axios.get(`${backPort}/api/check/${email}`);
+      const response = await axios.get(`${backPort}/api/user/check/${email}`);
 
       const message = response.data.message;
 

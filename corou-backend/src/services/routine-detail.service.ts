@@ -1,5 +1,5 @@
 import { Repository, EntityManager } from 'typeorm';
-// import { AppDataSource } from '../config/ormconfig';
+import { REPOSITORY_TOKENS } from '../config/constants';
 import { RoutineDetail } from '../entities/routine-detail.entity';
 import { RoutineService } from './routine.service';
 import { ItemService } from './item.service';
@@ -8,7 +8,7 @@ import { injectable, inject } from 'tsyringe';
 @injectable()
 export class RoutineDetailService {
     constructor(
-        @inject('RoutineDetailRepository') private routineDetailRepository: Repository<RoutineDetail>,
+        @inject(REPOSITORY_TOKENS.RoutineDetailRepository) private routineDetailRepository: Repository<RoutineDetail>,
         // private routineService: RoutineService,
         private itemService: ItemService
     ) { }

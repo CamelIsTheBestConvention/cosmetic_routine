@@ -49,8 +49,9 @@ export class ReviewController {
 
     async getReviewByRoutine(req: Request, res: Response): Promise<void> {
         const { routine_key } = req.params;
+        const lastPolled = req.query.lastPolled ? new Date(req.query.lastPolled as string) : new Date(0);
         try {
-            const reviews = await this.reviewService.getReviewByRoutine(Number(routine_key));
+            const reviews = await this.reviewService.getReviewByRoutine(Number(routine_key), lastPolled);
             res.status(200).json(reviews);
         } catch (error) {
             res.status(500).json({ message: '리뷰 조회에 실패했습니다.' });
@@ -59,8 +60,9 @@ export class ReviewController {
 
     async getReviewByItem(req: Request, res: Response): Promise<void> {
         const { item_key } = req.params;
+        const lastPolled = req.query.lastPolled ? new Date(req.query.lastPolled as string) : new Date(0);
         try {
-            const reviews = await this.reviewService.getReviewByItem(Number(item_key));
+            const reviews = await this.reviewService.getReviewByItem(Number(item_key), lastPolled);
             res.status(200).json(reviews);
         } catch (error) {
             res.status(500).json({ message: '리뷰 조회에 실패했습니다.' });

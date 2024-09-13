@@ -3,6 +3,7 @@ import { REPOSITORY_TOKENS } from '../config/constants';
 import { User } from '../entities/user.entity';
 import { injectable, inject } from 'tsyringe';
 import { UserSkinRelationService } from './user-skin-relation.service';
+import { hashPassword, comparePassword } from '../utils/bcrypt.utils';
 
 @injectable()
 export class UserService {
@@ -15,10 +16,11 @@ export class UserService {
 
     // 사용자 생성
     async createUser(email: string, password: string, username: string, birth_date: Date, gender: 'M' | 'F', attributes: number[]): Promise<User> {
+        const hashedPassword = await hashPassword(password);
         return this.dataSource.transaction(async transactionalEntityManager => {
             const newUser = await transactionalEntityManager.save(User, {
                 email,
-                password,
+                password: hashedPassword,
                 username,
                 birth_date,
                 gender
@@ -35,26 +37,15 @@ export class UserService {
             return newUser;
         });
     }
-    // async createUser(email: string, password: string, username: string, birth_date: Date, gender: 'M' | 'F'): Promise<User> {
-    //     let user = await this.userRepository.findOneBy({ email });
-    //     if (user) {
-    //         throw new Error('해당 이메일은 이미 사용중입니다.');
-    //     }
 
-    //     user = await this.userRepository.findOneBy({ username });
-    //     if (user) {
-    //         throw new Error('해당 닉네임은 이미 사용중입니다.');
-    //     }
-
-    //     const newUser = this.userRepository.create({
-    //         email,
-    //         password,
-    //         username,
-    //         birth_date,
-    //         gender
-    //     });
-    //     return await this.userRepository.save(newUser);
-    // }
+    // 이메일 중복 확인
+    async checkEmail(email: string): Promise<boolean> {
+        const user = await this.userRepository.findOneBy({ email });
+        if (user) {
+            return true;
+        }
+        return false;
+    }
     // 닉네임 중복 확인
     async checkUsername(username: string): Promise<boolean> {
         const user = await this.userRepository.findOneBy({ username });
@@ -70,7 +61,8 @@ export class UserService {
             throw new Error('해당 이메일로 가입된 계정이 없습니다.');
         }
 
-        if (user.password !== password) {
+        const isPasswordCorrect = await comparePassword(password, user.password);
+        if (!isPasswordCorrect) {
             throw new Error('비밀번호가 일치하지 않습니다.');
         }
 

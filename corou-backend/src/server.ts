@@ -3,8 +3,9 @@ import express from 'express';
 import cors from 'cors';
 import { initializeDatabase } from './config/ormconfig';
 import { setupRoutes } from './routes/routes';
+import dotenv from 'dotenv';
 
-
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -27,6 +28,7 @@ async function startServer() {
 
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
+            console.log('Database connected to:', process.env.DB_HOST);
         });
     } catch (error) {
         console.error('Failed to start server:', error);

@@ -4,7 +4,7 @@ import { ItemController } from '../controllers/item.controller';
 import { ReviewController } from '../controllers/review.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
 
-export function setupUserRouter(): Router {
+export function setupItemRouter(): Router {
     const router = Router();
     const itemController = container.resolve(ItemController);
     const reviewController = container.resolve(ReviewController);

@@ -1,14 +1,15 @@
 import { Repository, DataSource } from 'typeorm';
+import { REPOSITORY_TOKENS } from '../config/constants';
+import { injectable, inject } from 'tsyringe';
 import { Routine } from "../entities/routine.entity";
 import { UserService } from "./user.service";
 import { RoutineDetailService } from './routine-detail.service';
-import { injectable, inject } from 'tsyringe';
 
 @injectable()
 export class RoutineService {
 
     constructor(
-        @inject('RoutineRepository') private routineRepository: Repository<Routine>,
+        @inject(REPOSITORY_TOKENS.RoutineRepository) private routineRepository: Repository<Routine>,
         private userService: UserService,
         private routineDetailService: RoutineDetailService,
         private dataSource: DataSource

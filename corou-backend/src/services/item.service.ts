@@ -1,12 +1,14 @@
 import { Repository } from 'typeorm';
-// import { AppDataSource } from '../config/ormconfig';
+import { REPOSITORY_TOKENS } from '../config/constants';
 import { Item } from '../entities/item.entity';
 import { injectable, inject } from 'tsyringe';
 
 @injectable()
 export class ItemService {
-    constructor(@inject('ItemRepository') private itemRepository: Repository<Item>) {
-    }
+    constructor(
+        @inject(REPOSITORY_TOKENS.ItemRepository)
+        private itemRepository: Repository<Item>
+    ) { }
     // 상품 등록 
     async createItem(item_name: string, item_price: number, description: string, category: string): Promise<Item> {
         const newItem = this.itemRepository.create({

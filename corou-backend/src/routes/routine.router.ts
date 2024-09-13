@@ -4,7 +4,7 @@ import { RoutineController } from '../controllers/routine.controller';
 import { ReviewController } from '../controllers/review.controller';
 import { authMiddleware } from '../middlewares/auth.middleware';
 
-export function setupUserRouter(): Router {
+export function setupRoutineRouter(): Router {
     const router = Router();
     const routineController = container.resolve(RoutineController);
     const reviewController = container.resolve(ReviewController);
