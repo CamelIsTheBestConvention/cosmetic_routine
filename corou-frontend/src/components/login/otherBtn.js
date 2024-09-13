@@ -1,15 +1,25 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const OtherBtn = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleMoveRegister = () => {
     navigate("/register");
   };
+
   const handleMoveEmailLogin = () => {
-    navigate("/login/email");
+    if (location.pathname === "/login") {
+      navigate("/login/email");
+    } else if (location.pathname === "/login/email") {
+      navigate("/login");
+    }
   };
+
+  const btnText =
+    location.pathname === "/login" ? "이메일 로그인" : "카카오 로그인";
 
   return (
     <>
@@ -17,7 +27,7 @@ const OtherBtn = () => {
         <OtherBtnWrapper>
           <Btn onClick={handleMoveRegister}>이메일 회원가입</Btn>
           <Slash> | </Slash>
-          <Btn onClick={handleMoveEmailLogin}>이메일 로그인</Btn>
+          <Btn onClick={handleMoveEmailLogin}>{btnText}</Btn>
         </OtherBtnWrapper>
       </>
     </>

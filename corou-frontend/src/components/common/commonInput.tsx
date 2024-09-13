@@ -5,6 +5,7 @@ interface CommonInputProps {
   placeholderValue: string;
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const CommonInput: React.FC<CommonInputProps> = ({
@@ -12,6 +13,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
   placeholderValue,
   value,
   onChange,
+  onBlur,
 }) => {
   return (
     <>
@@ -20,6 +22,7 @@ const CommonInput: React.FC<CommonInputProps> = ({
         placeholder={placeholderValue}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
       />
     </>
   );

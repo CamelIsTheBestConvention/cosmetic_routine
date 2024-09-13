@@ -1,14 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface RoutineItem {
-  order: string;
+  step_name: string;
   description: string;
-  itemName: string;
+  item_key: number;
 }
 
 interface addRoutineState {
   title: string;
-  forRoutine: number[];
+  gender: string[];
+  skin: number;
+  age: number;
+  problem: number[];
   grade: number;
   routineItem: RoutineItem[];
   tag: string[];
@@ -16,9 +19,12 @@ interface addRoutineState {
 
 const initialState: addRoutineState = {
   title: "",
-  forRoutine: [],
+  gender: [],
+  skin: 0,
+  age: 10,
+  problem: [],
   grade: 1,
-  routineItem: [],
+  routineItem: new Array(1).fill({ name: "", description: "", itemKey: 0 }),
   tag: [],
 };
 
@@ -29,14 +35,26 @@ const addRoutineSlice = createSlice({
     setTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
-    setForRoutine: (state, action: PayloadAction<number[]>) => {
-      state.forRoutine = action.payload;
+    setGender: (state, action: PayloadAction<string[]>) => {
+      state.gender = action.payload;
+    },
+    setSkin: (state, action: PayloadAction<number>) => {
+      state.skin = action.payload;
+    },
+    setAge: (state, action: PayloadAction<number>) => {
+      state.age = action.payload;
+    },
+    setProblem: (state, action: PayloadAction<number[]>) => {
+      state.problem = action.payload;
     },
     setGrade: (state, action: PayloadAction<number>) => {
       state.grade = action.payload;
     },
-    setRoutineItem: (state, action: PayloadAction<RoutineItem>) => {
-      state.routineItem.push(action.payload);
+    setRoutineItem: (
+      state,
+      action: PayloadAction<{ index: number; item: RoutineItem }>
+    ) => {
+      state.routineItem[action.payload.index] = action.payload.item;
     },
     setTag: (state, action: PayloadAction<string[]>) => {
       state.tag = action.payload;
@@ -44,6 +62,14 @@ const addRoutineSlice = createSlice({
   },
 });
 
-export const { setTitle, setForRoutine, setGrade, setRoutineItem, setTag } =
-  addRoutineSlice.actions;
+export const {
+  setTitle,
+  setGender,
+  setSkin,
+  setAge,
+  setProblem,
+  setGrade,
+  setRoutineItem,
+  setTag,
+} = addRoutineSlice.actions;
 export default addRoutineSlice.reducer;
