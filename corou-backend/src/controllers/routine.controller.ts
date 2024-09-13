@@ -25,7 +25,17 @@ export class RoutineController {
         //         for_age: '20',
         //         for_problem: ['10', '11'],
         //     },
-        //     details: [{}, {}, {}]
+        //     details: [{
+        //         step_number: 1,
+        //         item_key: 1,
+        //         step_name: 'Step Name',
+        //         description: 'Step Description'
+        //     }, {
+        //         step_number: 2,
+        //         item_key: 2,
+        //         step_name: 'Step Name',
+        //         description: 'Step Description'
+        //     }]
         //     tags: []
         // }
 

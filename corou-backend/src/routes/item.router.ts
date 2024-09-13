@@ -12,6 +12,7 @@ export function setupItemRouter(): Router {
     router.get('/:item_key', (req, res) => itemController.getItemByKey(req, res));
     router.get('/', (req, res) => itemController.getAllItems(req, res));
     router.post('/:item_key/review', authMiddleware, (req, res) => reviewController.createItemReview(req, res));
+    router.post('/', (req, res) => itemController.createItem(req, res));
     router.put('/:item_key', authMiddleware, (req, res) => itemController.updateItem(req, res));
 
     return router;

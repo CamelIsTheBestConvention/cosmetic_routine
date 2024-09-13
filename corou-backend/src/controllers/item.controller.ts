@@ -7,7 +7,9 @@ export class ItemController {
     constructor(private itemService: ItemService) { }
 
     async createItem(req: Request, res: Response): Promise<void> {
-        const { item_name, item_type, item_unit, item_price } = req.body;
+        const { item_name, item_price, description, category } = req.body;
+        const item = await this.itemService.createItem(item_name, item_price, description, category);
+        res.status(201).json(item);
     }
 
     async getAllItems(req: Request, res: Response): Promise<void> {
