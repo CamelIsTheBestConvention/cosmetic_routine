@@ -18,6 +18,7 @@ import {
   setColor,
 } from "../../redux/slice/signupSlice";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Signup3: React.FC = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const Signup3: React.FC = () => {
   const skinType = useSelector((state: RootState) => state.signup.skinType);
   const color = useSelector((state: RootState) => state.signup.color);
   const attributes = useSelector((state: RootState) => state.signup.attributes);
+  const navigate = useNavigate();
 
   const backPort = process.env.REACT_APP_BACKEND_PORT;
 
@@ -117,6 +119,7 @@ const Signup3: React.FC = () => {
 
       alert("회원가입 성공");
       console.log("회원가입 성공", response.data);
+      navigate("/login");
     } catch (error) {
       alert("회원가입 실패");
       console.log("회원가입 실패", error);
@@ -265,24 +268,6 @@ const Signup3: React.FC = () => {
               label="속건조"
               value={15}
               checked={attributes.includes(15)}
-              onChange={handleTroubleChange}
-            />
-            <CommonCheckBox
-              label="등"
-              value={16}
-              checked={attributes.includes(16)}
-              onChange={handleTroubleChange}
-            />
-            <CommonCheckBox
-              label="등등"
-              value={17}
-              checked={attributes.includes(17)}
-              onChange={handleTroubleChange}
-            />
-            <CommonCheckBox
-              label="등등등"
-              value={18}
-              checked={attributes.includes(18)}
               onChange={handleTroubleChange}
             />
           </TroubleBox>

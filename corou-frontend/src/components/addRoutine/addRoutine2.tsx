@@ -184,6 +184,7 @@ const RoutinePriceWrapper = styled.div`
   bottom: 0;
   background-color: white;
   z-index: 1000;
+  margin-bottom: 50px;
 
   div {
     width: 70%;

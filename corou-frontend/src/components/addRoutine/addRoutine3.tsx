@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import {
   setTitle,
-  setForRoutine,
   setGrade,
   setRoutineItem,
   setTag,
@@ -18,9 +17,6 @@ import axios from "axios";
 const AddRoutine3: React.FC = () => {
   const dispatch = useDispatch();
   const title = useSelector((state: RootState) => state.addRoutine.title);
-  const forRoutine = useSelector(
-    (state: RootState) => state.addRoutine.forRoutine
-  );
   const grade = useSelector((state: RootState) => state.addRoutine.grade);
   const routineItem = useSelector(
     (state: RootState) => state.addRoutine.routineItem
@@ -41,7 +37,6 @@ const AddRoutine3: React.FC = () => {
       const response = await axios.post(`${backPort}/api/routine`, {
         main: {
           title: title,
-          forRoutine: forRoutine,
           grade: grade,
         },
         routineItem: routineItem,

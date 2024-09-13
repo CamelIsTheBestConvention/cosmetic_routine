@@ -9,9 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import {
   setTitle,
-  setForRoutine,
+  setGender,
+  setSkin,
+  setAge,
+  setProblem,
   setGrade,
 } from "../../redux/slice/addRoutineSlice";
+import CommonCheckBox from "../common/commonCheckbox";
 
 interface NextProps {
   onNext: () => void;
@@ -20,17 +24,18 @@ interface NextProps {
 const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
   const dispatch = useDispatch();
   const title = useSelector((state: RootState) => state.addRoutine.title);
-  const forRoutine = useSelector(
-    (state: RootState) => state.addRoutine.forRoutine
-  );
+  // const forRoutine = useSelector(
+  //   (state: RootState) => state.addRoutine.forRoutine
+  // );
   const grade = useSelector((state: RootState) => state.addRoutine.grade);
 
-  const handleCheckedChange = (newCheckedItems: number[]) => {
-    dispatch(setForRoutine(newCheckedItems));
-  };
+  // const handleCheckedChange = (newCheckedItems: number[]) => {
+  //   dispatch(setForRoutine(newCheckedItems));
+  // };
 
   const isButtonDisabled = () => {
-    return !title || forRoutine.length === 0 || grade <= 0;
+    // return !title || forRoutine.length === 0 || grade <= 0;
+    return !title || grade <= 0;
   };
 
   return (
@@ -45,7 +50,21 @@ const AddRoutine1: React.FC<NextProps> = ({ onNext }) => {
           onChange={(e) => dispatch(setTitle(e.target.value))}
         />
         <PageGuide text="누구를 위한 루틴인가요?" />
-        <OtherFilter onCheckedChange={handleCheckedChange} />
+        {/* <OtherFilter onCheckedChange={handleCheckedChange} /> */}
+        <GenderBox>
+          {/* <CommonCheckBox
+            label="gender"
+            value="M"
+            checked={false}
+            onChange={""}
+          />
+          <CommonCheckBox
+            label="gender"
+            value="F"
+            checked={false}
+            onChange={""}
+          /> */}
+        </GenderBox>
         <PageGuide text="몇개의 단계로 이루어져 있나요?" />
         <ItemGrade>제품 개수</ItemGrade>
         <CommonInput
@@ -67,8 +86,16 @@ const AddRoutine1Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+
 const ItemGrade = styled.span`
   font-size: 14px;
   color: #848484;
   margin-bottom: 10px;
+`;
+
+const GenderBox = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 `;

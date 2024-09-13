@@ -8,7 +8,10 @@ interface RoutineItem {
 
 interface addRoutineState {
   title: string;
-  forRoutine: number[];
+  gender: string;
+  skin: number;
+  age: number;
+  problem: number[];
   grade: number;
   routineItem: RoutineItem[];
   tag: string[];
@@ -16,7 +19,10 @@ interface addRoutineState {
 
 const initialState: addRoutineState = {
   title: "",
-  forRoutine: [],
+  gender: "",
+  skin: 0,
+  age: 10,
+  problem: [],
   grade: 1,
   routineItem: [],
   tag: [],
@@ -29,8 +35,17 @@ const addRoutineSlice = createSlice({
     setTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
-    setForRoutine: (state, action: PayloadAction<number[]>) => {
-      state.forRoutine = action.payload;
+    setGender: (state, action: PayloadAction<string>) => {
+      state.gender = action.payload;
+    },
+    setSkin: (state, action: PayloadAction<number>) => {
+      state.skin = action.payload;
+    },
+    setAge: (state, action: PayloadAction<number>) => {
+      state.age = action.payload;
+    },
+    setProblem: (state, action: PayloadAction<number[]>) => {
+      state.problem = action.payload;
     },
     setGrade: (state, action: PayloadAction<number>) => {
       state.grade = action.payload;
@@ -44,6 +59,14 @@ const addRoutineSlice = createSlice({
   },
 });
 
-export const { setTitle, setForRoutine, setGrade, setRoutineItem, setTag } =
-  addRoutineSlice.actions;
+export const {
+  setTitle,
+  setGender,
+  setSkin,
+  setAge,
+  setProblem,
+  setGrade,
+  setRoutineItem,
+  setTag,
+} = addRoutineSlice.actions;
 export default addRoutineSlice.reducer;
