@@ -42,6 +42,15 @@ export class UserController {
             res.status(400).json({ message: error.message });
         }
     }
+    async checkEmail(req: Request, res: Response): Promise<void> {
+        const { email } = req.params;
+        const isExist = await this.userService.checkEmail(email);
+        if (!isExist) {
+            res.status(200).json({ message: '사용 가능한 이메일입니다.' });
+        } else {
+            res.status(400).json({ message: '이미 사용중인 이메일입니다.' });
+        }
+    }
     async checkUsername(req: Request, res: Response): Promise<void> {
         const { username } = req.params;
         const isExist = await this.userService.checkUsername(username);

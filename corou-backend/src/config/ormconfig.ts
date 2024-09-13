@@ -7,6 +7,7 @@ import { REPOSITORY_TOKENS } from './constants';
 import { User } from '../entities/user.entity';
 import { Address } from '../entities/address.entity';
 import { Routine } from '../entities/routine.entity';
+import { RoutineDetail } from '../entities/routine-detail.entity';
 import { Item } from '../entities/item.entity';
 import { SkinAttribute } from '../entities/skin-attribute.entity';
 import { UserSkinRelation } from '../entities/user-skin-relation.entity';
@@ -19,6 +20,7 @@ dotenv.config({ path: '.env' }); // 상대적 위치가 아닌, 루트 위치에
 
 const { DB_DATABASE, DB_USER, DB_HOST, DB_PASSWORD } = process.env;
 
+
 if (!DB_DATABASE || !DB_USER || !DB_HOST || !DB_PASSWORD) {
     throw new Error('Missing database configuration environment variables.');
 }
@@ -30,12 +32,10 @@ export const AppDataSource = new DataSource({
     username: DB_USER,
     password: DB_PASSWORD,
     database: DB_DATABASE,
-    synchronize: false,
+    synchronize: true,
     logging: false,
-    entities: [User, Address, Routine, Item, SkinAttribute, UserSkinRelation, ItemOrder, OrderDetail, Review],
-    // entities: [
-    // 'src/entities/*.ts'
-    // ]
+    entities: [User, Address, Routine, RoutineDetail, Item, SkinAttribute, UserSkinRelation, ItemOrder, OrderDetail, Review],
+
 });
 
 
@@ -50,6 +50,7 @@ export const initializeDatabase = async () => {
             { name: REPOSITORY_TOKENS.UserRepository, entity: User },
             { name: REPOSITORY_TOKENS.AddressRepository, entity: Address },
             { name: REPOSITORY_TOKENS.RoutineRepository, entity: Routine },
+            { name: REPOSITORY_TOKENS.RoutineDetailRepository, entity: RoutineDetail },
             { name: REPOSITORY_TOKENS.ItemRepository, entity: Item },
             { name: REPOSITORY_TOKENS.SkinAttributeRepository, entity: SkinAttribute },
             { name: REPOSITORY_TOKENS.UserSkinRelationRepository, entity: UserSkinRelation },
