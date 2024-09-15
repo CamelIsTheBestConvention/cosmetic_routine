@@ -129,5 +129,17 @@ export class RoutineService {
             return routine;
         });
     }
+    // 피부 타입 필터로 루틴 조회
+    async getRoutinesBySkinType(attr_key: number): Promise<Routine[]> {
+        const routineSkinRelations = await this.routineSkinRelationService.getRoutineSkinRelationByAttrKey(attr_key);
+        const routines = [];
+        for (const routineSkinRelation of routineSkinRelations) {
+            const routine = await this.routineRepository.findOneBy({ routine_key: routineSkinRelation.routine_key });
+            if (routine) {
+                routines.push(routine);
+            }
+        }
+        return routines;
+    }
 }
 

@@ -25,9 +25,13 @@ export class RoutineSkinRelationService {
             routine_key,
             attr_key
         });
-
-
         return transactionalEntityManager.save(RoutineSkinRelation, relation);
     }
-
+    async getRoutineSkinRelationByAttrKey(attr_key: number): Promise<RoutineSkinRelation[]> {
+        return this.routineSkinRelationRepository.find({
+            where: {
+                attr_key
+            }
+        });
+    }
 }
