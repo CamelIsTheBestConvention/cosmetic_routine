@@ -21,7 +21,7 @@ const initialState: addRoutineState = {
   title: "",
   gender: [],
   skin: 0,
-  age: 10,
+  age: 0,
   problem: [],
   grade: 1,
   routineItem: new Array(1).fill({ name: "", description: "", itemKey: 0 }),
