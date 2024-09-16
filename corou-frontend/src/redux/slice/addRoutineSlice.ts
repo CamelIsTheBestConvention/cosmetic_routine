@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface RoutineItem {
+  step_number: number;
   step_name: string;
   description: string;
   item_key: number;
@@ -24,7 +25,12 @@ const initialState: addRoutineState = {
   age: 0,
   problem: [],
   grade: 1,
-  routineItem: new Array(1).fill({ name: "", description: "", itemKey: 0 }),
+  routineItem: new Array(1).fill({
+    step_number: 1,
+    step_name: "",
+    description: "",
+    item_key: 0,
+  }),
   tag: [],
 };
 

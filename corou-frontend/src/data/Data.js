@@ -23,6 +23,7 @@ export const items = [
     price: 999999,
     rating: 4.9,
     reviews: 1192,
+    isLiked: false,
   },
   {
     title: "피부 탄력을 증가시키는 제품",
@@ -33,6 +34,7 @@ export const items = [
     price: 750000,
     rating: 4.7,
     reviews: 980,
+    isLiked: true,
   },
   {
     title: "모공을 관리하는 루틴",
@@ -43,6 +45,7 @@ export const items = [
     price: 850000,
     rating: 4.8,
     reviews: 1030,
+    isLiked: false,
   },
 ];
 

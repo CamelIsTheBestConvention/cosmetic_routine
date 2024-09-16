@@ -11,7 +11,7 @@ const MainFooter = () => {
   const navigate = useNavigate();
 
   const handleMoveItem = () => {
-    navigate("/ranking");
+    navigate("/item");
   };
 
   const handleMoveRoutine = () => {

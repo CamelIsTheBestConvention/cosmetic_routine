@@ -42,6 +42,13 @@ const FilterList: React.FC = () => {
     setSortedItems(sortedArray);
   };
 
+  const toggleLike = (index: number) => {
+    const updatedItems = sortedItems.map((item, i) =>
+      i === index ? { ...item, isLiked: !item.isLiked } : item
+    );
+    setSortedItems(updatedItems);
+  };
+
   return (
     <>
       <div className="filterListWrapper">
@@ -63,7 +70,12 @@ const FilterList: React.FC = () => {
               <div className="itemListFirstTitle">
                 <div>{item.title}</div>
                 <div>
-                  <img src={goodOff} alt="" />
+                  <img
+                    src={item.isLiked ? goodOn : goodOff}
+                    alt="좋아요"
+                    onClick={() => toggleLike(index)}
+                    style={{ cursor: "pointer" }}
+                  />
                 </div>
               </div>
               <div className="itemListSecondTitle">

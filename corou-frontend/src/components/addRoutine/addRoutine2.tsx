@@ -19,7 +19,12 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
     (state: RootState) => state.addRoutine.routineItem
   );
   const [allRoutineItems, setAllRoutineItems] = useState(
-    new Array(grade).fill({ step_name: "", description: "", item_key: 0 })
+    new Array(grade).fill({
+      step_number: 0,
+      step_name: "",
+      description: "",
+      item_key: 0,
+    })
   );
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
@@ -27,7 +32,12 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
 
   useEffect(() => {
     setAllRoutineItems(
-      new Array(grade).fill({ step_name: "", description: "", item_key: 0 })
+      new Array(grade).fill(null).map((_, index) => ({
+        step_number: index + 1,
+        step_name: "",
+        description: "",
+        item_key: 0,
+      }))
     );
   }, [grade]);
 
@@ -42,14 +52,22 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
     if (routineItems.length < grade) {
       setAllRoutineItems([
         ...routineItems,
-        ...new Array(grade - routineItems.length).fill({
-          step_name: "",
-          description: "",
-          item_key: 0,
-        }),
+        ...new Array(grade - routineItems.length)
+          .fill(null)
+          .map((_, index) => ({
+            step_number: routineItems.length + index + 1,
+            step_name: "",
+            description: "",
+            item_key: 0,
+          })),
       ]);
     } else {
-      setAllRoutineItems(routineItems.slice(0, grade));
+      setAllRoutineItems(
+        routineItems.map((item, index) => ({
+          ...item,
+          step_number: index + 1,
+        }))
+      );
     }
   }, [grade, routineItems]);
 
