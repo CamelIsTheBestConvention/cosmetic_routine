@@ -35,10 +35,14 @@ const EmailLoginBox: React.FC = () => {
       console.log("로그인 성공", response.data);
 
       const token = response.data.token;
+      const userKey = response.data.user.user_key;
+      const userName = response.data.user.username;
       const decodedToken = jwtDecode<MyTokenPayload>(token);
       const expirationTime = decodedToken.exp * 1000;
 
       sessionStorage.setItem("authToken", token);
+      sessionStorage.setItem("userKey", userKey);
+      sessionStorage.setItem("userName", userName);
       sessionStorage.setItem("tokenExpiration", expirationTime.toString());
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;

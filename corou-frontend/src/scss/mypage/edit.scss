@@ -5,5 +5,105 @@
 
   .profileEdit {
     width: 100%;
+    margin-top: 20px;
+
+    .editImg {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto;
+      border: 1.5px solid #ffa4e4;
+      border-radius: 50%;
+      position: relative;
+
+      img {
+        width: inherit;
+      }
+
+      div {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ffa4e4;
+        border-radius: 50%;
+        color: #ffa4e4;
+        background-color: white;
+        text-align: center;
+        font-size: 25px;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        line-height: 0.7;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    p {
+      font-size: 20px;
+      text-align: center;
+    }
+  }
+
+  .readEmail {
+    display: flex;
+    width: 70%;
+    margin: 0 auto;
+
+    span {
+      font-size: 16px;
+      line-height: 2.5;
+      margin-right: 10px;
+    }
+
+    input {
+      width: 70%;
+      border: 3px solid rgba(255, 164, 228, 0.5);
+      border-radius: 13px;
+      padding: 10px 10px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      outline: none;
+    }
+  }
+
+  .inputCheckBtn {
+    width: 70%;
+    margin: 0 auto 10px auto;
+
+    // background-color: rgba(255, 164, 228, 0.7);
+    border: 3px solid rgba(255, 164, 228, 0.5);
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px 0;
+    outline: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .completeBtn {
+    width: 70%;
+    margin: 0 auto 10px auto;
+
+    background-color: rgba(255, 164, 228, 0.7);
+    border: none;
+    border-radius: 10px;
+    padding: 10px 0;
+    outline: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
