@@ -1,6 +1,8 @@
 import { Repository, EntityManager } from 'typeorm';
 import { REPOSITORY_TOKENS } from '../config/constants';
 import { RoutineSkinRelation } from '../entities/routine-skin-relation.entity';
+import { SkinAttribute } from '../entities/skin-attribute.entity';
+import { Routine } from '../entities/routine.entity';
 import { RoutineService } from './routine.service';
 import { SkinAttributeService } from './skin-attribute.service';
 import { injectable, inject } from 'tsyringe';
@@ -12,7 +14,8 @@ export class RoutineSkinRelationService {
 
     constructor(
         @inject(REPOSITORY_TOKENS.RoutineSkinRelationRepository) private routineSkinRelationRepository: Repository<RoutineSkinRelation>,
-        // private userService: UserService,
+        @inject(REPOSITORY_TOKENS.SkinAttributeRepository) private skinAttributeRepository: Repository<SkinAttribute>,
+        @inject(REPOSITORY_TOKENS.RoutineRepository) private routineRepository: Repository<Routine>,
         private skinAttributeService: SkinAttributeService,
     ) { }
 
@@ -24,14 +27,11 @@ export class RoutineSkinRelationService {
         });
         return transactionalEntityManager.save(RoutineSkinRelation, relation);
     }
-    // async addUserSkinRelation(user_key: number, attr_key: number): Promise<void> {
-    //     const user = await this.userService.getUserByKey(user_key);
-    //     const attribute = await this.skinAttributeService.getSkinAttributeByKey(attr_key);
-    //     const userSkinRelation = this.userSkinRelationRepository.create({
-    //         user,
-    //         attribute
-    //     });
-
-    //     await this.userSkinRelationRepository.save(userSkinRelation);
-    // }
+    async getRoutineSkinRelationByAttrKey(attr_key: number): Promise<RoutineSkinRelation[]> {
+        return this.routineSkinRelationRepository.find({
+            where: {
+                attr_key
+            }
+        });
+    }
 }

@@ -36,9 +36,9 @@ export const AppDataSource = new DataSource({
     username: DB_USER,
     password: DB_PASSWORD,
     database: DB_DATABASE,
-    synchronize: false,
+    synchronize: true,
     logging: false,
-    entities: [User, Address, Routine, RoutineDetail, Item, SkinAttribute, UserSkinRelation, RoutineTagRelation, ItemOrder, OrderDetail, Review, Tag],
+    entities: [User, Address, Routine, RoutineDetail, Item, SkinAttribute, UserSkinRelation, RoutineSkinRelation, RoutineTagRelation, ItemOrder, OrderDetail, Review, Tag],
 
 });
 

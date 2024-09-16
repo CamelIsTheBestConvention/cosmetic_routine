@@ -7,16 +7,22 @@ import { RoutineDetailService } from './routine-detail.service';
 import { RoutineSkinRelationService } from './routine-skin-relation.service';
 import { TagService } from './tag.service';
 import { RoutineTagRelationService } from './routine-tag-relation.service';
+import { ReviewService } from './review.service';
+import { Review } from '../entities/review.entity';
+import { connect } from 'http2';
+// import { SkinAttributeService } from './skin-attribute.service';
 
 @injectable()
 export class RoutineService {
 
     constructor(
         @inject(REPOSITORY_TOKENS.RoutineRepository) private routineRepository: Repository<Routine>,
+        // @inject(REPOSITORY_TOKENS.ReviewRepository) private reviewRepository: Repository<Review>,
         private userService: UserService,
         private routineDetailService: RoutineDetailService,
         private routineSkinRelationService: RoutineSkinRelationService,
         private routineTagRelationService: RoutineTagRelationService,
+        // private reviewService: ReviewService,
         private tagService: TagService,
         private dataSource: DataSource
     ) { }
@@ -31,6 +37,7 @@ export class RoutineService {
         for_age: number,
         for_problem: Array<string>,
         details: Array<{
+            step_number: number;
             item_key: number;
             step_name: string;
             description: string;
@@ -41,6 +48,7 @@ export class RoutineService {
         if (!user) {
             throw new Error('해당 유저를 찾을 수 없습니다.');
         }
+
         return this.dataSource.transaction(async transactionalEntityManager => {
             const newRoutine = await transactionalEntityManager.save(Routine, {
                 user,
@@ -63,6 +71,7 @@ export class RoutineService {
             }
             for (const detail of details) {
                 await this.routineDetailService.createRoutineDetail(
+                    detail.step_number,
                     newRoutine.routine_key,
                     detail.item_key,
                     detail.step_name,
@@ -70,11 +79,14 @@ export class RoutineService {
                     transactionalEntityManager
                 );
             }
+            console.log('before tag')
+            console.log(tags);
             const tagKeys = [];
             for (const tag of tags) {
                 const tagKey = await this.tagService.createTag(tag);
                 tagKeys.push(tagKey);
             }
+            console.log(tagKeys);
             for (const tagKey of tagKeys) {
                 await this.routineTagRelationService.addRoutineTagRelation(
                     newRoutine.routine_key,
@@ -82,6 +94,7 @@ export class RoutineService {
                     transactionalEntityManager
                 );
             }
+            console.log('루틴 태그 등록 완료')
             return newRoutine;
         });
     }
@@ -95,10 +108,16 @@ export class RoutineService {
     }
     // 루틴 조회
     async getRoutineByKey(routine_key: number): Promise<Routine> {
-        const routine = await this.routineRepository.findOneBy({ routine_key });
+        const routine = await this.routineRepository.findOne({
+            where: { routine_key },
+            relations: ['routineDetails', 'routineSkinRelations', 'routineTagRelations', 'user', 'reviews']
+        });
         if (!routine) {
             throw new Error('해당 루틴을 찾을 수 없습니다.');
         }
+
+        // const reviews = await this.reviewService.getReviewByRoutine(routine_key);
+        // return { ...routine, reviews };
         return routine;
     }
     // 루틴 수정
@@ -125,5 +144,23 @@ export class RoutineService {
             return routine;
         });
     }
+    // 피부 타입 필터로 루틴 조회
+    async getRoutinesBySkinType(attr_key: number): Promise<Routine[]> {
+        const routineSkinRelations = await this.routineSkinRelationService.getRoutineSkinRelationByAttrKey(attr_key);
+        const routines = [];
+        for (const routineSkinRelation of routineSkinRelations) {
+            const routine = await this.routineRepository.findOneBy({ routine_key: routineSkinRelation.routine_key });
+            if (routine) {
+                routines.push(routine);
+            }
+        }
+        return routines;
+    }
+
+    // async updateAverageRating(routine_key: number): Promise<number> {
+    //     const reviews = await this.reviewService.getReviewByRoutine(routine_key);
+    //     const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+    //     return averageRating;
+    // }
 }
 

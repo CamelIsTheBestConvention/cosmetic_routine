@@ -13,8 +13,8 @@ export class RoutineController {
 
     async createRoutine(req: Request, res: Response): Promise<void> {
         const { routine_name, steps, for_gender, for_skin, for_age, for_problem } = req.body.main;
-        const details = req.body.detail;
-        const tags = req.body.tag;
+        const details = req.body.details;
+        const tags = req.body.tags;
 
         // body = {
         //     main: {
@@ -87,8 +87,8 @@ export class RoutineController {
     async deleteRoutine(req: Request, res: Response): Promise<void> {
         const routine_key = req.params.routine_key;
         try {
-            const routine = await this.routineService.deleteRoutine(Number(routine_key));
-            res.status(200).json(routine);
+            await this.routineService.deleteRoutine(Number(routine_key));
+            res.status(200).json({ message: '루틴 삭제에 성공했습니다.' });
         } catch (error) {
             res.status(500).json({ message: '루틴 삭제에 실패했습니다.' });
         }

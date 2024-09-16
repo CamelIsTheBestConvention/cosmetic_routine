@@ -21,6 +21,7 @@ export class RoutineTagRelationService {
             routine_key,
             tag_key
         });
-        return transactionalEntityManager.save(RoutineTagRelation, relation);
+        const savedRelation = await transactionalEntityManager.save(RoutineTagRelation, relation);
+        return savedRelation;
     }
 }

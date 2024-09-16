@@ -1,14 +1,14 @@
 import 'reflect-metadata';
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, OneToOne, ManyToOne, JoinColumn } from 'typeorm';
 import { Routine } from './routine.entity';
 import { Item } from './item.entity';
 
 @Entity('routine_detail')
 export class RoutineDetail {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     step_number!: number;
 
-    @Column()
+    @PrimaryColumn()
     routine_key!: number;
 
     @Column()
@@ -16,6 +16,7 @@ export class RoutineDetail {
 
     @Column({ type: `varchar`, length: 255 })
     step_name!: string;
+
     @Column({ type: `varchar`, length: 255 })
     description?: string;
 

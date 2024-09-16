@@ -29,6 +29,11 @@ export class ReviewService {
         if (!newReview) {
             throw new Error('리뷰를 등록할 수 없습니다.');
         }
+        // if (review_type === 'R') {
+        //     await this.routineService.calculateAverageRating(key);
+        // } else if (review_type === 'I') {
+        //     await this.itemService.calculateAverageRating(key);
+        // }
         return await this.reviewRepository.save(newReview);
     }
     // 루틴 별 리뷰 조회
