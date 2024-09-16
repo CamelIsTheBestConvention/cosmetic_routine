@@ -5,6 +5,7 @@ interface radioBoxType {
   name: string;
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  checked: boolean;
 }
 
 const CommonRadioBox: React.FC<radioBoxType> = ({
@@ -12,6 +13,7 @@ const CommonRadioBox: React.FC<radioBoxType> = ({
   name,
   value,
   onChange,
+  checked,
 }) => {
   return (
     <>
@@ -20,6 +22,7 @@ const CommonRadioBox: React.FC<radioBoxType> = ({
           type="radio"
           name={name}
           value={value}
+          checked={checked}
           onChange={onChange}
         />
         <RadioButtonText>{label}</RadioButtonText>

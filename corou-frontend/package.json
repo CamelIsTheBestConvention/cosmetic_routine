@@ -31,7 +31,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src",
-    "dev": "set PORT=3001 && react-scripts start"
+    "dev": "set HTTPS=true && set PORT=3001 && react-scripts start"
   },
   "eslintConfig": {
     "extends": [

@@ -31,6 +31,28 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
     );
   }, [grade]);
 
+  useEffect(() => {
+    // if (routineItems.length > 0) {
+    //   setAllRoutineItems(routineItems);
+    // } else {
+    //   setAllRoutineItems(
+    //     new Array(grade).fill({ step_name: "", description: "", item_key: 0 })
+    //   );
+    // }
+    if (routineItems.length < grade) {
+      setAllRoutineItems([
+        ...routineItems,
+        ...new Array(grade - routineItems.length).fill({
+          step_name: "",
+          description: "",
+          item_key: 0,
+        }),
+      ]);
+    } else {
+      setAllRoutineItems(routineItems.slice(0, grade));
+    }
+  }, [grade, routineItems]);
+
   // useEffect(() => {
   //   const sum = searchResults.reduce(
   //     (acc, product) => acc + parseFloat(product.price || "0"),
@@ -89,7 +111,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
 
   const isButtonDisabled = allRoutineItems.some(
     (item) =>
-      !item.step_name.trim() || !item.description.trim() || !item.item_key
+      !item.step_name?.trim() || !item.description?.trim() || !item.item_key
   );
 
   return (
@@ -127,7 +149,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
               <CommonInput
                 typeValue="text"
                 placeholderValue="제품명"
-                value={item.itemKey}
+                value={item.item_key}
                 onChange={(e) =>
                   handleRoutineItemChange(index, "item_key", e.target.value)
                 }
@@ -153,7 +175,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
           <span>
             종합 <span>₩ {totalPrice.toLocaleString()}</span>
           </span>
-          <NextBtn onClick={onNext} disabled={false} />
+          <NextBtn onClick={onNext} disabled={isButtonDisabled} />
         </div>
       </RoutinePriceWrapper>
     </>
