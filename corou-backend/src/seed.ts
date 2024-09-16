@@ -1,5 +1,6 @@
 import { DataSource } from 'typeorm';
 import { SkinAttribute } from './entities/skin-attribute.entity'; // Adjust the import path as necessary
+import { Item } from './entities/item.entity';
 import { AppDataSource } from './config/ormconfig'; // Adjust the import path as necessary
 
 const seedDatabase = async () => {
@@ -9,7 +10,7 @@ const seedDatabase = async () => {
 
         // Preload data
         const skinAttributeRepository = AppDataSource.getRepository(SkinAttribute);
-
+        const itemRepository = AppDataSource.getRepository(Item);
         // Example data
         const attributes = [
             { attr_key: 1, attr_name: '건성' },
@@ -32,6 +33,15 @@ const seedDatabase = async () => {
 
         // Insert data if it does not already exist
         await skinAttributeRepository.save(attributes);
+
+
+        const items = [
+            { item_key: 1, item_name: 'testItem1', item_price: 1000, description: '테스트 아이템입니다.', category: '지성' },
+            { item_key: 2, item_name: 'testItem2', item_price: 10000, description: '테스트 아이템입니다.', category: '건성' },
+            { item_key: 3, item_name: 'testItem3', item_price: 20000, description: '테스트 아이템입니다.', category: '지성' },
+        ];
+
+        await itemRepository.save(items);
 
         console.log('Database seeded with skin attributes!');
     } catch (error) {

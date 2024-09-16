@@ -50,4 +50,8 @@ export class ItemService {
         item.category = category;
         return await this.itemRepository.save(item);
     }
+    // 상품 평점 수정
+    async updateItemRating(item_key: number, average_rating: number): Promise<void> {
+        await this.itemRepository.update(item_key, { average_rating });
+    }
 }

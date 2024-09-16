@@ -14,6 +14,9 @@ export class Item {
     @Column({ type: 'int' })
     item_price!: number;
 
+    @Column({ type: 'float', default: 0 })
+    average_rating!: number;
+
     @Column({ type: 'varchar', length: 255 })
     description!: string;
 

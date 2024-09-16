@@ -8,7 +8,6 @@ import { RoutineSkinRelationService } from './routine-skin-relation.service';
 import { TagService } from './tag.service';
 import { RoutineTagRelationService } from './routine-tag-relation.service';
 import { ReviewService } from './review.service';
-import { Review } from '../entities/review.entity';
 import { connect } from 'http2';
 // import { SkinAttributeService } from './skin-attribute.service';
 
@@ -22,7 +21,7 @@ export class RoutineService {
         private routineDetailService: RoutineDetailService,
         private routineSkinRelationService: RoutineSkinRelationService,
         private routineTagRelationService: RoutineTagRelationService,
-        // private reviewService: ReviewService,
+        private reviewService: ReviewService,
         private tagService: TagService,
         private dataSource: DataSource
     ) { }
@@ -121,13 +120,16 @@ export class RoutineService {
         return routine;
     }
     // 루틴 수정
-    async updateRoutine(routine_key: number, routine_name: string, steps: number): Promise<Routine> {
+    async updateRoutine(routine_key: number, routine_name?: string, steps?: number, average_rating?: number): Promise<Routine> {
         const routine = await this.routineRepository.findOneBy({ routine_key });
         if (!routine) {
             throw new Error('해당 루틴을 찾을 수 없습니다.');
         }
-        routine.routine_name = routine_name;
-        routine.steps = steps;
+
+        routine.routine_name = routine_name ?? routine.routine_name;
+        routine.steps = steps ?? routine.steps;
+        routine.average_rating = average_rating ?? routine.average_rating;
+
         return await this.routineRepository.save(routine);
     }
     // 루틴 삭제
@@ -157,10 +159,7 @@ export class RoutineService {
         return routines;
     }
 
-    // async updateAverageRating(routine_key: number): Promise<number> {
-    //     const reviews = await this.reviewService.getReviewByRoutine(routine_key);
-    //     const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
-    //     return averageRating;
-    // }
+    async updateRoutineRating(routine_key: number, average_rating: number): Promise<void> {
+        await this.routineRepository.update(routine_key, { average_rating });
+    }
 }
-
