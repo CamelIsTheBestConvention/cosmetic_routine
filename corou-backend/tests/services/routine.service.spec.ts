@@ -21,7 +21,20 @@ describe('RoutineService', () => {
             remove: jest.fn(),
         } as unknown as Repository<Routine>;
 
+        routineSkinRelationRepository = {
+            find: jest.fn(),
+            findOneBy: jest.fn(),
+            save: jest.fn(),
+            remove: jest.fn(),
+        } as unknown as Repository<RoutineSkinRelation>;
+
+        routineSkinRelationService = {
+            getRoutineSkinRelationByAttrKey: jest.fn(),
+        } as unknown as RoutineSkinRelationService;
+
         container.registerInstance(REPOSITORY_TOKENS.RoutineRepository, routineRepository);
+        container.registerInstance(REPOSITORY_TOKENS.RoutineSkinRelationRepository, routineSkinRelationRepository);
+        container.registerInstance(RoutineSkinRelationService, routineSkinRelationService);
         routineService = container.resolve(RoutineService);
     });
 
