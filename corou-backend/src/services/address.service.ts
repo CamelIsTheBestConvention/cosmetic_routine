@@ -14,9 +14,11 @@ export class AddressService {
     // 사용자 주소 추가 
     async addAddress(user_key: number, name: string, addr: string, addr_detail: string, zip: string, tel: string, request: string, is_default: 'Y' | 'N'): Promise<Address> {
         const foundUser = await this.userService.getUserByKey(user_key);
-        console.log('Fetched user: x', foundUser);
         if (!foundUser) {
             throw new Error('해당 유저를 찾을 수 없습니다.');
+        }
+        if (is_default === 'Y') {
+            await this.addressRepository.update({ user: foundUser }, { is_default: 'N' });
         }
         const newAddress = this.addressRepository.create({
             user: foundUser,
@@ -28,11 +30,6 @@ export class AddressService {
             request,
             is_default
         });
-        console.log('New address object before save:', JSON.stringify(newAddress, null, 2));
-        console.log('User object in the new address:', JSON.stringify(newAddress.user, null, 2));
-
-        console.log('New address object before save:', newAddress);
-        console.log('User object in the new address:', newAddress.user);
         return await this.addressRepository.save(newAddress);
     }
 
@@ -46,7 +43,7 @@ export class AddressService {
     }
 
     // 사용자 주소 조회
-    async getAddress(address_key: number): Promise<Address> {
+    async getOneAddress(user_key: number, address_key: number): Promise<Address> {
         const address = await this.addressRepository.findOneBy({ address_key });
         if (!address) {
             throw new Error('해당 주소를 찾을 수 없습니다.');
@@ -59,6 +56,9 @@ export class AddressService {
         const address = await this.addressRepository.findOneBy({ address_key });
         if (!address) {
             throw new Error('해당 주소를 찾을 수 없습니다.');
+        }
+        if (is_default === 'Y') {
+            await this.addressRepository.update({ user: address.user }, { is_default: 'N' });
         }
         address.name = name;
         address.addr = addr;
@@ -79,5 +79,3 @@ export class AddressService {
         return await this.addressRepository.remove(address);
     }
 }
-
-declare const userService: UserService;

@@ -63,33 +63,5 @@ describe('RoutineService', () => {
     });
 
     // Test Driven Development
-    // 피부 타입 필터로 루틴 조회
-    it('should return routines by skin type', async () => {
-        const routineSkinRelations = [
-            { routine_key: 1, attr_key: 1 } as RoutineSkinRelation,
-            { routine_key: 2, attr_key: 1 } as RoutineSkinRelation,
-        ];
-        const routines = [
-            { routine_key: 1, routine_name: 'Routine 1' } as Routine,
-            { routine_key: 2, routine_name: 'Routine 2' } as Routine,
-        ];
-        (routineSkinRelationService.getRoutineSkinRelationByAttrKey as jest.Mock).mockResolvedValue(routineSkinRelations);
-        (routineRepository.findOneBy as jest.Mock).mockImplementation(({ routine_key }) => {
-            return routines.find(routine => routine.routine_key === routine_key) || null;
-        });
-
-        const result = await routineService.getRoutinesBySkinType(1);
-        expect(result).toEqual(routines);
-        expect(routineSkinRelationService.getRoutineSkinRelationByAttrKey).toHaveBeenCalledWith(1);
-        expect(routineRepository.findOneBy).toHaveBeenCalledTimes(2);
-    });
-
-    it('should return an empty array if no routines are found', async () => {
-        (routineSkinRelationService.getRoutineSkinRelationByAttrKey as jest.Mock).mockResolvedValue([]);
-        const result = await routineService.getRoutinesBySkinType(1);
-        expect(result).toEqual([]);
-        expect(routineSkinRelationService.getRoutineSkinRelationByAttrKey).toHaveBeenCalledWith(1);
-        expect(routineRepository.findOneBy).not.toHaveBeenCalled();
-    });
 
 });

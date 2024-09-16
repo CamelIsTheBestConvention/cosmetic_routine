@@ -10,7 +10,10 @@ export function setupUserRouter(): Router {
     router.get('/checkemail/:email', (req, res) => userController.checkEmail(req, res));
     router.get('/checkusername/:username', (req, res) => userController.checkUsername(req, res));
     router.get('/self', authMiddleware, (req, res) => userController.getSelf(req, res));
-    router.get('/:user_key/address', authMiddleware, (req, res) => userController.getUserAddress(req, res));
+    router.get('/:user_key/address/:addr_key', authMiddleware, (req, res) => userController.getOneAddress(req, res));
+    router.get('/:user_key/address', authMiddleware, (req, res) => userController.getAllAddress(req, res));
+    router.get('/:user_key/order/:order_key', authMiddleware, (req, res) => userController.getItemOrderByKey(req, res));
+    router.get('/:user_key/order', authMiddleware, (req, res) => userController.getItemOrderByUser(req, res));
     router.get('/:user_key', (req, res) => userController.getUserByKey(req, res));
     router.get('/', (req, res) => userController.getAllUsers(req, res));
     router.post('/register', (req, res) => userController.createUser(req, res));
