@@ -3,18 +3,48 @@ import sortFilter from "../../img/sort.png";
 import goodOff from "../../img/goodOff.png";
 import goodOn from "../../img/goodOn.png";
 import star from "../../img/star.png";
-import { items } from "../../data/Data";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface routineItem {
+  routine_key: number;
+  for_age: number;
+  for_gender: string;
+  isLiked: boolean;
+  price: number;
+  average_rating: number;
+  routine_name: string;
+  reviews: number;
+  user: string;
+  problem: number[];
+  tags: string[];
+}
 
 const FilterList: React.FC = () => {
   const navigate = useNavigate();
-  const [sortedItems, setSortedItems] = useState(items);
+  const [items, setItems] = useState<routineItem[]>([]);
   const [sortOrder, setSortOrder] = useState("priceAsc");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
 
-  const handleAddRoutine = () => {
-    navigate("/add");
-  };
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await axios.get(`${backPort}/api/routine`);
+        console.log("데이터", response.data);
+        setItems(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("아이템 가져오기 실패", err);
+        setError("데이터를 불러오는데 실패했습니다.");
+        setLoading(false);
+      }
+    };
+
+    fetchItems();
+  }, [backPort]);
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOrder = e.target.value;
@@ -30,23 +60,57 @@ const FilterList: React.FC = () => {
         sortedArray.sort((a, b) => b.price - a.price);
         break;
       case "ratingAsc":
-        sortedArray.sort((a, b) => a.rating - b.rating);
+        sortedArray.sort((a, b) => a.average_rating - b.average_rating);
         break;
       case "ratingDesc":
-        sortedArray.sort((a, b) => b.rating - a.rating);
+        sortedArray.sort((a, b) => b.average_rating - a.average_rating);
         break;
       default:
         break;
     }
 
-    setSortedItems(sortedArray);
+    setItems(sortedArray);
   };
 
   const toggleLike = (index: number) => {
-    const updatedItems = sortedItems.map((item, i) =>
+    const updatedItems = items.map((item, i) =>
       i === index ? { ...item, isLiked: !item.isLiked } : item
     );
-    setSortedItems(updatedItems);
+    setItems(updatedItems);
+  };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  const handleAddRoutine = () => {
+    navigate("/add");
+  };
+
+  const handleRoutineClick = (routineKey: number) => {
+    navigate(`/routine/${routineKey}`);
+  };
+
+  const getGenderDisplay = (gender: string) => {
+    switch (gender) {
+      case "M":
+        return <div>남성</div>;
+      case "F":
+        return <div>여성</div>;
+      case "A":
+        return (
+          <>
+            <div>남성</div>
+            <div>여성</div>
+          </>
+        );
+      default:
+        return <div>알 수 없음</div>;
+    }
   };
 
   return (
@@ -65,10 +129,14 @@ const FilterList: React.FC = () => {
           {/* <img src={sortFilter} alt="" /> */}
         </div>
         {items.map((item, index) => (
-          <div className="itemListWrapper" key={index}>
+          <div
+            className="itemListWrapper"
+            key={index}
+            onClick={() => handleRoutineClick(item?.routine_key)}
+          >
             <div className="itemListTitle">
               <div className="itemListFirstTitle">
-                <div>{item.title}</div>
+                <div>{item?.routine_name}</div>
                 <div>
                   <img
                     src={item.isLiked ? goodOn : goodOff}
@@ -83,7 +151,7 @@ const FilterList: React.FC = () => {
                   <img src={star} alt="" />
                 </div>
                 <div>
-                  {item.rating} <span>({item.reviews})</span>
+                  {item?.average_rating} <span>({item.reviews})</span>
                 </div>
               </div>
             </div>
@@ -92,20 +160,27 @@ const FilterList: React.FC = () => {
                 <img src="#" alt="" />
               </div>
               <div className="contentInfo">
-                <span>{item.routine}</span>
+                <span>{item?.user}님의 루틴</span>
                 <div className="selectFilter">
-                  <div>{item.skinType}</div>
-                  <div>{item.gender}</div>
+                  {getGenderDisplay(item?.for_gender)}
+                  <div>{item?.for_age}대</div>
+                  {item?.problem && item.problem.length > 0 && (
+                    <div>{item.problem.join(", ")}</div>
+                  )}
                 </div>
                 <div className="contentTag">
-                  <ul>
-                    {item.tags.map((tag, tagIndex) => (
-                      <li key={tagIndex}>{tag}</li>
-                    ))}
-                  </ul>
+                  {item.tags && item.tags.length > 0 ? (
+                    <ul>
+                      {item.tags.map((tag, tagIndex) => (
+                        <li key={tagIndex}>{tag}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <ul></ul>
+                  )}
                 </div>
                 <div className="contentPrice">
-                  종합 <span>₩ {item.price.toLocaleString()}</span>
+                  종합 <span>₩ {item?.price}</span>
                 </div>
               </div>
             </div>

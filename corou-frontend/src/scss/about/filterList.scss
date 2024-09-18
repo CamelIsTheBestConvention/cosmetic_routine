@@ -27,7 +27,11 @@
   width: 90%;
   margin: 0 auto;
   padding: 20px 0;
-  //   background-color: aliceblue;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .itemListTitle {
@@ -93,9 +97,11 @@
   }
 
   .selectFilter {
-    display: flex;
-    justify-content: flex-start;
-    font-size: 14px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    font-size: 13px;
     color: #848484;
     margin: 5px 0 0 0;
 
@@ -144,13 +150,22 @@
   border-radius: 50%;
   background-color: #ffa4e4;
   position: sticky;
+  bottom: 10px;
+  right: 40px;
   float: right;
   margin-right: 3%;
-  bottom: 10%;
   font-size: 65px;
   color: white;
   cursor: pointer;
   opacity: 0.8;
+  z-index: 1000;
+
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120%;
+  }
 
   &:hover {
     opacity: 1;

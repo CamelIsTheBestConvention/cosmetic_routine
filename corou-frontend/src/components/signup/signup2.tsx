@@ -48,12 +48,13 @@ const Signup2: React.FC<NextProps> = ({ onStepChange }) => {
         `${backPort}/api/user/check/${username}`
       );
       const message = response.data.message;
+      console.log("dfd", message);
 
       if (message === "이미 사용중인 닉네임입니다.") {
         return true;
+      } else if (message === "사용 가능한 닉네임입니다.") {
+        return false;
       }
-
-      return false;
     } catch (error) {
       console.error("닉네임 중복 확인 중 오류", error);
       return true;
@@ -89,8 +90,8 @@ const Signup2: React.FC<NextProps> = ({ onStepChange }) => {
               <NickCheckWrapper>
                 <NicknameCheck valid={usernameValid}>
                   {usernameValid
-                    ? "사용할 수 있는 닉네임이에요"
-                    : "사용할 수 없는 닉네임이에요"}
+                    ? "사용할 수 있는 닉네임입니다."
+                    : "사용할 수 없는 닉네임입니다."}
                 </NicknameCheck>
                 <span>{username.length}/10</span>
               </NickCheckWrapper>

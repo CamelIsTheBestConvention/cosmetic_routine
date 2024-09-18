@@ -22,14 +22,14 @@ function Routing() {
         <ScrollToTop />
         <Routes>
           <Route exact path="/" element={<Main />} />
-          <Route exact path="/about" element={<AboutRoutine />} />
+          <Route exact path="/routine" element={<AboutRoutine />} />
+          <Route exact path="/routine/:id" element={<DetailRoutine />} />
           <Route exact path="/login" element={<SocialLogin />} />
           <Route exact path="/login/email" element={<EmailLogin />} />
           <Route exact path="/register" element={<Signup />} />
           <Route exact path="/mypage" element={<Mypage />} />
           <Route exact path="/mypage/profileEdit" element={<ProfileEdit />} />
           <Route exact path="/order" element={<Mart />} />
-          <Route exact path="/detail" element={<DetailRoutine />} />
           <Route exact path="/add" element={<AddRoutine />} />
           <Route exact path="/item" element={<Ranking />} />
           <Route exact path="/item/:id" element={<RankingDetail />} />
