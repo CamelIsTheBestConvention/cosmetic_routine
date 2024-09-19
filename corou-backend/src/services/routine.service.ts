@@ -124,7 +124,11 @@ export class RoutineService {
 
         if (filter) {
             Object.keys(filter).forEach(key => {
-                queryBuilder.andWhere(`routine.${key} = :${key}`, { [key]: filter[key] });
+                if (Array.isArray(filter[key])) {
+                    queryBuilder.andWhere(`routine.${key} IN (:...${key})`, { [key]: filter[key] });
+                } else {
+                    queryBuilder.andWhere(`routine.${key} = :${key}`, { [key]: filter[key] });
+                }
             });
         }
 
