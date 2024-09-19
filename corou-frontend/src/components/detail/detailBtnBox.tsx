@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 interface itemBox {
-  itemList: string[];
+  itemList: number[];
 }
 
 const DetailBtnBox: React.FC<itemBox> = ({ itemList }) => {

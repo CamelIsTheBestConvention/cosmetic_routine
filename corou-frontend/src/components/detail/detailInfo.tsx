@@ -8,54 +8,72 @@ import DetailBtnBox from "./detailBtnBox";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-interface routineObject {
-  id: number;
-  brand: string;
-  name: string;
-  size: number;
-  price: number;
-  itemImg: string;
+interface user {
+  user_key: number;
+  username: string;
+}
+
+interface routineDetails {
+  step_number: number;
+  item_key: number[];
+  step_name: string;
+  description: string;
+}
+
+interface routineSkinRelations {
+  skin_type: string[];
+}
+
+interface routineTagRelations {
+  tags: string[];
+}
+
+interface reviews {
+  review_key: number;
+  user_key: number;
+  rating: number;
+  review_content: string;
 }
 
 interface routineData {
-  nickname: string;
-  reviewPoint: string;
-  reviewMember: number;
-  profileImg: string;
-  check: string[];
-  tag: string[];
-  routineGrade: number;
-  routineList: routineObject[];
-  itemList: string[];
+  routine_key: number;
+  routine_name: string;
+  steps: number;
+  for_gender: string;
+  for_age: number;
+  average_rating: number;
+  user: user;
+  routineDetails: routineDetails;
+  routineSkinRelations: routineSkinRelations;
+  routineTagRelations: routineTagRelations;
+  reviews: reviews[];
 }
 
 interface detailRoutineData {
-  data: routineData[];
+  data: routineData;
 }
 
 const DetailInfo: React.FC<detailRoutineData> = ({ data }) => {
-  const hasData = data && data.length > 0;
-
   return (
     <>
-      {hasData ? (
+      {data ? (
         <div className="detailInfoWrapper">
-          <h4>{data[0]?.nickname}의 루틴</h4>
+          <h4>{data?.user.username}의 루틴</h4>
           <DetailTitle
-            reviewPoint={data[0]?.reviewPoint}
-            reviewMember={data[0]?.reviewMember}
+            reviewPoint={data?.average_rating}
+            reviewMember={data?.reviews.length}
           />
           <DetailProfile
-            profileImg={data[0]?.profileImg}
-            profileNickname={data[0]?.nickname}
+            profileImg={data?.user.username}
+            profileNickname={data?.user.username}
           />
-          <DetailCheck check={data[0]?.check} />
-          <DetailTag tag={data[0]?.tag} />
+          <DetailCheck check={data?.routineSkinRelations.skin_type} />
+          <DetailTag tag={data?.routineTagRelations.tags} />
           <DetailGrade
-            routineGrade={data[0]?.routineGrade}
-            routineList={data[0]?.routineList}
+            routineGrade={data?.steps}
+            routineList={data?.routineDetails || []}
           />
-          <DetailBtnBox itemList={data[0]?.itemList} />
+          <DetailBtnBox itemList={data?.routineDetails.item_key} />
         </div>
       ) : (
         <div>루틴 정보가 없습니다.</div>

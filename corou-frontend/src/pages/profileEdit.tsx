@@ -1,10 +1,12 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AboutHeader from "../components/common/aboutHeader";
 import styled from "styled-components";
 import "../scss/mypage/edit.scss";
 
 const ProfileEdit: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const profile = location.state?.profile;
 
   const handleBack = () => {
     navigate(-1);
@@ -18,16 +20,16 @@ const ProfileEdit: React.FC = () => {
         <div className="editWrapper">
           <div className="profileEdit">
             <div className="editImg">
-              <img src="프로필이미지" alt="" />
+              <img src={profile?.profileImg} alt={profile?.username} />
               <div>+</div>
             </div>
             {/* 유저이름 */}
-            <p>닉네임</p>
+            <p>{profile?.username}</p>
           </div>
           {/* 읽기전용 이메일 */}
           <div className="readEmail">
             <span>이메일: </span>
-            <input type="text" value="a@test.com" />
+            <input type="text" value={profile?.email} />
           </div>
           {/* 비밀번호 변경 버튼 */}
           <button className="inputCheckBtn">비밀번호 변경</button>

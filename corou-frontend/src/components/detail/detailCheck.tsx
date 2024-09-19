@@ -10,8 +10,8 @@ const DetailCheck: React.FC<detailCheckData> = ({ check }) => {
   return (
     <>
       <div className="detailCheckWrapper">
-        <CommonTag tagName={check} />
-        <CommonTag tagName={check} />
+        <CommonTag tagName={check[0]} />
+        <CommonTag tagName={check[1]} />
       </div>
     </>
   );

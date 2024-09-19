@@ -1,0 +1,82 @@
+.orderListWrapper {
+  width: 90%;
+  margin: 0 auto;
+
+  .orderListFilter {
+    width: 90%;
+    margin: 0 auto 20px auto;
+    border-bottom: 1px solid #ffa4e4;
+
+    div {
+      visibility: hidden;
+    }
+  }
+
+  .orderDetailContent {
+    width: 100%;
+
+    .orderDetailBox {
+      width: 90%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+
+      .detailTitle {
+        width: 95%;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .boxContent {
+        width: 100%;
+
+        .boxContentMain {
+          display: flex;
+          justify-content: flex-start;
+
+          div {
+            &:nth-child(1) {
+              width: 84px;
+              height: 84px;
+              border: 3px solid rgba(255, 164, 228, 0.5);
+              border-radius: 13px;
+              margin-right: 10px;
+            }
+
+            &:nth-child(2) {
+              font-size: 14px;
+              font-weight: 700;
+              line-height: 1.5;
+              display: flex;
+              flex-direction: column;
+              margin-top: 5px;
+
+              span {
+                color: #9d9d9d;
+              }
+            }
+          }
+        }
+
+        .boxContentBtn {
+          width: 95%;
+          margin: 10px auto;
+          display: flex;
+          justify-content: space-between;
+
+          button {
+            width: 150px;
+            font-size: 13px;
+            background-color: rgba(255, 164, 228, 0.5);
+            border: none;
+            border-radius: 12px;
+            padding: 7px 0;
+          }
+        }
+      }
+    }
+  }
+}

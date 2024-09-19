@@ -15,7 +15,7 @@ const MainFooter = () => {
   };
 
   const handleMoveRoutine = () => {
-    navigate("/about");
+    navigate("/routine");
   };
 
   const handleMoveHome = () => {

@@ -1,24 +1,22 @@
 import ReviewPoint from "../common/reviewPoint";
 
-interface routineObject {
-  id: number;
-  brand: string;
-  name: string;
-  size: number;
-  price: number;
-  itemImg: string;
+interface routineList {
+  step_number: number;
+  item_key: number[];
+  step_name: string;
+  description: string;
 }
 
 interface detailGradeData {
   routineGrade: number;
-  routineList: routineObject[];
+  routineList: routineList;
 }
 
 const DetailGrade: React.FC<detailGradeData> = ({
   routineGrade,
   routineList,
 }) => {
-  const hasRoutine = routineList && routineList.length > 0;
+  const hasRoutine = routineList;
 
   return (
     <>
@@ -38,7 +36,7 @@ const DetailGrade: React.FC<detailGradeData> = ({
             <div className="detailGradeBox">
               <span>1단계:세안</span>
               <div className="detailItemInfo">
-                <div>
+                {/* <div>
                   <img src={routineList[0].itemImg} alt="" />
                 </div>
                 <div>
@@ -48,7 +46,7 @@ const DetailGrade: React.FC<detailGradeData> = ({
                   </span>
                   <span>₩ {routineList[0]?.price}</span>
                   <ReviewPoint />
-                </div>
+                </div> */}
               </div>
               <div className="detailItemEffect">제품 효능 박스(일단 보류)</div>
             </div>

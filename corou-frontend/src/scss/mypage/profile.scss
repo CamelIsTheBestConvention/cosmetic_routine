@@ -49,3 +49,17 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;
 }
+
+.goLoginBox {
+  font-size: 18px;
+  text-align: center;
+
+  p {
+    color: #848484;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px 0;
+  }
+}
