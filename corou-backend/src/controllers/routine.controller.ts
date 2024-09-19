@@ -58,7 +58,14 @@ export class RoutineController {
 
     async getAllRoutines(req: Request, res: Response): Promise<void> {
         try {
-            const { sort, order, page, size, filter } = req.query;
+            const { sort, order, page, size, ...filter } = req.query;
+
+            Object.keys(filter).forEach(key => {
+                if (!Array.isArray(filter[key])) {
+                    filter[key] = [filter[key] as string];
+                }
+            });
+
             const routines = await this.routineService.getAllRoutines(
                 sort as string,
                 order as 'ASC' | 'DESC',
