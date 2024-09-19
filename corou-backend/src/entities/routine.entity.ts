@@ -25,6 +25,9 @@ export class Routine {
     @Column({ type: 'float', default: 0 })
     average_rating!: number;
 
+    @Column({ type: 'int' })
+    price_total!: number;
+
     @ManyToOne(() => User)
     @JoinColumn({ name: 'user_key' })
     user!: User;

@@ -12,11 +12,11 @@ interface routineItem {
   for_age: number;
   for_gender: string;
   isLiked: boolean;
-  price: number;
+  price_total: number;
   average_rating: number;
   routine_name: string;
   reviews: number;
-  user: string;
+  user: { username: string };
   problem: number[];
   tags: string[];
 }
@@ -54,10 +54,10 @@ const FilterList: React.FC = () => {
 
     switch (selectedOrder) {
       case "priceAsc":
-        sortedArray.sort((a, b) => a.price - b.price);
+        sortedArray.sort((a, b) => a.price_total - b.price_total);
         break;
       case "priceDesc":
-        sortedArray.sort((a, b) => b.price - a.price);
+        sortedArray.sort((a, b) => b.price_total - a.price_total);
         break;
       case "ratingAsc":
         sortedArray.sort((a, b) => a.average_rating - b.average_rating);
@@ -160,7 +160,7 @@ const FilterList: React.FC = () => {
                 <img src="#" alt="" />
               </div>
               <div className="contentInfo">
-                <span>{item?.user}님의 루틴</span>
+                <span>{item?.user.username}님의 루틴</span>
                 <div className="selectFilter">
                   {getGenderDisplay(item?.for_gender)}
                   <div>{item?.for_age}대</div>
@@ -180,7 +180,7 @@ const FilterList: React.FC = () => {
                   )}
                 </div>
                 <div className="contentPrice">
-                  종합 <span>₩ {item?.price}</span>
+                  종합 <span>₩ {item?.price_total}</span>
                 </div>
               </div>
             </div>
