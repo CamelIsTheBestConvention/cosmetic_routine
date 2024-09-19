@@ -41,6 +41,7 @@ const seedDatabase = async () => {
             { item_key: 3, item_name: 'testItem3', item_price: 20000, description: '테스트 아이템입니다.', category: '지성' },
         ];
 
+
         await itemRepository.save(items);
 
         console.log('Database seeded with skin attributes!');

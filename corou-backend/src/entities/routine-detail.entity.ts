@@ -24,7 +24,7 @@ export class RoutineDetail {
     @JoinColumn({ name: 'routine_key' })
     routine!: Routine;
 
-    @OneToOne(() => Item, item => item.item_key)
+    @ManyToOne(() => Item, item => item.item_key)
     @JoinColumn({ name: 'item_key' })
     item!: Item;
 }

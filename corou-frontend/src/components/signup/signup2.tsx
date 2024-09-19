@@ -45,7 +45,7 @@ const Signup2: React.FC<NextProps> = ({ onStepChange }) => {
   const handleNicknameDuplicationCheck = async () => {
     try {
       const response = await axios.get(
-        `${backPort}/api/user/check/${username}`
+        `${backPort}/api/user/checkusername/${username}`
       );
       const message = response.data.message;
       console.log("dfd", message);

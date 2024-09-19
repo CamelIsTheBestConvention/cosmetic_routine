@@ -10,7 +10,6 @@ import { injectable, inject } from 'tsyringe';
 export class OrderDetailService {
     constructor(
         @inject(REPOSITORY_TOKENS.OrderDetailRepository) private orderDetailRepository: Repository<OrderDetail>,
-        private itemOrderService: ItemOrderService,
         private itemService: ItemService,
     ) { }
 
