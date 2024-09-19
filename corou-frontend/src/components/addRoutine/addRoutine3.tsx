@@ -13,6 +13,7 @@ import {
   setTag,
 } from "../../redux/slice/addRoutineSlice";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddRoutine3: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const AddRoutine3: React.FC = () => {
   const age = useSelector((state: RootState) => state.addRoutine.age);
   const problem = useSelector((state: RootState) => state.addRoutine.problem);
   const grade = useSelector((state: RootState) => state.addRoutine.grade);
+  const navigate = useNavigate();
   const routineItem = useSelector(
     (state: RootState) => state.addRoutine.routineItem
   );
@@ -76,6 +78,7 @@ const AddRoutine3: React.FC = () => {
           },
         }
       );
+      navigate("/routine");
       console.log("응답:", response.data);
     } catch (error) {
       console.error("제출 중 오류 발생", error);

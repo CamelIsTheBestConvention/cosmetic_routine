@@ -21,7 +21,6 @@ export class RoutineService {
         private routineDetailService: RoutineDetailService,
         private routineSkinRelationService: RoutineSkinRelationService,
         private routineTagRelationService: RoutineTagRelationService,
-        private reviewService: ReviewService,
         private tagService: TagService,
         private dataSource: DataSource
     ) { }
@@ -47,7 +46,7 @@ export class RoutineService {
         if (!user) {
             throw new Error('해당 유저를 찾을 수 없습니다.');
         }
-
+        console.log(details);
         return this.dataSource.transaction(async transactionalEntityManager => {
             const newRoutine = await transactionalEntityManager.save(Routine, {
                 user,
@@ -77,6 +76,7 @@ export class RoutineService {
                     detail.description,
                     transactionalEntityManager
                 );
+                console.log('step added');
             }
             console.log('before tag')
             console.log(tags);
@@ -164,18 +164,6 @@ export class RoutineService {
             return routine;
         });
     }
-    // 피부 타입 필터로 루틴 조회
-    // async getRoutinesBySkinType(attr_key: number): Promise<Routine[]> {
-    //     const routineSkinRelations = await this.routineSkinRelationService.getRoutineSkinRelationByAttrKey(attr_key);
-    //     const routines = [];
-    //     for (const routineSkinRelation of routineSkinRelations) {
-    //         const routine = await this.routineRepository.findOneBy({ routine_key: routineSkinRelation.routine_key });
-    //         if (routine) {
-    //             routines.push(routine);
-    //         }
-    //     }
-    //     return routines;
-    // }
 
     async updateRoutineRating(routine_key: number, average_rating: number): Promise<void> {
         await this.routineRepository.update(routine_key, { average_rating });
