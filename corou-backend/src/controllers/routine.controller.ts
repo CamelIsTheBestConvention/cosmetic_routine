@@ -2,13 +2,15 @@ import { Request, Response } from 'express';
 import { injectable } from 'tsyringe';
 import { RoutineService } from '../services/routine.service';
 import { RoutineDetailService } from '../services/routine-detail.service';
+import { RoutineSkinRelationService } from '../services/routine-skin-relation.service';
 import { verifyToken } from '../utils/jwt.utils';
 
 @injectable()
 export class RoutineController {
     constructor(
         private routineService: RoutineService,
-        private routineDetailService: RoutineDetailService
+        private routineDetailService: RoutineDetailService,
+        private routineSkinRelationService: RoutineSkinRelationService
     ) { }
 
     async createRoutine(req: Request, res: Response): Promise<void> {
@@ -55,14 +57,13 @@ export class RoutineController {
     }
 
     async getAllRoutines(req: Request, res: Response): Promise<void> {
-        const { sort, order, page, size, filter } = req.query;
-
         try {
+            const { sort, order, page, size, filter } = req.query;
             const routines = await this.routineService.getAllRoutines(
                 sort as string,
                 order as 'ASC' | 'DESC',
-                Number(page),
-                Number(size),
+                page ? parseInt(page as string) : undefined,
+                size ? parseInt(size as string) : undefined,
                 filter as { [key: string]: any }
             );
             res.status(200).json(routines);

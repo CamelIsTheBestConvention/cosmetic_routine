@@ -25,6 +25,9 @@ export class Routine {
     @Column({ type: 'float', default: 0 })
     average_rating!: number;
 
+    @Column({ type: 'int' })
+    price_total!: number;
+
     @ManyToOne(() => User)
     @JoinColumn({ name: 'user_key' })
     user!: User;
@@ -32,8 +35,8 @@ export class Routine {
     @OneToMany(() => Review, review => review.routine, { cascade: true })
     reviews?: Review[];
 
-    @OneToMany(() => RoutineDetail, detail => detail.routine, { cascade: true })
-    details?: RoutineDetail[];
+    @OneToMany(() => RoutineDetail, routineDetail => routineDetail.routine, { cascade: true })
+    routineDetails?: RoutineDetail[];
 
     // @OneToMany(() => RoutineSkinRelation, relation => relation.routine, { cascade: true })
     // user_skin_relations?: RoutineSkinRelation[];

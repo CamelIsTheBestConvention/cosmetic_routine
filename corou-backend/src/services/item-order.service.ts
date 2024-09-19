@@ -4,11 +4,12 @@ import { UserService } from './user.service';
 import { AddressService } from './address.service';
 import { OrderDetailService } from './order-detail.service';
 import { injectable, inject } from 'tsyringe';
+import { REPOSITORY_TOKENS } from '../config/constants';
 
 @injectable()
 export class ItemOrderService {
     constructor(
-        @inject('ItemOrderRepository') private itemOrderRepository: Repository<ItemOrder>,
+        @inject(REPOSITORY_TOKENS.ItemOrderRepository) private itemOrderRepository: Repository<ItemOrder>,
         private userService: UserService,
         private addressService: AddressService,
         private orderDetailService: OrderDetailService,
