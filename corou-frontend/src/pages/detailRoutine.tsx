@@ -9,6 +9,7 @@ const DetailRoutine: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const { id } = useParams<{ id: string }>();
+  console.log("전달된 id", id);
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -20,8 +21,8 @@ const DetailRoutine: React.FC = () => {
       axios
         .get(`${backPort}/api/routine/${id}`)
         .then((response) => {
-          setData(response.data);
           console.log("상세루틴 데이터", response.data);
+          setData(response.data);
         })
         .catch((error) => {
           console.log(error);

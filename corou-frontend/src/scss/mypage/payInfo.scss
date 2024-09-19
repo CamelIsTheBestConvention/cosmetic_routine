@@ -1,0 +1,111 @@
+.payInfoWrapper {
+  width: 90%;
+  margin: 50px auto 0 auto;
+
+  //결제 정보
+  .payInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    span {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    div {
+      display: flex;
+
+      span {
+        font-size: 11px;
+        text-decoration: underline;
+        color: gray;
+        font-weight: normal;
+
+        &:nth-child(1) {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+  //상품 금액
+  .itemPrice {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+
+    span {
+      font-size: 12px;
+    }
+  }
+
+  // 할인 금액
+  .discountPrice {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+
+    span {
+      font-size: 12px;
+
+      &:nth-child(2) {
+        color: blue;
+      }
+    }
+  }
+
+  // 적립금
+  .savingsPrice {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+
+    span {
+      font-size: 12px;
+
+      &:nth-child(2) {
+        color: blue;
+      }
+    }
+  }
+
+  // 배송비
+  .deliveryPrice {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+
+    span {
+      font-size: 12px;
+
+      &:nth-child(2) {
+        color: blue;
+      }
+    }
+  }
+
+  // 결제 금액
+  .payPrice {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+
+    span {
+      font-size: 13px;
+      font-weight: 600;
+
+      span {
+        color: red;
+      }
+    }
+  }
+  .payMethod {
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      font-size: 12px;
+    }
+  }
+}

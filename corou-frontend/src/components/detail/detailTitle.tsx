@@ -2,7 +2,7 @@ import Star from "../../img/star.png";
 import "../../scss/detail/detailInfo.scss";
 
 interface detailTitleData {
-  reviewPoint: string;
+  reviewPoint: number;
   reviewMember: number;
 }
 

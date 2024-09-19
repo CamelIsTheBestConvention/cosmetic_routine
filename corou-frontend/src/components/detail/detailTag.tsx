@@ -9,13 +9,9 @@ const DetailTag: React.FC<detailTag> = ({ tag }) => {
     <>
       <div className="detailTagWrapper">
         <ul>
-          <li>{tag}</li>
-          <li>태그2</li>
-          <li>태그3</li>
-          <li>태그4</li>
-          <li>태그5</li>
-          <li>태그6</li>
-          <li>태그7</li>
+          {tag.map((tag, index) => (
+            <li key={index}>{tag}</li>
+          ))}
         </ul>
       </div>
     </>

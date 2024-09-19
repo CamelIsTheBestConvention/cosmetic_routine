@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface routineItem {
-  routine_key: number;
+  routine_key: string;
   for_age: number;
   for_gender: string;
   isLiked: boolean;
@@ -91,7 +91,7 @@ const FilterList: React.FC = () => {
     navigate("/add");
   };
 
-  const handleRoutineClick = (routineKey: number) => {
+  const handleRoutineClick = (routineKey: string) => {
     navigate(`/routine/${routineKey}`);
   };
 
