@@ -7,16 +7,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 interface ItemDetails {
-  itemName: string;
-  price: string;
-  volume: string;
-  imageUrl: string;
-  effect: string;
+  average_rating: number;
+  category: string;
+  description: string;
+  item_key: number;
+  item_name: string;
+  item_price: number;
 }
 
 const RankingDetail: React.FC<ItemDetails> = () => {
   const { id } = useParams<{ id: string }>();
   const [itemDetails, setItemDetails] = useState<ItemDetails | null>(null);
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
 
   const navigate = useNavigate();
 
@@ -27,7 +29,8 @@ const RankingDetail: React.FC<ItemDetails> = () => {
   useEffect(() => {
     const fetchItemDetails = async () => {
       try {
-        const response = await axios.get(`/api/items/${id}`);
+        const response = await axios.get(`${backPort}/api/item/key/${id}`);
+        console.log(response.data);
         setItemDetails(response.data);
       } catch (error) {
         console.error("Error fetching item details:", error);
@@ -49,15 +52,14 @@ const RankingDetail: React.FC<ItemDetails> = () => {
         <BackHeader onBack={handleBackPage} />
         <DetailItemBox>
           <ItemImg>
-            <img src={itemDetails.imageUrl} alt={itemDetails.itemName} />
+            <img src={""} alt={itemDetails.item_name} />
           </ItemImg>
           <ItemInfo>
-            <h3>{itemDetails.itemName}</h3>
+            <h3>{itemDetails.item_name}</h3>
+            <p>{itemDetails.description}</p>
             <ItemPrice>
               <span>정가</span>
-              <span>
-                {itemDetails.price}원 / {itemDetails.volume}ml
-              </span>
+              <span>{itemDetails.item_price}원 / 50ml</span>
             </ItemPrice>
             <ItemEffect>제품 효과 박스</ItemEffect>
           </ItemInfo>

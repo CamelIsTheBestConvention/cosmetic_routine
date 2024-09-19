@@ -3,15 +3,24 @@ import ReviewPoint from "../common/reviewPoint";
 import ItemBox from "./itemBox";
 import { useNavigate } from "react-router-dom";
 
-interface RankingItemProps {
-  rankingData: any[];
+interface itemProps {
+  average_rating: number;
+  category: string;
+  description: string;
+  item_key: number;
+  item_name: string;
+  item_price: number;
 }
 
-const RankingItem: React.FC<RankingItemProps> = ({ rankingData }) => {
+interface rankingItemProps {
+  rankingData: itemProps[];
+}
+
+const RankingItem: React.FC<rankingItemProps> = ({ rankingData }) => {
   const navigate = useNavigate();
 
   const handleItemClick = (id: number) => {
-    navigate(`/api/item/${id}`);
+    navigate(`/item/${id}`);
   };
 
   return (
@@ -23,7 +32,7 @@ const RankingItem: React.FC<RankingItemProps> = ({ rankingData }) => {
               key={index}
               item={item}
               rank={index + 1}
-              onClick={() => handleItemClick(item.id)}
+              onClick={() => handleItemClick(item.item_key)}
             />
           ))
         ) : (

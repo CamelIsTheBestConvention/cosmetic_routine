@@ -1,8 +1,8 @@
 .filterListWrapper {
   width: 100%;
   margin-top: 20px;
+  min-height: 78vh;
   position: relative;
-  //   background-color: aqua;
 }
 
 .filterBtn {
@@ -149,32 +149,24 @@
   border: none;
   border-radius: 50%;
   background-color: #ffa4e4;
-  position: sticky;
-  bottom: 10%;
-  right: 40px;
-  float: right;
-  margin-right: 3%;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  // margin-right: 3%;
   font-size: 65px;
   color: white;
   cursor: pointer;
   opacity: 0.8;
   z-index: 1000;
-
-  span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 120%;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     opacity: 1;
   }
 
   span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: translateY(-15%);
+    transform: translate(3%, -8%);
   }
 }

@@ -4,7 +4,7 @@ interface RoutineItem {
   step_number: number;
   step_name: string;
   description: string;
-  item_key: number;
+  item_key: string;
 }
 
 interface addRoutineState {
@@ -29,7 +29,7 @@ const initialState: addRoutineState = {
     step_number: 1,
     step_name: "",
     description: "",
-    item_key: 0,
+    item_key: "",
   }),
   tag: [],
 };

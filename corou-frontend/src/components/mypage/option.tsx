@@ -9,6 +9,12 @@ const Option: React.FC = () => {
     navigate("/mypage/orderList");
   };
 
+  const handleLogout = () => {
+    sessionStorage.clear();
+
+    navigate("/login");
+  };
+
   return (
     <>
       <OptionWrapper>
@@ -23,7 +29,7 @@ const Option: React.FC = () => {
           <SettingBox name="상품 문의 내역" onClick={handleOrderList} />
           <SettingBox name="공지사항" onClick={handleOrderList} />
         </SettingWrapper2>
-        <Logout>로그아웃</Logout>
+        <Logout onClick={handleLogout}>로그아웃</Logout>
       </OptionWrapper>
     </>
   );
