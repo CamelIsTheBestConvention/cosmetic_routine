@@ -23,16 +23,46 @@ export class ItemService {
         return await this.itemRepository.save(newItem);
     }
     // 모든 상품 조회
-    async getAllItems() {
-        const items = await this.itemRepository.find();
-        if (!items) {
-            throw new Error('상품 정보를 불러올 수 없습니다.');
+    async getAllItems(
+        sort: string,
+        order: 'ASC' | 'DESC' = 'DESC',
+        page: number = 1,
+        size: number = 10,
+        filter: { [key: string]: any }
+    ) {
+        const queryBuilder = this.itemRepository.createQueryBuilder('item');
+
+        if (filter) {
+            Object.keys(filter).forEach(key => {
+                if (Array.isArray(filter[key])) {
+                    queryBuilder.andWhere(`routine.${key} IN (:...${key})`, { [key]: filter[key] });
+                } else {
+                    queryBuilder.andWhere(`routine.${key} = :${key}`, { [key]: filter[key] });
+                }
+            });
         }
+
+        if (sort) {
+            queryBuilder.orderBy(sort, order);
+        }
+
+        queryBuilder.skip((page - 1) * size).take(size);
+
+        const items = await queryBuilder.getMany();
+
         return items;
     }
     // 상품 조회
     async getItemByKey(item_key: number): Promise<Item> {
         const item = await this.itemRepository.findOneBy({ item_key });
+        if (!item) {
+            throw new Error('해당 아이템을 찾을 수 없습니다.');
+        }
+        return item;
+    }
+
+    async getItemByName(item_name: string): Promise<Item> {
+        const item = await this.itemRepository.findOneBy({ item_name });
         if (!item) {
             throw new Error('해당 아이템을 찾을 수 없습니다.');
         }
