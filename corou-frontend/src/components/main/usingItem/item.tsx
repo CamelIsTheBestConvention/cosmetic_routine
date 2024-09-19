@@ -1,15 +1,34 @@
 import "../../../scss/main/item.scss";
 
-const Item: React.FC = () => {
+interface ItemProps {
+  average_rating: number;
+  category: string;
+  description: string;
+  item_key: number;
+  item_name: string;
+  item_price: number;
+}
+
+interface ItemComponentProps {
+  item: ItemProps;
+  rank: number;
+}
+
+const Item: React.FC<ItemComponentProps> = ({ item, rank }) => {
   return (
     <>
       <div className="itemWrapper">
-        <div className="num">1</div>
-        <div className="itemImg">이미지</div>
+        <div className="num">{rank}</div>
+        <div className="itemImg">
+          <img
+            src={`/assets/item/${item?.item_key}.jpg`}
+            alt={`Routine ${item?.item_key}`}
+          />
+        </div>
         <div className="itemInfo">
           <p>브랜드</p>
-          <p>제품명 & 용량</p>
-          <p>₩ 00,000</p>
+          <p>{item?.item_name} & 용량</p>
+          <p>₩ {item?.item_price}</p>
         </div>
       </div>
     </>

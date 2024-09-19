@@ -2,14 +2,32 @@ import styled from "styled-components";
 import TopRoutineBoxImg from "./topRoutineBoxImg";
 import TopRoutineBoxInfo from "./topRoutineBoxInfo";
 
-const BannerBox: React.FC = () => {
+interface routineItem {
+  routine_key: string;
+  for_age: number;
+  for_gender: string;
+  isLiked: boolean;
+  price_total: number;
+  average_rating: number;
+  routine_name: string;
+  reviews: number;
+  user: { username: string };
+  problem: number[];
+  tags: string[];
+}
+
+interface routineData {
+  routine: routineItem;
+}
+
+const BannerBox: React.FC<routineData> = ({ routine }) => {
   return (
     <>
       <BannerBoxWrapper>
         {/* 이미지 */}
-        <TopRoutineBoxImg />
+        <TopRoutineBoxImg routine_key={routine?.routine_key} />
         {/* 정보 */}
-        <TopRoutineBoxInfo />
+        <TopRoutineBoxInfo routine={routine} />
       </BannerBoxWrapper>
     </>
   );
