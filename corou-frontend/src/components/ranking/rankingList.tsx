@@ -4,15 +4,31 @@ import RankingItem from "./rankingItem";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+interface itemProps {
+  average_rating: number;
+  category: string;
+  description: string;
+  item_key: number;
+  item_name: string;
+  item_price: number;
+}
+
 const RankingList: React.FC = () => {
   const [mainFilter, setMainFilter] = useState<string>("");
   const [subFilter, setSubFilter] = useState<string>("");
-  const [rankingData, setRankingData] = useState<any[]>([]);
+  const [rankingData, setRankingData] = useState<itemProps[]>([]);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
 
   const fetchRankingData = async () => {
     try {
-      const response = await axios.post(`${backPort}/api/item`);
+      // const response = await axios.get(`${backPort}/api/item`, {
+      //   params: {
+      //     mainFilter: mainFilter,
+      //     subFilter: subFilter,
+      //   },
+      // });
+      const response = await axios.get(`${backPort}/api/item`);
+      console.log(response.data);
       setRankingData(response.data);
     } catch (error) {
       console.error("랭킹 데이터 가져오기 실패:", error);
@@ -21,7 +37,7 @@ const RankingList: React.FC = () => {
 
   useEffect(() => {
     fetchRankingData();
-  }, []);
+  }, [mainFilter, subFilter]);
 
   return (
     <>

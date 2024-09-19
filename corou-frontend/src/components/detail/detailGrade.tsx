@@ -1,20 +1,23 @@
 import ReviewPoint from "../common/reviewPoint";
 
 interface routineList {
-  step_number: number;
-  item_key: number[];
-  step_name: string;
   description: string;
+  item_key: number;
+  routine_key: number;
+  step_name: string;
+  step_number: number;
 }
 
 interface detailGradeData {
   routineGrade: number;
-  routineList: routineList;
+  routineList: routineList[];
+  routineName: string;
 }
 
 const DetailGrade: React.FC<detailGradeData> = ({
   routineGrade,
   routineList,
+  routineName,
 }) => {
   const hasRoutine = routineList;
 
@@ -23,33 +26,40 @@ const DetailGrade: React.FC<detailGradeData> = ({
       <div className="detailGradeWrapper">
         <div className="detailGradeTitle">
           <div>
-            <span>취침 전 : {routineGrade}단계 루틴</span>
-            <span>2/{routineGrade} 제품 보유중</span>
+            <span>
+              {routineName} : {routineGrade}단계 루틴
+            </span>
+            <span>0/{routineGrade} 제품 보유중</span>
           </div>
-          <div>
+          {/* <div>
             <span>보유중인 제품 제외하기</span>
             <input type="checkbox" />
-          </div>
+          </div> */}
         </div>
         <div className="detailGradeItem">
           {hasRoutine ? (
-            <div className="detailGradeBox">
-              <span>1단계:세안</span>
-              <div className="detailItemInfo">
-                {/* <div>
-                  <img src={routineList[0].itemImg} alt="" />
+            routineList.map((routine, index) => (
+              <div className="detailGradeBox" key={index}>
+                <span>
+                  {routine.step_number}단계: {routine.step_name}
+                </span>
+                <div className="detailItemInfo">
+                  <div>{/* <img src={routine.itemImg} alt="" /> */}</div>
+                  <div>
+                    <span>브랜드</span>
+                    <span>제품명 & 용량</span>
+                    <span>₩ 00,000</span>
+                    <ReviewPoint />
+                  </div>
                 </div>
-                <div>
-                  <span>{routineList[0].brand}</span>
-                  <span>
-                    {routineList[0]?.name} & {routineList[0]?.size}
-                  </span>
-                  <span>₩ {routineList[0]?.price}</span>
-                  <ReviewPoint />
-                </div> */}
+                <span style={{ margin: "10px 0" }}>
+                  설명 : {routine.description}
+                </span>
+                <div className="detailItemEffect">
+                  제품 효능 박스(일단 보류)
+                </div>
               </div>
-              <div className="detailItemEffect">제품 효능 박스(일단 보류)</div>
-            </div>
+            ))
           ) : (
             <div>루틴 정보가 없습니다.</div>
           )}

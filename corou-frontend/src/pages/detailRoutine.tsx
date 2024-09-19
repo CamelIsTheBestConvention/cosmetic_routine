@@ -9,7 +9,6 @@ const DetailRoutine: React.FC = () => {
   const [data, setData] = useState<any>(null);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const { id } = useParams<{ id: string }>();
-  console.log("전달된 id", id);
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -28,7 +27,7 @@ const DetailRoutine: React.FC = () => {
           console.log(error);
         });
     }
-  }, [id, backPort]);
+  }, [id]);
 
   return (
     <>

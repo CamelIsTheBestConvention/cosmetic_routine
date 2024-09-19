@@ -1,6 +1,6 @@
 .detailInfoWrapper {
   width: 90%;
-  margin: 0 auto;
+  margin: 50px auto 0 auto;
 
   h4 {
     font-size: 24px;
@@ -83,7 +83,7 @@
 
   // 체크사항 css
   .detailCheckWrapper {
-    width: 55%;
+    width: 70%;
     text-align: center;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -187,6 +187,7 @@
       &:nth-child(2) {
         display: flex;
         flex-direction: column;
+        margin-top: 5px;
         margin-left: 10px;
         padding: 0;
 

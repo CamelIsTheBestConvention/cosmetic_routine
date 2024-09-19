@@ -23,11 +23,12 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
       step_number: 0,
       step_name: "",
       description: "",
-      item_key: 0,
+      item_key: "",
     })
   );
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const backPort = process.env.REACT_APP_BACKEND_PORT;
 
   useEffect(() => {
@@ -36,19 +37,12 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
         step_number: index + 1,
         step_name: "",
         description: "",
-        item_key: 0,
+        item_key: "",
       }))
     );
   }, [grade]);
 
   useEffect(() => {
-    // if (routineItems.length > 0) {
-    //   setAllRoutineItems(routineItems);
-    // } else {
-    //   setAllRoutineItems(
-    //     new Array(grade).fill({ step_name: "", description: "", item_key: 0 })
-    //   );
-    // }
     if (routineItems.length < grade) {
       setAllRoutineItems([
         ...routineItems,
@@ -58,7 +52,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
             step_number: routineItems.length + index + 1,
             step_name: "",
             description: "",
-            item_key: 0,
+            item_key: "",
           })),
       ]);
     } else {
@@ -70,14 +64,6 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
       );
     }
   }, [grade, routineItems]);
-
-  // useEffect(() => {
-  //   const sum = searchResults.reduce(
-  //     (acc, product) => acc + parseFloat(product.price || "0"),
-  //     0
-  //   );
-  //   setTotalPrice(sum);
-  // }, [searchResults]);
 
   const handleRoutineItemChange = (
     index: number,
@@ -91,9 +77,27 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
     setAllRoutineItems(updatedItems);
 
     if (key === "item_key" && value.length > 2) {
-      searchItemData(value);
+      setSearchQuery(value);
     }
     dispatch(setRoutineItem({ index, item: updatedItem }));
+  };
+
+  useEffect(() => {
+    const delayDeboundceFn = setTimeout(() => {
+      if (searchQuery.length > 2) {
+        searchItemData(searchQuery);
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDeboundceFn);
+  }, [searchQuery]);
+
+  const handleProductSelect = (index: number, product: any) => {
+    const updatedItems = [...allRoutineItems];
+    updatedItems[index] = { ...updatedItems[index], item_key: product.name };
+    setAllRoutineItems(updatedItems);
+    dispatch(setRoutineItem({ index, item: updatedItems[index] }));
+    setSearchResults([]);
   };
 
   const handleInputBlur = (
@@ -104,9 +108,12 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
     handleRoutineItemChange(index, key, value);
   };
 
-  const searchItemData = async (query: string) => {
+  const searchItemData = async (item_name: string) => {
+    console.log(item_name);
     try {
-      const response = await axios.get(`${backPort}/api/item/${query}`);
+      const response = await axios.get(
+        `${backPort}/api/item/name/${item_name}`
+      );
       console.log(response.data);
 
       setSearchResults(response.data.item || []);
@@ -114,18 +121,6 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
       console.error("제품 검색 중 오류 발생", error);
     }
   };
-
-  // const handleProductSelect = (
-  //   index: number,
-  //   productName: string,
-  //   productPrice: string
-  // ) => {
-  //   const updatedItems = [...allRoutineItems];
-  //   updatedItems[index] = { ...updatedItems[index], itemName: productName };
-  //   setAllRoutineItems(updatedItems);
-  //   dispatch(setRoutineItem(updatedItems[index]));
-  //   setSearchResults([]);
-  // };
 
   const isButtonDisabled = allRoutineItems.some(
     (item) =>
@@ -178,8 +173,11 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
               {searchResults.length > 0 && (
                 <SearchResults>
                   {searchResults.map((product, productIndex) => (
-                    <ProductItem key={productIndex}>
-                      {/* Render search results here */}
+                    <ProductItem
+                      key={productIndex}
+                      onClick={() => handleProductSelect(index, product)}
+                    >
+                      {/* {product?.name} - {product?.price}원 */}
                     </ProductItem>
                   ))}
                 </SearchResults>
