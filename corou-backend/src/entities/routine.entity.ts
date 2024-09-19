@@ -22,7 +22,7 @@ export class Routine {
     @Column({ type: 'int' })
     for_age!: number;
 
-    @Column({ type: 'int', default: 0 })
+    @Column({ type: 'float', default: 0 })
     average_rating!: number;
 
     @ManyToOne(() => User)

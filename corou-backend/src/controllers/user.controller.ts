@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import { injectable } from 'tsyringe';
+import { verifyToken } from '../utils/jwt.utils';
 import { UserService } from '../services/user.service';
 import { AddressService } from '../services/address.service';
 import { UserSkinRelationService } from '../services/user-skin-relation.service';
+import { ItemOrderService } from '../services/item-order.service';
 import { generateToken } from '../utils/jwt.utils';
 
 @injectable()
@@ -10,6 +12,7 @@ export class UserController {
     constructor(
         private userService: UserService,
         private addressService: AddressService,
+        private itemOrderService: ItemOrderService
         // private userSkinRelationService: UserSkinRelationService
     ) { }
 
@@ -119,10 +122,10 @@ export class UserController {
             res.status(400).json({ message: error.message });
         }
     }
-    async getUserAddress(req: Request, res: Response): Promise<void> {
-        const { user_key } = req.params;
+    async getOneAddress(req: Request, res: Response): Promise<void> {
+        const { user_key, addr_key } = req.params;
         try {
-            const address = await this.addressService.getAddress(Number(user_key));
+            const address = await this.addressService.getOneAddress(Number(user_key), Number(addr_key));
             res.status(200).json(address);
         } catch (error: any) {
             res.status(400).json({ message: error.message });
@@ -135,6 +138,58 @@ export class UserController {
         try {
             const address = await this.addressService.updateAddress(Number(user_key), name, addr, addr_detail, zip, tel, request, is_default);
             res.status(200).json(address);
+        } catch (error: any) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+
+    async createItemOrder(req: Request, res: Response): Promise<void> {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            res.status(401).json({ message: '토큰이 제공되지 않았습니다.' });
+            return;
+        }
+        const decoded = verifyToken(token);
+        const user_key = decoded.user_key;
+        const { addr_key, price_total } = req.body;
+        const items = req.body.items;
+        try {
+            const order = await this.itemOrderService.createItemOrder(Number(user_key), Number(addr_key), price_total, items);
+            res.status(200).json(order);
+        } catch (error: any) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+
+    async getItemOrderByUser(req: Request, res: Response): Promise<void> {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            res.status(401).json({ message: '토큰이 제공되지 않았습니다.' });
+            return;
+        }
+        const decoded = verifyToken(token);
+        const user_key = decoded.user_key;
+        try {
+            const order = await this.itemOrderService.getItemOrderByUser(Number(user_key));
+            res.status(200).json(order);
+        } catch (error: any) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+
+    async getItemOrderByKey(req: Request, res: Response): Promise<void> {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            res.status(401).json({ message: '토큰이 제공되지 않았습니다.' });
+            return;
+        }
+        const decoded = verifyToken(token);
+        const user_key = decoded.user_key;
+        const { order_key } = req.params;
+        try {
+            const order = await this.itemOrderService.getItemOrderByKey(Number(order_key), Number(user_key));
+
+            res.status(200).json(order);
         } catch (error: any) {
             res.status(400).json({ message: error.message });
         }

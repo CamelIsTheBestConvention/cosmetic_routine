@@ -8,7 +8,6 @@ import { RoutineSkinRelationService } from './routine-skin-relation.service';
 import { TagService } from './tag.service';
 import { RoutineTagRelationService } from './routine-tag-relation.service';
 import { ReviewService } from './review.service';
-import { Review } from '../entities/review.entity';
 import { connect } from 'http2';
 // import { SkinAttributeService } from './skin-attribute.service';
 
@@ -22,7 +21,7 @@ export class RoutineService {
         private routineDetailService: RoutineDetailService,
         private routineSkinRelationService: RoutineSkinRelationService,
         private routineTagRelationService: RoutineTagRelationService,
-        // private reviewService: ReviewService,
+        private reviewService: ReviewService,
         private tagService: TagService,
         private dataSource: DataSource
     ) { }
@@ -99,12 +98,28 @@ export class RoutineService {
         });
     }
     // 모든 루틴 조회
-    async getAllRoutines(): Promise<Routine[]> {
-        const routines = await this.routineRepository.find();
-        if (!routines) {
-            throw new Error('해당 유저의 루틴을 찾을 수 없습니다.');
+    async getAllRoutines(
+        sort?: string,
+        order: 'ASC' | 'DESC' = 'DESC',
+        page: number = 1,
+        size: number = 10,
+        filter?: { [key: string]: any }
+    ): Promise<Routine[]> {
+        const queryBuilder = this.routineRepository.createQueryBuilder('routine');
+
+        if (filter) {
+            Object.keys(filter).forEach(key => {
+                queryBuilder.andWhere(`routine.${key} = :${key}`, { [key]: filter[key] });
+            });
         }
-        return routines;
+
+        if (sort) {
+            queryBuilder.orderBy(sort, order);
+        }
+
+        queryBuilder.skip((page - 1) * size).take(size);
+
+        return await queryBuilder.getMany();
     }
     // 루틴 조회
     async getRoutineByKey(routine_key: number): Promise<Routine> {
@@ -121,13 +136,18 @@ export class RoutineService {
         return routine;
     }
     // 루틴 수정
-    async updateRoutine(routine_key: number, routine_name: string, steps: number): Promise<Routine> {
+    async updateRoutine(user_key: number, routine_key: number, routine_name?: string, steps?: number, average_rating?: number): Promise<Routine> {
         const routine = await this.routineRepository.findOneBy({ routine_key });
         if (!routine) {
             throw new Error('해당 루틴을 찾을 수 없습니다.');
         }
-        routine.routine_name = routine_name;
-        routine.steps = steps;
+        if (routine.user.user_key !== user_key) {
+            throw new Error('해당 루틴의 작성자가 아닙니다.');
+        }
+        routine.routine_name = routine_name ?? routine.routine_name;
+        routine.steps = steps ?? routine.steps;
+        routine.average_rating = average_rating ?? routine.average_rating;
+
         return await this.routineRepository.save(routine);
     }
     // 루틴 삭제
@@ -145,22 +165,19 @@ export class RoutineService {
         });
     }
     // 피부 타입 필터로 루틴 조회
-    async getRoutinesBySkinType(attr_key: number): Promise<Routine[]> {
-        const routineSkinRelations = await this.routineSkinRelationService.getRoutineSkinRelationByAttrKey(attr_key);
-        const routines = [];
-        for (const routineSkinRelation of routineSkinRelations) {
-            const routine = await this.routineRepository.findOneBy({ routine_key: routineSkinRelation.routine_key });
-            if (routine) {
-                routines.push(routine);
-            }
-        }
-        return routines;
-    }
-
-    // async updateAverageRating(routine_key: number): Promise<number> {
-    //     const reviews = await this.reviewService.getReviewByRoutine(routine_key);
-    //     const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
-    //     return averageRating;
+    // async getRoutinesBySkinType(attr_key: number): Promise<Routine[]> {
+    //     const routineSkinRelations = await this.routineSkinRelationService.getRoutineSkinRelationByAttrKey(attr_key);
+    //     const routines = [];
+    //     for (const routineSkinRelation of routineSkinRelations) {
+    //         const routine = await this.routineRepository.findOneBy({ routine_key: routineSkinRelation.routine_key });
+    //         if (routine) {
+    //             routines.push(routine);
+    //         }
+    //     }
+    //     return routines;
     // }
-}
 
+    async updateRoutineRating(routine_key: number, average_rating: number): Promise<void> {
+        await this.routineRepository.update(routine_key, { average_rating });
+    }
+}

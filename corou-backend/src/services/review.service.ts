@@ -29,11 +29,13 @@ export class ReviewService {
         if (!newReview) {
             throw new Error('리뷰를 등록할 수 없습니다.');
         }
-        // if (review_type === 'R') {
-        //     await this.routineService.calculateAverageRating(key);
-        // } else if (review_type === 'I') {
-        //     await this.itemService.calculateAverageRating(key);
-        // }
+        const averageRating = await this.calculateAverageRating(key, review_type);
+        if (review_type === 'R') {
+            await this.routineService.updateRoutineRating(key, averageRating,);
+        } else if (review_type === 'I') {
+            await this.itemService.updateItemRating(key, averageRating);
+        }
+
         return await this.reviewRepository.save(newReview);
     }
     // 루틴 별 리뷰 조회
@@ -75,11 +77,27 @@ export class ReviewService {
         }
         await this.reviewRepository.delete(review_key);
     }
+
+    async calculateAverageRating(key: number, review_type: 'I' | 'R'): Promise<number> {
+        if (review_type === 'R') {
+            const result = await this.reviewRepository
+                .createQueryBuilder('review')
+                .select('AVG(review.rating)', 'average')
+                .where('review.routine_key = :routine_key', { routine_key: key })
+                .getRawOne();
+
+            return parseFloat(result.average) || 0;
+        } else if (review_type === 'I') {
+            const result = await this.reviewRepository
+                .createQueryBuilder('review')
+                .select('AVG(review.rating)', 'average')
+                .where('review.item_key = :item_key', { item_key: key })
+                .getRawOne();
+
+            return parseFloat(result.average) || 0;
+        }
+        return 0;
+    }
+
+
 }
-
-// declare const userService: UserService;
-// declare const itemService: ItemService;
-// declare const routineService: RoutineService;
-
-// const reviewRepository = AppDataSource.getRepository(Review);
-// const reviewService = new ReviewService(reviewRepository, userService, itemService, routineService);

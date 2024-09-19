@@ -14,7 +14,14 @@ export class RoutineDetailService {
     ) { }
 
     // 루틴 단계 생성
-    async createRoutineDetail(step_number: number, routine_key: number, item_key: number, step_name: string, description: string, transactionalEntityManager: EntityManager): Promise<RoutineDetail> {
+    async createRoutineDetail(
+        step_number: number,
+        routine_key: number,
+        item_key: number,
+        step_name: string,
+        description: string,
+        transactionalEntityManager: EntityManager
+    ): Promise<RoutineDetail> {
         console.log(step_number, routine_key, item_key, step_name, description)
         const item = await this.itemService.getItemByKey(item_key);
         console.log(item)

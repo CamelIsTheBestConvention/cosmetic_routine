@@ -54,9 +54,17 @@ export class RoutineController {
         }
     }
 
-    async getRoutines(req: Request, res: Response): Promise<void> {
+    async getAllRoutines(req: Request, res: Response): Promise<void> {
+        const { sort, order, page, size, filter } = req.query;
+
         try {
-            const routines = await this.routineService.getAllRoutines();
+            const routines = await this.routineService.getAllRoutines(
+                sort as string,
+                order as 'ASC' | 'DESC',
+                Number(page),
+                Number(size),
+                filter as { [key: string]: any }
+            );
             res.status(200).json(routines);
         } catch (error) {
             res.status(500).json({ message: '루틴 조회에 실패했습니다.' });
@@ -74,10 +82,18 @@ export class RoutineController {
     }
 
     async updateRoutine(req: Request, res: Response): Promise<void> {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            res.status(401).json({ message: '토큰이 제공되지 않았습니다.' });
+            return;
+        }
+        const decoded = verifyToken(token);
+        const user_key = decoded.user_key;
+
         const { routine_name, steps } = req.body;
         const routine_key = req.params.routine_key;
         try {
-            const routine = await this.routineService.updateRoutine(Number(routine_key), routine_name, steps);
+            const routine = await this.routineService.updateRoutine(Number(user_key), Number(routine_key), routine_name, steps);
             res.status(200).json(routine);
         } catch (error) {
             res.status(500).json({ message: '루틴 수정에 실패했습니다.' });
