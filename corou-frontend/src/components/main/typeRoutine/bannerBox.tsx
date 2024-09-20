@@ -45,6 +45,13 @@ const BannerBoxImg = styled.div`
   height: 200px;
   border: 3px solid #ffa4e4;
   border-radius: 20px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+  }
 `;
 
 const BannerBoxTitle = styled.h2`

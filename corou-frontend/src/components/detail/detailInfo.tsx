@@ -42,17 +42,12 @@ interface detailRoutineData {
 }
 
 const DetailInfo: React.FC<detailRoutineData> = ({ data }) => {
-  console.log("props 데이터", data);
-
   return (
     <>
       {data ? (
         <div className="detailInfoWrapper">
           <h4>{data?.user.username}님의 루틴</h4>
-          <DetailTitle
-            reviewPoint={data?.average_rating}
-            reviewMember={2}
-          />
+          <DetailTitle reviewPoint={data?.average_rating} reviewMember={2} />
           <DetailProfile
             profileImg={data?.user.username}
             profileNickname={data?.user.username}

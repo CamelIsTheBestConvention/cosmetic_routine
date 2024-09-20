@@ -6,12 +6,7 @@ import { useState } from "react";
 import CompleteBtn from "../common/completeBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import {
-  setTitle,
-  setGrade,
-  setRoutineItem,
-  setTag,
-} from "../../redux/slice/addRoutineSlice";
+import { setTag } from "../../redux/slice/addRoutineSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -53,6 +48,10 @@ const AddRoutine3: React.FC = () => {
       for_gender = gender[0];
     }
 
+    const filterRoutineItems = routineItem.map(({ item_name, ...rest }) => ({
+      ...rest,
+    }));
+
     const requestBody = {
       main: {
         routine_name: title,
@@ -62,7 +61,7 @@ const AddRoutine3: React.FC = () => {
         for_age: age,
         for_problem: problem,
       },
-      details: routineItem,
+      details: filterRoutineItems,
       tags: tag,
     };
 

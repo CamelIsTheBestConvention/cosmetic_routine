@@ -3,7 +3,7 @@ import sortFilter from "../../img/sort.png";
 import goodOff from "../../img/goodOff.png";
 import goodOn from "../../img/goodOn.png";
 import star from "../../img/star.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -23,6 +23,7 @@ interface routineItem {
 
 const FilterList: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [items, setItems] = useState<routineItem[]>([]);
   const [sortOrder, setSortOrder] = useState("priceAsc");
   const [loading, setLoading] = useState(true);
@@ -88,7 +89,7 @@ const FilterList: React.FC = () => {
   }
 
   const handleAddRoutine = () => {
-    navigate("/add");
+    navigate("/add", { state: { from: location.pathname } });
   };
 
   const handleRoutineClick = (routineKey: string) => {

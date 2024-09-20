@@ -21,8 +21,15 @@
 .rankingImg {
   width: 60px;
   height: 60px;
-  border: 1px solid black;
+  border-radius: 5px;
   margin: auto 10px auto 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    object-fit: cover;
+  }
 }
 
 .rankingInfo {
