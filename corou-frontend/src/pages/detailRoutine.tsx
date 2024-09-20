@@ -4,6 +4,8 @@ import DetailHeader from "../components/detail/detailHeader";
 import DetailInfo from "../components/detail/detailInfo";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import MainFooter from "../components/common/mainFooter";
+import RoutineReview from "../components/common/routineReview";
 
 const DetailRoutine: React.FC = () => {
   const [data, setData] = useState<any>(null);
@@ -33,6 +35,8 @@ const DetailRoutine: React.FC = () => {
     <>
       <AboutHeader Title="" onBack={handleBack} />
       <DetailInfo data={data} />
+      <RoutineReview routine_key={data?.routine_key} />
+      <MainFooter />
     </>
   );
 };
