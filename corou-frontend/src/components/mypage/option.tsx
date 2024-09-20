@@ -9,6 +9,10 @@ const Option: React.FC = () => {
     navigate("/mypage/orderList");
   };
 
+  const handleSetAddress = () => {
+    navigate("/mypage/setAddress");
+  };
+
   const handleNotice = () => {
     navigate("/mypage/notice");
   };
@@ -24,6 +28,7 @@ const Option: React.FC = () => {
       <OptionWrapper>
         <SettingWrapper1>
           <SettingBox name="주문 내역" onClick={handleOrderList} />
+          <SettingBox name="배송지 관리" onClick={handleSetAddress} />
         </SettingWrapper1>
         <SettingWrapper2>
           <SettingBox name="고객센터" onClick={handleOrderList} />

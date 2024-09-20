@@ -23,4 +23,5 @@ const SettingBoxWrapper = styled.div`
 
   font-size: 13px;
   margin-bottom: 20px;
+  cursor: pointer;
 `;
