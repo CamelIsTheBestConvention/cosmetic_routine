@@ -9,6 +9,10 @@ const Option: React.FC = () => {
     navigate("/mypage/orderList");
   };
 
+  const handleNotice = () => {
+    navigate("/mypage/notice");
+  };
+
   const handleLogout = () => {
     sessionStorage.clear();
 
@@ -20,14 +24,12 @@ const Option: React.FC = () => {
       <OptionWrapper>
         <SettingWrapper1>
           <SettingBox name="주문 내역" onClick={handleOrderList} />
-          <SettingBox name="취소/반품/교환 내역" onClick={handleOrderList} />
-          <SettingBox name="나의 맞춤 정보" onClick={handleOrderList} />
         </SettingWrapper1>
         <SettingWrapper2>
           <SettingBox name="고객센터" onClick={handleOrderList} />
           <SettingBox name="1:1 문의 내역" onClick={handleOrderList} />
           <SettingBox name="상품 문의 내역" onClick={handleOrderList} />
-          <SettingBox name="공지사항" onClick={handleOrderList} />
+          <SettingBox name="공지사항" onClick={handleNotice} />
         </SettingWrapper2>
         <Logout onClick={handleLogout}>로그아웃</Logout>
       </OptionWrapper>

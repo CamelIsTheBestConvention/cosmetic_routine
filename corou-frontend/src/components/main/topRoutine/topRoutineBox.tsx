@@ -1,12 +1,43 @@
 import styled from "styled-components";
 import BannerBox from "./bannerBox";
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+
+interface routineItem {
+  routine_key: string;
+  for_age: number;
+  for_gender: string;
+  isLiked: boolean;
+  price_total: number;
+  average_rating: number;
+  routine_name: string;
+  reviews: number;
+  user: { username: string };
+  problem: number[];
+  tags: string[];
+}
 
 const TopRoutineBox: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const topRoutineRef = useRef<HTMLDivElement>(null);
+  const [topRoutine, setTopRoutine] = useState<routineItem[]>([]);
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
+
+  useEffect(() => {
+    const fetchRoutines = async () => {
+      try {
+        const response = await axios.get(`${backPort}/api/routine`);
+        setTopRoutine(response.data);
+        console.log("탑텐 데이터", response.data);
+      } catch (error) {
+        console.error("Error fetching routines:", error);
+      }
+    };
+
+    fetchRoutines();
+  }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -52,9 +83,9 @@ const TopRoutineBox: React.FC = () => {
       onMouseMove={handleMouseMove}
     >
       <TopRoutineBanner>
-        <BannerBox />
-        <BannerBox />
-        <BannerBox />
+        {topRoutine.slice(0, 10).map((routine) => (
+          <BannerBox key={routine.routine_key} routine={routine} />
+        ))}
       </TopRoutineBanner>
     </OutBox>
   );

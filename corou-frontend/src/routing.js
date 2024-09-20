@@ -16,6 +16,8 @@ import ScrollToTop from "./components/common/scrollToTop";
 import ProfileEdit from "./pages/profileEdit";
 import OrderList from "./pages/orderList";
 import OrderDetail from "./pages/orderDetail";
+import Notice from "./pages/notice";
+import Payment from "./pages/payment";
 
 function Routing() {
   return (
@@ -30,14 +32,16 @@ function Routing() {
           <Route exact path="/login/email" element={<EmailLogin />} />
           <Route exact path="/register" element={<Signup />} />
           <Route exact path="/mypage" element={<Mypage />} />
+          <Route exact path="/mypage/notice" element={<Notice />} />
           <Route exact path="/mypage/orderList" element={<OrderList />} />
-          <Route exact path="/mypage/orderList/1" element={<OrderDetail />} />
+          <Route exact path="/mypage/orderList/:id" element={<OrderDetail />} />
           <Route exact path="/mypage/profileEdit" element={<ProfileEdit />} />
           <Route exact path="/order" element={<Mart />} />
           <Route exact path="/add" element={<AddRoutine />} />
           <Route exact path="/item" element={<Ranking />} />
           <Route exact path="/item/:id" element={<RankingDetail />} />
           <Route exact path="/kakao/oauth" element={<Redirection />} />
+          <Route exact path="/payment" element={<Payment />} />
         </Routes>
       </BrowserRouter>
     </TotalWrapper>

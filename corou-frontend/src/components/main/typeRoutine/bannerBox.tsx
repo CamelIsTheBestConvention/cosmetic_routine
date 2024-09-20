@@ -1,11 +1,34 @@
 import styled from "styled-components";
 
-const BannerBox: React.FC = () => {
+interface routineItem {
+  routine_key: string;
+  for_age: number;
+  for_gender: string;
+  isLiked: boolean;
+  price_total: number;
+  average_rating: number;
+  routine_name: string;
+  reviews: number;
+  user: { username: string };
+  problem: number[];
+  tags: string[];
+}
+
+interface routineData {
+  routine: routineItem;
+}
+
+const BannerBox: React.FC<routineData> = ({ routine }) => {
   return (
     <>
       <BannerBoxWrapper>
-        <BannerBoxImg></BannerBoxImg>
-        <BannerBoxTitle>메이크업</BannerBoxTitle>
+        <BannerBoxImg>
+          <img
+            src={`/assets/item/${routine?.routine_key}.jpg`}
+            alt={`Routine ${routine?.routine_key}`}
+          />
+        </BannerBoxImg>
+        <BannerBoxTitle>{routine?.routine_name}</BannerBoxTitle>
       </BannerBoxWrapper>
     </>
   );
