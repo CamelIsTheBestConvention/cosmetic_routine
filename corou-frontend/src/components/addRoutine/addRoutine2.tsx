@@ -108,11 +108,11 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
     handleRoutineItemChange(index, key, value);
   };
 
-  const searchItemData = async (item_name: string) => {
-    console.log(item_name);
+  const searchItemData = async (query: string) => {
+    console.log(query);
     try {
       const response = await axios.get(
-        `${backPort}/api/item/name/${item_name}`
+        `${backPort}/api/item/search/${query}`
       );
       console.log(response.data);
 

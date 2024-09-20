@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { initializeDatabase } from './config/ormconfig';
 import { setupRoutes } from './routes/routes';
+import paymentRoutes from './routes/payment.router';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ limit: '1mb', extended: true }));
 
 app.use(morgan('combined'));
 
+app.use('/api', paymentRoutes);
 // app.use((req, res, next) => {
 //     console.log('body:', req.body);
 //     next();

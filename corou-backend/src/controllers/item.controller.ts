@@ -49,4 +49,15 @@ export class ItemController {
 
     async updateItem(req: Request, res: Response): Promise<void> {
     }
+
+    async searchItem(req: Request, res: Response): Promise<void> {
+        const query = req.params.query as string;
+        try {
+            const items = await this.itemService.searchItem(query);
+            res.status(200).json(items);
+        } catch (error) {
+            res.status(500).json({ message: '아이템 검색에 실패했습니다.' });
+        }
+    }
+
 }

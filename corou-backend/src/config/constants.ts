@@ -2,6 +2,7 @@ export const REPOSITORY_TOKENS = {
     UserRepository: Symbol('UserRepository'),
     AddressRepository: Symbol('AddressRepository'),
     RoutineRepository: Symbol('RoutineRepository'),
+    CartRepository: Symbol('CartRepository'),
     ItemRepository: Symbol('ItemRepository'),
     SkinAttributeRepository: Symbol('SkinAttributeRepository'),
     UserSkinRelationRepository: Symbol('UserSkinRelationRepository'),
