@@ -17,6 +17,7 @@ import ProfileEdit from "./pages/profileEdit";
 import OrderList from "./pages/orderList";
 import OrderDetail from "./pages/orderDetail";
 import Notice from "./pages/notice";
+import Payment from "./pages/payment";
 
 function Routing() {
   return (
@@ -40,6 +41,7 @@ function Routing() {
           <Route exact path="/item" element={<Ranking />} />
           <Route exact path="/item/:id" element={<RankingDetail />} />
           <Route exact path="/kakao/oauth" element={<Redirection />} />
+          <Route exact path="/payment" element={<Payment />} />
         </Routes>
       </BrowserRouter>
     </TotalWrapper>

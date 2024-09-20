@@ -83,7 +83,7 @@ const TopRoutineBox: React.FC = () => {
       onMouseMove={handleMouseMove}
     >
       <TopRoutineBanner>
-        {topRoutine.map((routine) => (
+        {topRoutine.slice(0, 10).map((routine) => (
           <BannerBox key={routine.routine_key} routine={routine} />
         ))}
       </TopRoutineBanner>

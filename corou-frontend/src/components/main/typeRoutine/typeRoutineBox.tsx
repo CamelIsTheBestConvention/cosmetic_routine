@@ -121,7 +121,7 @@ const TypeRoutineBox: React.FC = () => {
         onMouseMove={handleMouseMove}
       >
         <TypeRoutineBanner>
-          {typeRoutine.map((routine) => (
+          {typeRoutine.slice(0, 3).map((routine) => (
             <BannerBox key={routine.routine_key} routine={routine} />
           ))}
         </TypeRoutineBanner>
