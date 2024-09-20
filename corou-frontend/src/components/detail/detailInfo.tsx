@@ -8,6 +8,7 @@ import DetailBtnBox from "./detailBtnBox";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import MainFooter from "../common/mainFooter";
+import Review from "../common/itemReview";
 
 interface routineDetails {
   description: string;
@@ -70,7 +71,6 @@ const DetailInfo: React.FC<detailRoutineData> = ({ data }) => {
       ) : (
         <div>루틴 정보가 없습니다.</div>
       )}
-      <MainFooter />
     </>
   );
 };
