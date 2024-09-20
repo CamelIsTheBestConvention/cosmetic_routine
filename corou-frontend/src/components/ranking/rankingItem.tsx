@@ -10,6 +10,8 @@ interface itemProps {
   item_key: number;
   item_name: string;
   item_price: number;
+  brand_name: string;
+  volume: number;
 }
 
 interface rankingItemProps {

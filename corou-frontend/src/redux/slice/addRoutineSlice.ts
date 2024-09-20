@@ -5,6 +5,7 @@ interface RoutineItem {
   step_name: string;
   description: string;
   item_key: string;
+  item_name: string;
 }
 
 interface addRoutineState {
@@ -30,6 +31,7 @@ const initialState: addRoutineState = {
     step_name: "",
     description: "",
     item_key: "",
+    item_name: "",
   }),
   tag: [],
 };
@@ -65,6 +67,9 @@ const addRoutineSlice = createSlice({
     setTag: (state, action: PayloadAction<string[]>) => {
       state.tag = action.payload;
     },
+    resetAddRoutine(state) {
+      return initialState;
+    },
   },
 });
 
@@ -77,5 +82,6 @@ export const {
   setGrade,
   setRoutineItem,
   setTag,
+  resetAddRoutine,
 } = addRoutineSlice.actions;
 export default addRoutineSlice.reducer;

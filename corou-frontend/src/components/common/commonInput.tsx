@@ -6,6 +6,7 @@ interface CommonInputProps {
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  ref?: React.Ref<HTMLInputElement>;
 }
 
 const CommonInput: React.FC<CommonInputProps> = ({
@@ -14,10 +15,12 @@ const CommonInput: React.FC<CommonInputProps> = ({
   value,
   onChange,
   onBlur,
+  ref,
 }) => {
   return (
     <>
       <Input
+        ref={ref}
         type={typeValue}
         placeholder={placeholderValue}
         value={value}

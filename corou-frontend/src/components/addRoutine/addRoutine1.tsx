@@ -2,7 +2,6 @@ import styled from "styled-components";
 import PageCount from "../common/pageCount";
 import PageGuide from "../common/pageGuide";
 import CommonInput from "../common/commonInput";
-import { useState } from "react";
 import NextBtn from "../signup/nextBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";

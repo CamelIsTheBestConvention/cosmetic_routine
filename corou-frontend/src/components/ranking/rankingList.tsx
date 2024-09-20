@@ -11,6 +11,8 @@ interface itemProps {
   item_key: number;
   item_name: string;
   item_price: number;
+  brand_name: string;
+  volume: number;
 }
 
 const RankingList: React.FC = () => {
@@ -28,7 +30,7 @@ const RankingList: React.FC = () => {
       //   },
       // });
       const response = await axios.get(`${backPort}/api/item`);
-      console.log(response.data);
+      console.log("아이템 데이터", response.data);
       setRankingData(response.data);
     } catch (error) {
       console.error("랭킹 데이터 가져오기 실패:", error);

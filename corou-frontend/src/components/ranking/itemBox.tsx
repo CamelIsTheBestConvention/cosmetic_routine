@@ -9,11 +9,8 @@ interface ItemBoxProps {
     item_key: number;
     item_name: string;
     item_price: number;
-
-    // brand: string;
-    // imageUrl: string;
-    // reviewPoint: number;
-    // reviewCount: number;
+    brand_name: string;
+    volume: number;
   };
   rank: number;
   onClick: () => void;
@@ -26,16 +23,18 @@ const ItemBox: React.FC<ItemBoxProps> = ({ item, rank, onClick }) => {
         <div className="rankingNum">{rank}</div>
         <div className="rankingInfoBox">
           <div className="rankingImg">
-            <img src={""} alt={`${item.item_name} 이미지`} />
+            <img
+              src={`/assets/item/${item?.item_key}.jpg`}
+              alt={`${item.item_name} 이미지`}
+            />
           </div>
           <div className="rankingInfo">
             <span className="itemName">
-              브랜드 <span>{item.item_name}</span>
+              {item?.brand_name} <span>{item?.item_name}</span>
             </span>
             <ReviewPoint />
             <span className="itemPrice">
-              정가 <span>{item.item_price}원</span>
-              /50ml
+              정가 <span>{item?.item_price}원</span>/{item?.volume}ml
             </span>
           </div>
         </div>
