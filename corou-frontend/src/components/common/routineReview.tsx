@@ -23,6 +23,7 @@ const RoutineReview: React.FC<ReviewProps> = ({ routine_key }) => {
   const [rating, setRating] = useState<number>(0);
   const [hoverRating, setHoverRating] = useState<number>(0);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const token = sessionStorage.getItem("authToken");
 
   const fetchReviews = async () => {
     try {
@@ -49,10 +50,15 @@ const RoutineReview: React.FC<ReviewProps> = ({ routine_key }) => {
       try {
         console.log(reviewText, rating);
         const response = await axios.post(
-          `/api/routine/${routine_key}/review`,
+          `${backPort}/api/routine/${routine_key}/review`,
           {
             review_content: reviewText,
             rating: rating,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 

@@ -12,12 +12,13 @@ interface ItemProps {
 interface ItemComponentProps {
   item: ItemProps;
   rank: number;
+  onClick: () => void;
 }
 
-const Item: React.FC<ItemComponentProps> = ({ item, rank }) => {
+const Item: React.FC<ItemComponentProps> = ({ item, rank, onClick }) => {
   return (
     <>
-      <div className="itemWrapper">
+      <div className="itemWrapper" onClick={onClick}>
         <div className="num">{rank}</div>
         <div className="itemImg">
           <img

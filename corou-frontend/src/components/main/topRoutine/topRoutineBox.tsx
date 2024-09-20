@@ -2,6 +2,7 @@ import styled from "styled-components";
 import BannerBox from "./bannerBox";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface routineItem {
   routine_key: string;
@@ -24,6 +25,7 @@ const TopRoutineBox: React.FC = () => {
   const topRoutineRef = useRef<HTMLDivElement>(null);
   const [topRoutine, setTopRoutine] = useState<routineItem[]>([]);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRoutines = async () => {
@@ -74,6 +76,10 @@ const TopRoutineBox: React.FC = () => {
     };
   }, []);
 
+  const handleDetailRoutine = (routine_key: string) => {
+    navigate(`/routine/${routine_key}`);
+  };
+
   return (
     <OutBox
       ref={topRoutineRef}
@@ -84,7 +90,11 @@ const TopRoutineBox: React.FC = () => {
     >
       <TopRoutineBanner>
         {topRoutine.slice(0, 10).map((routine) => (
-          <BannerBox key={routine.routine_key} routine={routine} />
+          <BannerBox
+            key={routine.routine_key}
+            routine={routine}
+            onClick={() => handleDetailRoutine(routine.routine_key)}
+          />
         ))}
       </TopRoutineBanner>
     </OutBox>

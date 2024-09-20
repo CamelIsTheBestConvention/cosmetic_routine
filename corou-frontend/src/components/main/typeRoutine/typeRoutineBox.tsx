@@ -2,6 +2,7 @@ import styled from "styled-components";
 import BannerBox from "./bannerBox";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface userProfile {
   username: string;
@@ -36,6 +37,7 @@ const TypeRoutineBox: React.FC = () => {
   const [userData, setUserData] = useState<userProfile | null>(null);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const userKey = sessionStorage.getItem("userKey");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -111,6 +113,10 @@ const TypeRoutineBox: React.FC = () => {
     };
   }, []);
 
+  const handleDetailRoutine = (routine_key: string) => {
+    navigate(`/routine/${routine_key}`);
+  };
+
   return (
     <>
       <OutBox
@@ -122,7 +128,11 @@ const TypeRoutineBox: React.FC = () => {
       >
         <TypeRoutineBanner>
           {typeRoutine.slice(0, 3).map((routine) => (
-            <BannerBox key={routine.routine_key} routine={routine} />
+            <BannerBox
+              key={routine.routine_key}
+              routine={routine}
+              onClick={() => handleDetailRoutine(routine.routine_key)}
+            />
           ))}
         </TypeRoutineBanner>
       </OutBox>

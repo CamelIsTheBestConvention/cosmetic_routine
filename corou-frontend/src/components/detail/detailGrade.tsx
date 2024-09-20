@@ -95,7 +95,7 @@ const DetailGrade: React.FC<detailGradeData> = ({
                     </div>
                     <div>
                       <span>{item?.brand_name}</span>
-                      <span>{`${item?.item_name} & ${item?.volume}ml`}</span>
+                      <span>{`${item?.item_name} / ${item?.volume}ml`}</span>
                       <span>{`₩ ${item?.item_price.toLocaleString()}`}</span>
                       <ReviewPoint />
                     </div>
