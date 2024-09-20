@@ -78,10 +78,7 @@ export class RoutineService {
                     detail.description,
                     transactionalEntityManager
                 );
-                console.log('step added');
             }
-            console.log('before tag')
-            console.log(tags);
             const tagKeys = [];
             for (const tag of tags) {
                 const tagKey = await this.tagService.createTag(tag);
@@ -122,6 +119,7 @@ export class RoutineService {
     ): Promise<Routine[]> {
         const queryBuilder = this.routineRepository.createQueryBuilder('routine');
 
+        // Apply filters if provided
         if (filter) {
             Object.keys(filter).forEach(key => {
                 if (Array.isArray(filter[key])) {
@@ -156,7 +154,7 @@ export class RoutineService {
             .leftJoinAndSelect('routine.routineDetails', 'routineDetails')
             .leftJoin('routine.user', 'user')
             .addSelect(['user.username'])
-            .leftJoinAndSelect('routine.reviews', 'reviews')
+            // .leftJoinAndSelect('routine.reviews', 'reviews')
             .where('routine.routine_key = :routine_key', { routine_key })
             .getOne();
         console.log(routine);
@@ -200,5 +198,11 @@ export class RoutineService {
 
     async updateRoutineRating(routine_key: number, average_rating: number): Promise<void> {
         await this.routineRepository.update(routine_key, { average_rating });
+    }
+
+    async searchRoutine(query: string): Promise<Routine[]> {
+        return this.routineRepository.createQueryBuilder('routine')
+            .where('routine.routine_name LIKE :query', { query: `%${query}%` })
+            .getMany();
     }
 }

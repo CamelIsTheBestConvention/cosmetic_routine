@@ -9,6 +9,7 @@ export function setupRoutineRouter(): Router {
     const routineController = container.resolve(RoutineController);
     const reviewController = container.resolve(ReviewController);
 
+    router.get('/search/:query', (req, res) => routineController.searchRoutine(req, res));
     router.get('/:routine_key/review', (req, res) => reviewController.getReviewByRoutine(req, res));
     router.get('/:routine_key', (req, res) => routineController.getRoutineByKey(req, res));
     router.get('/', (req, res) => routineController.getAllRoutines(req, res));

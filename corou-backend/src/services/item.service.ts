@@ -84,4 +84,11 @@ export class ItemService {
     async updateItemRating(item_key: number, average_rating: number): Promise<void> {
         await this.itemRepository.update(item_key, { average_rating });
     }
+
+    async searchItem(query: string): Promise<Item[]> {
+        return this.itemRepository.createQueryBuilder('item')
+            .where('item.item_name LIKE :query', { query: `%${query}%` })
+            .orWhere('item.brand_name LIKE :query', { query: `%${query}%` })
+            .getMany();
+    }
 }

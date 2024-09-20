@@ -9,6 +9,7 @@ import { Address } from '../entities/address.entity';
 import { Routine } from '../entities/routine.entity';
 import { RoutineDetail } from '../entities/routine-detail.entity';
 import { Item } from '../entities/item.entity';
+import { Cart } from '../entities/cart.entity';
 import { SkinAttribute } from '../entities/skin-attribute.entity';
 import { UserSkinRelation } from '../entities/user-skin-relation.entity';
 import { RoutineSkinRelation } from '../entities/routine-skin-relation.entity';
@@ -38,7 +39,7 @@ export const AppDataSource = new DataSource({
     database: DB_DATABASE,
     synchronize: true,
     logging: false,
-    entities: [User, Address, Routine, RoutineDetail, Item, SkinAttribute, UserSkinRelation, RoutineSkinRelation, RoutineTagRelation, ItemOrder, OrderDetail, Review, Tag],
+    entities: [User, Address, Routine, RoutineDetail, Cart, Item, SkinAttribute, UserSkinRelation, RoutineSkinRelation, RoutineTagRelation, ItemOrder, OrderDetail, Review, Tag],
 
 });
 

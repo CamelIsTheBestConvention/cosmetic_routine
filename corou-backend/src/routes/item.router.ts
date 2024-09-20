@@ -11,6 +11,8 @@ export function setupItemRouter(): Router {
 
     router.get('/key/:item_key', (req, res) => itemController.getItemByKey(req, res));
     router.get('/name/:item_name', (req, res) => itemController.getItemByName(req, res));
+    router.get('/search/:query', (req, res) => itemController.searchItem(req, res));
+    router.get('/:item_key/review', (req, res) => reviewController.getReviewByItem(req, res));
     router.get('/', (req, res) => itemController.getAllItems(req, res));
     router.post('/:item_key/review', authMiddleware, (req, res) => reviewController.createItemReview(req, res));
     router.post('/', (req, res) => itemController.createItem(req, res));

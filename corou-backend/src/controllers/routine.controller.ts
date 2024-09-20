@@ -139,4 +139,14 @@ export class RoutineController {
             res.status(500).json({ message: '루틴 단계 삭제에 실패했습니다.' });
         }
     }
+
+    async searchRoutine(req: Request, res: Response): Promise<void> {
+        const query = req.params.query as string;
+        try {
+            const routines = await this.routineService.searchRoutine(query);
+            res.status(200).json(routines);
+        } catch (error) {
+            res.status(500).json({ message: '루틴 검색에 실패했습니다.' });
+        }
+    }
 }

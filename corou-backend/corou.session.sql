@@ -13,3 +13,4 @@ FROM routine_detail as rd
 INNER JOIN item as i ON rd.item_key = i.item_key
 WHERE rd.routine_key = 1;
 
+

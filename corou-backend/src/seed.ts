@@ -36,9 +36,9 @@ const seedDatabase = async () => {
 
 
         const items = [
-            { item_key: 1, item_name: 'testItem1', item_price: 1000, description: '테스트 아이템입니다.', category: '지성' },
-            { item_key: 2, item_name: 'testItem2', item_price: 10000, description: '테스트 아이템입니다.', category: '건성' },
-            { item_key: 3, item_name: 'testItem3', item_price: 20000, description: '테스트 아이템입니다.', category: '지성' },
+            { item_key: 1, item_name: 'testItem1', brand_name: 'brand1', volume: 10, item_price: 1000, description: '테스트 아이템입니다.', category: '지성' },
+            { item_key: 2, item_name: 'testItem2', brand_name: 'brand2', volume: 50, item_price: 10000, description: '테스트 아이템입니다.', category: '건성' },
+            { item_key: 3, item_name: 'testItem3', brand_name: 'brand3', volume: 100, item_price: 20000, description: '테스트 아이템입니다.', category: '지성' },
         ];
 
 

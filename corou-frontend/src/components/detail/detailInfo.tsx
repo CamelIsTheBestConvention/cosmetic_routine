@@ -51,7 +51,7 @@ const DetailInfo: React.FC<detailRoutineData> = ({ data }) => {
           <h4>{data?.user.username}님의 루틴</h4>
           <DetailTitle
             reviewPoint={data?.average_rating}
-            reviewMember={data?.reviews.length}
+            reviewMember={2}
           />
           <DetailProfile
             profileImg={data?.user.username}
