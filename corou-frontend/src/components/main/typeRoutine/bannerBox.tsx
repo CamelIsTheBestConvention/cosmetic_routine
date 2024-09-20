@@ -16,12 +16,13 @@ interface routineItem {
 
 interface routineData {
   routine: routineItem;
+  onClick: () => void;
 }
 
-const BannerBox: React.FC<routineData> = ({ routine }) => {
+const BannerBox: React.FC<routineData> = ({ routine, onClick }) => {
   return (
     <>
-      <BannerBoxWrapper>
+      <BannerBoxWrapper onClick={onClick}>
         <BannerBoxImg>
           <img
             src={`/assets/item/${routine?.routine_key}.jpg`}

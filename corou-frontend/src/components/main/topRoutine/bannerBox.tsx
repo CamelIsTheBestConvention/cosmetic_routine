@@ -18,12 +18,13 @@ interface routineItem {
 
 interface routineData {
   routine: routineItem;
+  onClick: () => void;
 }
 
-const BannerBox: React.FC<routineData> = ({ routine }) => {
+const BannerBox: React.FC<routineData> = ({ routine, onClick }) => {
   return (
     <>
-      <BannerBoxWrapper>
+      <BannerBoxWrapper onClick={onClick}>
         {/* 이미지 */}
         <TopRoutineBoxImg routine_key={routine?.routine_key} />
         {/* 정보 */}
