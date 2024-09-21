@@ -50,6 +50,7 @@ export class ItemOrderService {
                     transactionalEntityManager
                 );
             }
+            
             return newItemOrder;
         });
         // const newItemOrder = this.itemOrderRepository.create({
