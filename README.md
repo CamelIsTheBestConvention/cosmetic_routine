@@ -1,6 +1,6 @@
 # cosmetic_routine
 
-![example](/images/images/2024-09-21-16-37-17.png)
+![example](/images/example.png)
 
 ## Pre Development  
 
@@ -10,7 +10,7 @@
 ![Figma](image.png)
 
 **ERD**  
-![erd](/images/images/2024-09-21-16-39-49.png)  
+![erd](/images/erd.png)  
 
 ## Backend  
 
