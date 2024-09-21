@@ -8,7 +8,7 @@ import { REPOSITORY_TOKENS } from '../config/constants';
 export class AddressService {
     constructor(
         private userService: UserService,
-        @inject(REPOSITORY_TOKENS.UserRepository) private addressRepository: Repository<Address>
+        @inject(REPOSITORY_TOKENS.AddressRepository) private addressRepository: Repository<Address>
     ) { }
 
     // 사용자 주소 추가 
@@ -36,9 +36,7 @@ export class AddressService {
     // 사용자 주소록 조회 
     async getAllAddress(user_key: number): Promise<Address[]> {
         const addresses = await this.addressRepository.find({ where: { user: { user_key } } });
-        if (!addresses.length) {
-            throw new Error('해당 유저의 주소록을 찾을 수 없습니다.');
-        }
+
         return addresses;
     }
 
