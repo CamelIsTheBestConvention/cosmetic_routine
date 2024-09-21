@@ -21,7 +21,11 @@ interface routineItem {
   tags: string[];
 }
 
-const FilterList: React.FC = () => {
+interface searchData {
+  searchQuery: string;
+}
+
+const FilterList: React.FC<searchData> = ({ searchQuery }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [items, setItems] = useState<routineItem[]>([]);
@@ -31,9 +35,12 @@ const FilterList: React.FC = () => {
   const backPort = process.env.REACT_APP_BACKEND_PORT;
 
   useEffect(() => {
-    const fetchItems = async () => {
+    const fetchItems = async (query: string) => {
+      console.log(query);
       try {
-        const response = await axios.get(`${backPort}/api/routine`);
+        const response = await axios.get(
+          `${backPort}/api/routine${query ? `/search/${query}` : ""}`
+        );
         console.log("데이터", response.data);
         setItems(response.data);
         setLoading(false);
@@ -44,8 +51,8 @@ const FilterList: React.FC = () => {
       }
     };
 
-    fetchItems();
-  }, [backPort]);
+    fetchItems(searchQuery);
+  }, [backPort, searchQuery]);
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOrder = e.target.value;

@@ -76,6 +76,7 @@ const SkinFilterWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-around;
+  margin-top: 20px;
   padding-bottom: 10px;
 `;
 
