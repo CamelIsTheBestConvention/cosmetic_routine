@@ -10,7 +10,7 @@
 ![Figma](image/figma.png)
 
 **ERD**  
-![erd](/images/erd.png)  
+![erd](images/erd.png)  
 
 ## Backend  
 
