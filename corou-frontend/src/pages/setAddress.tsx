@@ -37,6 +37,7 @@ const SetAddress: React.FC = () => {
         })
         .then((response) => {
           setAddressList(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.error("프로필 조회 실패", error);
