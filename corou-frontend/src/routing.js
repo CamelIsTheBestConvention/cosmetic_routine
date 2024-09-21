@@ -19,6 +19,7 @@ import OrderDetail from "./pages/orderDetail";
 import Notice from "./pages/notice";
 import SetAddress from "./pages/setAddress";
 import AddAddress from "./pages/addAddress";
+import EditAddress from "./pages/editAddress";
 
 function Routing() {
   return (
@@ -36,6 +37,11 @@ function Routing() {
           <Route exact path="/mypage/notice" element={<Notice />} />
           <Route exact path="/mypage/setAddress" element={<SetAddress />} />
           <Route exact path="/mypage/addAddress" element={<AddAddress />} />
+          <Route
+            exact
+            path="/mypage/editAddress/:id"
+            element={<EditAddress />}
+          />
           <Route exact path="/mypage/orderList" element={<OrderList />} />
           <Route exact path="/mypage/orderList/:id" element={<OrderDetail />} />
           <Route exact path="/mypage/profileEdit" element={<ProfileEdit />} />
