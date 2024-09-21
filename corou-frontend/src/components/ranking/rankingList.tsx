@@ -15,21 +15,22 @@ interface itemProps {
   volume: number;
 }
 
-const RankingList: React.FC = () => {
+interface RankingListProps {
+  searchQuery: string;
+}
+
+const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
   const [mainFilter, setMainFilter] = useState<string>("");
   const [subFilter, setSubFilter] = useState<string>("");
   const [rankingData, setRankingData] = useState<itemProps[]>([]);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
 
-  const fetchRankingData = async () => {
+  const fetchRankingData = async (query: string) => {
     try {
-      // const response = await axios.get(`${backPort}/api/item`, {
-      //   params: {
-      //     mainFilter: mainFilter,
-      //     subFilter: subFilter,
-      //   },
-      // });
-      const response = await axios.get(`${backPort}/api/item`);
+      const response = await axios.get(
+        `${backPort}/api/item${query ? `/search/${query}` : ""}`
+      );
+      // const response = await axios.get(`${backPort}/api/item`);
       console.log("아이템 데이터", response.data);
       setRankingData(response.data);
     } catch (error) {
@@ -38,8 +39,8 @@ const RankingList: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchRankingData();
-  }, [mainFilter, subFilter]);
+    fetchRankingData(searchQuery);
+  }, [mainFilter, subFilter, searchQuery]);
 
   return (
     <>

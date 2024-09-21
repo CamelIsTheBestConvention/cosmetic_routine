@@ -1,13 +1,19 @@
 import styled from "styled-components";
 import AboutHeader from "../components/common/aboutHeader";
 import MainHeader from "../components/common/mainHeader";
-import SearchBar from "../components/ranking/searchBar";
+import SearchBar from "../components/common/searchBar";
 import RankingList from "../components/ranking/rankingList";
 import MainFooter from "../components/common/mainFooter";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Ranking: React.FC = () => {
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
 
   const handleBackPage = () => {
     navigate(-1);
@@ -17,8 +23,8 @@ const Ranking: React.FC = () => {
     <>
       <RankingWrapper>
         <AboutHeader Title="제품 랭킹" onBack={handleBackPage} />
-        <SearchBar />
-        <RankingList />
+        <SearchBar onSearch={handleSearch} />
+        <RankingList searchQuery={searchQuery} />
         <MainFooter />
       </RankingWrapper>
     </>
