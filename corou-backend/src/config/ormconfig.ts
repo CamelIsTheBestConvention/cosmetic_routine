@@ -66,6 +66,7 @@ export const initializeDatabase = async () => {
             { name: REPOSITORY_TOKENS.OrderDetailRepository, entity: OrderDetail },
             { name: REPOSITORY_TOKENS.ReviewRepository, entity: Review },
             { name: REPOSITORY_TOKENS.TagRepository, entity: Tag },
+            { name: REPOSITORY_TOKENS.CartRepository, entity: Cart },
         ];
 
         for (const repo of repositories) {

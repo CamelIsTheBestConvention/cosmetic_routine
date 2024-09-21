@@ -19,7 +19,7 @@ export function setupUserRouter(): Router {
     router.post('/register', (req, res) => userController.createUser(req, res));
     router.post('/login', (req, res) => userController.loginUser(req, res));
     router.post('/:user_key/address', authMiddleware, (req, res) => userController.addAddress(req, res));
-    router.put('/:user_key/address', authMiddleware, (req, res) => userController.updateAddress(req, res));
+    router.put('/:user_key/address/:addr_key', authMiddleware, (req, res) => userController.updateAddress(req, res));
 
     return router;
 }
