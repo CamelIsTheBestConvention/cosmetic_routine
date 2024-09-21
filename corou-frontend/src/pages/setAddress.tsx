@@ -45,19 +45,21 @@ const SetAddress: React.FC = () => {
     } else {
       setHasToken(false);
     }
-  }, [backPort, addressList]);
+  }, []);
 
   const handleBack = () => {
     navigate(-1);
   };
 
-  // const handel
+  const handleAddAddress = () => {
+    navigate("/mypage/addAddress");
+  };
 
   return (
     <>
       <AboutHeader Title="배송지" onBack={handleBack} />
       <div>
-        <span>배송지 추가</span>
+        <span onClick={handleAddAddress}>배송지 추가</span>
       </div>
       <div>
         <div>
