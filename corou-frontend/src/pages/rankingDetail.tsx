@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import BackHeader from "../components/common/backHeader";
-import Lotion from "../img/화장품1.jpg";
 import MainFooter from "../components/common/mainFooter";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import ItemReview from "../components/common/itemReview";
+import ItemBtnBox from "../components/ranking/itemBtnBox";
+import AboutHeader from "../components/common/aboutHeader";
 
 interface ItemDetails {
   average_rating: number;
@@ -50,14 +50,17 @@ const RankingDetail: React.FC<ItemDetails> = () => {
   return (
     <>
       <RankingDetailWrapper>
-        <BackHeader onBack={handleBackPage} />
+        <AboutHeader Title="" onBack={handleBackPage} />
         <DetailItemBox>
           <ItemImg>
-            <img src={""} alt={itemDetails.item_name} />
+            <img
+              src={`/assets/item/${itemDetails.item_key}.jpg`}
+              alt={itemDetails.item_name}
+            />
           </ItemImg>
           <ItemInfo>
-            <h3>{itemDetails.item_name}</h3>
-            <p>{itemDetails.description}</p>
+            <h2>{itemDetails.item_name}</h2>
+            <ItemDescription>{itemDetails.description}</ItemDescription>
             <ItemPrice>
               <span>정가</span>
               <span>{itemDetails.item_price}원 / 50ml</span>
@@ -66,6 +69,7 @@ const RankingDetail: React.FC<ItemDetails> = () => {
           </ItemInfo>
         </DetailItemBox>
       </RankingDetailWrapper>
+      <ItemBtnBox item_key={itemDetails?.item_key} />
       <ItemReview item_key={itemDetails?.item_key} />
       <MainFooter />
     </>
@@ -85,8 +89,8 @@ const DetailItemBox = styled.div`
 `;
 
 const ItemImg = styled.div`
-  width: 80%;
-  height: auto;
+  width: 310px;
+  height: 310px;
   aspect-ratio: 1/1;
   object-fit: cover;
   margin: 0 auto;
@@ -94,8 +98,7 @@ const ItemImg = styled.div`
 
   img {
     width: 100%;
-    height: auto;
-    aspect-ratio: 1/1;
+    height: 100%;
     object-fit: cover;
   }
 `;
@@ -130,4 +133,15 @@ const ItemEffect = styled.div`
   background-color: #d9d9d9;
   border-radius: 13px;
   margin-top: 10%;
+  margin-bottom: 20px;
+`;
+
+const ItemDescription = styled.div`
+  width: 95%;
+  margin: 0 auto 10px auto;
+  height: 100px;
+  border: 3px solid #ffa4e4;
+  border-radius: 12px;
+  padding: 5px;
+  font-size: 17px;
 `;

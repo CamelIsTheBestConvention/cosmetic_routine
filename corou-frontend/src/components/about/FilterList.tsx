@@ -4,7 +4,7 @@ import goodOff from "../../img/goodOff.png";
 import goodOn from "../../img/goodOn.png";
 import star from "../../img/star.png";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 interface routineItem {
@@ -19,6 +19,7 @@ interface routineItem {
   user: { username: string };
   problem: number[];
   tags: string[];
+  firstItemKey?: number;
 }
 
 interface searchData {
@@ -34,19 +35,75 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
   const [error, setError] = useState<string | null>(null);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
 
+  const buttonRef = useRef<HTMLDivElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (wrapperRef.current && buttonRef.current) {
+        const { scrollTop, clientHeight, scrollHeight } = wrapperRef.current;
+
+        // 스크롤이 있으면 sticky, 없으면 absolute
+        if (scrollHeight > clientHeight) {
+          buttonRef.current.style.position = "sticky";
+          buttonRef.current.style.bottom = "20px"; // 스크롤이 있을 때의 위치
+        } else {
+          buttonRef.current.style.position = "absolute";
+          buttonRef.current.style.bottom = "20px"; // 스크롤이 없을 때의 위치
+        }
+      }
+    };
+
+    const wrapperElement = wrapperRef.current;
+    wrapperElement?.addEventListener("scroll", handleScroll);
+
+    // 초기 실행
+    handleScroll();
+
+    return () => {
+      wrapperElement?.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   useEffect(() => {
     const fetchItems = async (query: string) => {
       console.log(query);
       try {
+        // 루틴 목록 가져오기
         const response = await axios.get(
           `${backPort}/api/routine${query ? `/search/${query}` : ""}`
         );
         console.log("데이터", response.data);
-        setItems(response.data);
-        setLoading(false);
+
+        // 각 루틴의 아이템 키 가져오기
+        const updatedItems = await Promise.all(
+          response.data.map(async (item: routineItem) => {
+            try {
+              const itemResponse = await axios.get(
+                `${backPort}/api/routine/${item?.routine_key}`
+              );
+              const firstItemKey =
+                itemResponse.data.routineDetails[0]?.item_key;
+              console.log("첫번째 아이템키", firstItemKey);
+              return {
+                ...item,
+                firstItemKey,
+              };
+            } catch (error) {
+              console.error(
+                `루틴의 제품 목록을 가져오는 중 에러 (${item.routine_key}):`,
+                error
+              );
+              return item;
+            }
+          })
+        );
+
+        setItems(updatedItems);
       } catch (err) {
         console.error("아이템 가져오기 실패", err);
         setError("데이터를 불러오는데 실패했습니다.");
+      } finally {
         setLoading(false);
       }
     };
@@ -81,19 +138,12 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
   };
 
   const toggleLike = (index: number) => {
-    const updatedItems = items.map((item, i) =>
-      i === index ? { ...item, isLiked: !item.isLiked } : item
+    setItems((prevItems) =>
+      prevItems.map((item, i) =>
+        i === index ? { ...item, isLiked: !item.isLiked } : item
+      )
     );
-    setItems(updatedItems);
   };
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>{error}</p>;
-  }
 
   const handleAddRoutine = () => {
     navigate("/add", { state: { from: location.pathname } });
@@ -121,9 +171,17 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
     }
   };
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
     <>
-      <div className="filterListWrapper">
+      <div className="filterListWrapper" ref={wrapperRef}>
         <div className="filterBtn">
           <div style={{ display: "flex" }}>
             정렬 순:{" "}
@@ -139,7 +197,7 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
         {items.map((item, index) => (
           <div
             className="itemListWrapper"
-            key={index}
+            key={item?.routine_key}
             onClick={() => handleRoutineClick(item?.routine_key)}
           >
             <div className="itemListTitle">
@@ -149,7 +207,10 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
                   <img
                     src={item.isLiked ? goodOn : goodOff}
                     alt="좋아요"
-                    onClick={() => toggleLike(index)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleLike(index);
+                    }}
                     style={{ cursor: "pointer" }}
                   />
                 </div>
@@ -159,13 +220,17 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
                   <img src={star} alt="" />
                 </div>
                 <div>
-                  {item?.average_rating} <span>({item.reviews})</span>
+                  {Math.ceil(item?.average_rating * 10) / 10}{" "}
+                  <span>({item?.reviews})</span>
                 </div>
               </div>
             </div>
             <div className="itemListContent">
               <div className="contentImg">
-                <img src="#" alt="" />
+                <img
+                  src={`/assets/item/${item?.firstItemKey}.jpg`}
+                  alt="루틴 첫번째 제품이미지"
+                />
               </div>
               <div className="contentInfo">
                 <span>{item?.user.username}님의 루틴</span>
@@ -194,7 +259,11 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
             </div>
           </div>
         ))}
-        <div className="addRoutineBtn" onClick={handleAddRoutine}>
+        <div
+          className="addRoutineBtn"
+          onClick={handleAddRoutine}
+          ref={buttonRef}
+        >
           <span>+</span>
         </div>
       </div>

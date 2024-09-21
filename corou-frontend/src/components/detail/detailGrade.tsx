@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ReviewPoint from "../common/reviewPoint";
 import axios from "axios";
+import styled from "styled-components";
 
 interface ItemData {
   average_rating: number;
@@ -100,9 +101,10 @@ const DetailGrade: React.FC<detailGradeData> = ({
                       <ReviewPoint />
                     </div>
                   </div>
-                  <span style={{ margin: "10px 0" }}>
-                    설명 : {routine.description}
-                  </span>
+                  <span>설명 :</span>
+                  <ItemDescription style={{ margin: "10px 0" }}>
+                    {routine.description}
+                  </ItemDescription>
                   <div className="detailItemEffect">
                     제품 효능 박스(일단 보류)
                   </div>
@@ -118,3 +120,13 @@ const DetailGrade: React.FC<detailGradeData> = ({
   );
 };
 export default DetailGrade;
+
+const ItemDescription = styled.div`
+  width: 95%;
+  margin: 0 auto 10px auto;
+  height: 100px;
+  border: 3px solid #ffa4e4;
+  border-radius: 12px;
+  padding: 5px;
+  font-size: 17px;
+`;

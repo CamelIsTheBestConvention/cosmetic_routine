@@ -4,13 +4,28 @@ import { useNavigate } from "react-router-dom";
 
 const Option: React.FC = () => {
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("authToken");
+
+  const isTokenCheck = () => {
+    return token !== null;
+  };
 
   const handleOrderList = () => {
-    navigate("/mypage/orderList");
+    if (isTokenCheck()) {
+      navigate("/mypage/orderList");
+    } else {
+      alert("로그인 후 이용해 주세요.");
+      navigate("/login");
+    }
   };
 
   const handleSetAddress = () => {
-    navigate("/mypage/setAddress");
+    if (isTokenCheck()) {
+      navigate("/mypage/setAddress");
+    } else {
+      alert("로그인 후 이용해 주세요.");
+      navigate("/login");
+    }
   };
 
   const handleNotice = () => {
@@ -36,7 +51,7 @@ const Option: React.FC = () => {
           <SettingBox name="상품 문의 내역" onClick={handleOrderList} />
           <SettingBox name="공지사항" onClick={handleNotice} />
         </SettingWrapper2>
-        <Logout onClick={handleLogout}>로그아웃</Logout>
+        {token && <Logout onClick={handleLogout}>로그아웃</Logout>}
       </OptionWrapper>
     </>
   );
