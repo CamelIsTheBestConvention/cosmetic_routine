@@ -6,31 +6,54 @@ import halfStar from "../../img/halfStar.png";
 import filledStar from "../../img/filledStar.png";
 
 interface ReviewItem {
-  id: number;
-  description: string;
+  review_key: number;
   rating: number;
+  review_content: string;
+  review_at: string;
+  user_key: number;
+  username: string;
 }
 
 interface ReviewProps {
-  routine_key: number;
+  item_key: number;
 }
 
 const MAX_RATING = 5;
 
-const ItemReview: React.FC<ReviewProps> = ({ routine_key }) => {
+const ItemReview: React.FC<ReviewProps> = ({ item_key }) => {
   const [reviewText, setReviewText] = useState<string>("");
   const [reviews, setReviews] = useState<ReviewItem[]>([]);
   const [rating, setRating] = useState<number>(0);
   const [hoverRating, setHoverRating] = useState<number>(0);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const token = sessionStorage.getItem("authToken");
+
+  const fetchUser = async (user_key: number): Promise<string> => {
+    try {
+      const response = await axios.get(`${backPort}/api/user/${user_key}`);
+      return response.data.username;
+    } catch (error) {
+      console.error("유저 정보를 가져오는 중 오류가 발생했습니다.", error);
+      return "유저 정보가 없습니다.";
+    }
+  };
 
   const fetchReviews = async () => {
     try {
       const response = await axios.get(
-        `${backPort}/api/routine/${routine_key}/review`
+        `${backPort}/api/item/${item_key}/review`
       );
+
+      const fetchedReviews = await Promise.all(
+        response.data.map(async (review: ReviewItem) => {
+          const username = await fetchUser(review.user_key);
+          console.log(username);
+          return { ...review, username };
+        })
+      );
+
       console.log("루틴리뷰", response.data);
-      setReviews(response.data);
+      setReviews(fetchedReviews);
     } catch (error) {
       console.error("리뷰를 가져오는 중 오류가 발생했습니다.", error);
     }
@@ -38,7 +61,7 @@ const ItemReview: React.FC<ReviewProps> = ({ routine_key }) => {
 
   useEffect(() => {
     fetchReviews();
-  }, [routine_key]);
+  }, [item_key]);
 
   const handleReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReviewText(e.target.value);
@@ -49,20 +72,33 @@ const ItemReview: React.FC<ReviewProps> = ({ routine_key }) => {
       try {
         console.log(reviewText, rating);
         const response = await axios.post(
-          `/api/routine/${routine_key}/review`,
+          `${backPort}/api/item/${item_key}/review`,
           {
-            description: reviewText,
+            review_content: reviewText,
             rating: rating,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
 
         const newReview: ReviewItem = {
-          id: response.data.id,
-          description: reviewText,
-          rating: 5,
+          review_key: response.data?.review_key,
+          review_content: reviewText,
+          review_at: response.data?.review_at,
+          rating: rating,
+          username: response.data?.username,
+          user_key: response.data?.user_key,
         };
 
-        setReviews((prevReviews) => [...prevReviews, newReview]);
+        const username = await fetchUser(newReview.user_key);
+        setReviews((prevReviews) => [
+          ...prevReviews,
+          { ...newReview, username },
+        ]);
+
         setReviewText("");
         setRating(0);
       } catch (error) {
@@ -113,14 +149,45 @@ const ItemReview: React.FC<ReviewProps> = ({ routine_key }) => {
         <textarea
           value={reviewText}
           onChange={handleReviewChange}
-          placeholder="리뷰를 입력하세요"
+          placeholder="리뷰를 입력하세요.(100글자 제한)"
+          maxLength={100}
         />
         <button onClick={handleAddReview}>리뷰 작성</button>
 
         {/* 작성된 리뷰 리스트 */}
         <ReviewList>
           {reviews.map((review) => (
-            <ReviewItem key={review.id}>{review.description}</ReviewItem>
+            <ReviewItem key={review.review_key}>
+              <ReviewProfile>
+                <div>
+                  <img
+                    src={`/assets/user/${review.user_key}.png`}
+                    alt={`${review?.username} 이미지`}
+                  />
+                </div>
+                <p>{review?.username}</p>
+              </ReviewProfile>
+              <ReviewContent>
+                <ReviewContentTitle>
+                  <Stars>
+                    {[...Array(MAX_RATING)].map((_, index) => (
+                      <ReviewListStar
+                        key={index}
+                        filled={review.rating >= index + 1}
+                        halfFilled={
+                          review.rating >= index + 0.5 &&
+                          review.rating < index + 1
+                        }
+                      />
+                    ))}
+                  </Stars>
+                  <span>{review?.review_at}</span>
+                </ReviewContentTitle>
+                <ReviewContentContent>
+                  {review.review_content}
+                </ReviewContentContent>
+              </ReviewContent>
+            </ReviewItem>
           ))}
         </ReviewList>
       </ReviewWrapper>
@@ -141,18 +208,25 @@ const ReviewWrapper = styled.div`
   textarea {
     width: 100%;
     height: 100px;
+    border: 2px solid #ffa4e4;
+    border-radius: 12px;
     margin-bottom: 10px;
+    padding: 5px;
+    resize: none;
   }
 
   button {
     padding: 10px 20px;
     margin-bottom: 20px;
-    background-color: #007bff;
+    background-color: #ff5cd0;
     color: white;
+    font-size: 17px;
     border: none;
+    border-radius: 10px;
     cursor: pointer;
+
     &:hover {
-      background-color: #0056b3;
+      background-color: #fa7cd6;
     }
   }
 `;
@@ -186,4 +260,69 @@ const ReviewItem = styled.li`
   padding: 10px;
   margin-bottom: 10px;
   background-color: #f9f9f9;
+  display: flex;
+`;
+
+const ReviewProfile = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: auto 20px auto 0;
+
+  div {
+    width: 60px;
+    height: 60px;
+    border: 3px solid #ffa4e4;
+    border-radius: 50%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  p {
+    text-align: center;
+    font-size: 13px;
+    margin: 5px 0;
+  }
+`;
+
+const ReviewContent = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ReviewListStar = styled.div<{ filled: boolean; halfFilled: boolean }>`
+  width: 12px;
+  height: 12px;
+  background: ${({ filled, halfFilled }) =>
+    filled
+      ? `url(${filledStar})`
+      : halfFilled
+      ? `url(${halfStar})`
+      : `url(${emptyStar})`};
+  background-size: cover;
+`;
+
+const ReviewContentTitle = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  span {
+    font-size: 12px;
+  }
+`;
+const ReviewContentContent = styled.div`
+  width: 95%;
+  height: 80px;
+  padding: 5px;
+  border: 2px solid #ffa4e4;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-top: -10px;
+  overflow-y: auto;
 `;

@@ -5,6 +5,7 @@ import MainFooter from "../components/common/mainFooter";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import ItemReview from "../components/common/itemReview";
 
 interface ItemDetails {
   average_rating: number;
@@ -65,6 +66,7 @@ const RankingDetail: React.FC<ItemDetails> = () => {
           </ItemInfo>
         </DetailItemBox>
       </RankingDetailWrapper>
+      <ItemReview item_key={itemDetails?.item_key} />
       <MainFooter />
     </>
   );
