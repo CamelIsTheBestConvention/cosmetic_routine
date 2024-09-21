@@ -203,6 +203,7 @@ export class RoutineService {
     async searchRoutine(query: string): Promise<Routine[]> {
         return this.routineRepository.createQueryBuilder('routine')
             .where('routine.routine_name LIKE :query', { query: `%${query}%` })
+            .leftJoin('routine.user', 'user').addSelect(['user.username'])
             .getMany();
     }
 }
