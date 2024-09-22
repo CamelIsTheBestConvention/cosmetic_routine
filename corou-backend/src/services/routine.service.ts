@@ -116,7 +116,7 @@ export class RoutineService {
         page: number = 1,
         size: number = 10,
         filter?: { [key: string]: any }
-    ): Promise<Routine[]> {
+    ): Promise<{ routine: Routine, attr_keys: number[] }[]> {
         const queryBuilder = this.routineRepository.createQueryBuilder('routine');
 
         // Apply filters if provided
@@ -137,9 +137,20 @@ export class RoutineService {
         queryBuilder.skip((page - 1) * size).take(size);
         queryBuilder.leftJoin('routine.user', 'user').addSelect(['user.username']);
 
+        // Join with routine_skin_relation to get attr_key values
+        queryBuilder.leftJoinAndSelect('routine.routine_skin_relations', 'routineSkinRelation');
+
         const routines = await queryBuilder.getMany();
-        console.log(routines);
-        return routines;
+
+        // Construct an array of objects pairing each routine with its attr_key values
+        const routineWithAttrKeys = routines.map(routine => ({
+            routine,
+            attr_keys: routine.routine_skin_relations?.map(relation => relation.attr_key) || []
+        }));
+
+        console.log(routineWithAttrKeys);
+        // console.log(routines)
+        return routineWithAttrKeys;
     }
     // 루틴 조회
     async getRoutineByKey(routine_key: number): Promise<Routine> {

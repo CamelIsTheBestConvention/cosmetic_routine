@@ -1,5 +1,5 @@
 INSERT INTO skin_attribute (attr_key, attr_name)
-VALUES (0, '잘 모르겠어요'), 
+VALUES (100, '잘 모르겠어요'), 
 (1, '건성'),
 (2, '중성'),
 (3, '지성'),
