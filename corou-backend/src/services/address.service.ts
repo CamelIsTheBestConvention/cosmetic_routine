@@ -10,11 +10,12 @@ export class AddressService {
     private userService: UserService,
     @inject(REPOSITORY_TOKENS.AddressRepository)
     private addressRepository: Repository<Address>
-  ) {}
+  ) { }
 
   // 사용자 주소 추가
   async addAddress(
     user_key: number,
+    address_name: string,
     name: string,
     addr: string,
     addr_detail: string,
@@ -67,6 +68,7 @@ export class AddressService {
   // 사용자 주소 수정
   async updateAddress(
     address_key: number,
+    address_name: string,
     name: string,
     addr: string,
     addr_detail: string,
@@ -85,6 +87,7 @@ export class AddressService {
         { is_default: "N" }
       );
     }
+    address.address_name = address_name;
     address.name = name;
     address.addr = addr;
     address.addr_detail = addr_detail;

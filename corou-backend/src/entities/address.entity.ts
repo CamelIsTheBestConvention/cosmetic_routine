@@ -9,6 +9,9 @@ export class Address {
     address_key!: number;
 
     @Column({ type: 'varchar', length: 255 })
+    address_name!: string;
+
+    @Column({ type: 'varchar', length: 255 })
     name!: string;
 
     @Column({ type: 'varchar', length: 255 })
