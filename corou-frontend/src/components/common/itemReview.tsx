@@ -131,28 +131,32 @@ const ItemReview: React.FC<ReviewProps> = ({ item_key }) => {
   return (
     <>
       <ReviewWrapper>
-        <Stars>
-          {[...Array(MAX_RATING)].map((_, index) => (
-            <Star
-              key={index}
-              filled={hoverRating >= index + 1 || rating >= index + 1}
-              halfFilled={
-                (hoverRating >= index + 0.5 && hoverRating < index + 1) ||
-                (rating >= index + 0.5 && rating < index + 1)
-              }
-              onMouseMove={(e) => handleMouseMove(index, e)}
-              onClick={(e) => handleClickRating(index, e)}
-              onMouseLeave={handleMouseLeave}
+        {token && (
+          <>
+            <Stars>
+              {[...Array(MAX_RATING)].map((_, index) => (
+                <Star
+                  key={index}
+                  filled={hoverRating >= index + 1 || rating >= index + 1}
+                  halfFilled={
+                    (hoverRating >= index + 0.5 && hoverRating < index + 1) ||
+                    (rating >= index + 0.5 && rating < index + 1)
+                  }
+                  onMouseMove={(e) => handleMouseMove(index, e)}
+                  onClick={(e) => handleClickRating(index, e)}
+                  onMouseLeave={handleMouseLeave}
+                />
+              ))}
+            </Stars>
+            <textarea
+              value={reviewText}
+              onChange={handleReviewChange}
+              placeholder="리뷰를 입력하세요.(100글자 제한)"
+              maxLength={100}
             />
-          ))}
-        </Stars>
-        <textarea
-          value={reviewText}
-          onChange={handleReviewChange}
-          placeholder="리뷰를 입력하세요.(100글자 제한)"
-          maxLength={100}
-        />
-        <button onClick={handleAddReview}>리뷰 작성</button>
+            <button onClick={handleAddReview}>리뷰 작성</button>
+          </>
+        )}
 
         {/* 작성된 리뷰 리스트 */}
         <ReviewList>

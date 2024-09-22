@@ -34,6 +34,7 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const token = sessionStorage.getItem("authToken");
 
   const buttonRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -259,13 +260,15 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
             </div>
           </div>
         ))}
-        <div
-          className="addRoutineBtn"
-          onClick={handleAddRoutine}
-          ref={buttonRef}
-        >
-          <span>+</span>
-        </div>
+        {token && (
+          <div
+            className="addRoutineBtn"
+            onClick={handleAddRoutine}
+            ref={buttonRef}
+          >
+            <span>+</span>
+          </div>
+        )}
       </div>
     </>
   );

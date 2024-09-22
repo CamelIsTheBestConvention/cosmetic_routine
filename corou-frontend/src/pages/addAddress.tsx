@@ -6,8 +6,8 @@ import axios from "axios";
 import MainFooter from "../components/common/mainFooter";
 
 interface addressData {
+  address_name: string;
   name: string;
-  //   username: string;
   addr: string;
   addr_detail: string;
   zip: string;
@@ -19,8 +19,8 @@ interface addressData {
 const AddAddress: React.FC = () => {
   const navigate = useNavigate();
   const [addressData, setAddressData] = useState<addressData>({
+    address_name: "",
     name: "",
-    // username: "",
     addr: "",
     addr_detail: "",
     zip: "",
@@ -74,22 +74,22 @@ const AddAddress: React.FC = () => {
             <span>배송지 이름</span>
             <input
               type="text"
-              name="name"
+              name="address_name"
               placeholder="예) 우리 집"
+              value={addressData.address_name}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <span>성함</span>
+            <input
+              type="text"
+              name="name"
+              placeholder="예) 문미새"
               value={addressData.name}
               onChange={handleInputChange}
             />
           </div>
-          {/* <div>
-            <span>성함</span>
-            <input
-              type="text"
-              name="username"
-              placeholder="예) 문미새"
-              value={addressData.username}
-              onChange={handleInputChange}
-            />
-          </div> */}
           <div>
             <span>주소</span>
             <input

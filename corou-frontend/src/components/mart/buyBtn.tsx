@@ -20,6 +20,7 @@ interface totalPriceData {
 const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
   const handlePayment = async () => {
     const { IMP } = window as any; // 타입스크립트에서 window 객체를 사용하는 방법
+    console.log(IMP);
     const clientKey = process.env.PORTONE_CLIENT_KEY;
 
     if (!IMP) {
@@ -33,7 +34,7 @@ const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
       pg: "tosspayments", // PG사
       pay_method: "card", // 결제수단
       merchant_uid: `mid_${new Date().getTime()}`, // 주문 고유 ID
-      amount: 1, // 결제 금액
+      amount: totalPrice, // 결제 금액
       name: "아임포트 결제 데이터", // 주문명
       buyer_name: "문미새",
       buyer_tel: "010-1234-5678",

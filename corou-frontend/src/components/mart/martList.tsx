@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../../scss/mart/martList.scss";
 import notItem from "../../img/notItem.png";
+import axios from "axios";
 
 interface itemData {
   average_rating: number;
@@ -25,23 +26,51 @@ interface cartListData {
   cartList: cartItem[];
   onQuantityChange: (cartKey: number, newQuantity: number) => void;
   onCheckedItemsChange: (checkedItems: number[]) => void;
+  refreshCartData: () => void;
 }
 
 const MartList: React.FC<cartListData> = ({
   cartList,
   onQuantityChange,
   onCheckedItemsChange,
+  refreshCartData,
 }) => {
   const hasItem = cartList && cartList.length > 0;
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const token = sessionStorage.getItem("authToken");
 
-  const handleQuantityInputChange = (
+  const handleQuantityInputChange = async (
     cartKey: number,
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newQuantity = parseInt(e.target.value, 10);
     if (!isNaN(newQuantity) && newQuantity >= 1) {
       onQuantityChange(cartKey, newQuantity);
+
+      const cart_key = cartList.find(
+        (item) => item.cart_key === cartKey
+      )?.item_key;
+
+      try {
+        console.log(cart_key, newQuantity);
+        await axios.put(
+          `${backPort}/api/order/cart`,
+          {
+            cart_key,
+            quantity: newQuantity,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("제품의 수량이 변경");
+      } catch (error) {
+        console.error("수량 업데이트 중 에러", error);
+      }
     }
   };
 
@@ -54,6 +83,25 @@ const MartList: React.FC<cartListData> = ({
       onCheckedItemsChange(updatedCheckedItems);
       return updatedCheckedItems;
     });
+  };
+
+  const handleDeleteItem = async (cart_key: number) => {
+    if (confirm("제품을 삭제하시겠습니까?")) {
+      try {
+        const response = await axios.delete(`${backPort}/api/order/cart`, {
+          data: { cart_key: cart_key },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("삭제 성공", response.data);
+        refreshCartData();
+      } catch (error) {
+        console.error("아이템 삭제 중 에러 발생:", error);
+      }
+    } else {
+      console.log("삭제 취소");
+    }
   };
 
   return (
@@ -102,6 +150,12 @@ const MartList: React.FC<cartListData> = ({
                   </div>
                 </div>
               </label>
+              <div
+                className="itemDelBtn"
+                onClick={() => handleDeleteItem(cartItem?.cart_key)}
+              >
+                ✖
+              </div>
             </div>
           ))
         ) : (
