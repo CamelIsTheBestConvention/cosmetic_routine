@@ -207,9 +207,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
                 }
               />
             </RoutineGradeTitle>
-            <CommonInput
-              typeValue="text"
-              placeholderValue="설명"
+            <CommonTextarea
               value={item.description}
               onChange={(e) =>
                 handleRoutineItemChange(index, "description", e.target.value)
@@ -217,6 +215,8 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
               onBlur={(e) =>
                 handleInputBlur(index, "description", e.target.value)
               }
+              placeholder="설명 (100글자 제한)"
+              maxLength={100}
             />
             <ItemSearchWrapper>
               <CommonInput
@@ -330,6 +330,18 @@ const RoutinePriceWrapper = styled.div`
 const ItemSearchWrapper = styled.div`
   width: 100%;
   position: relative;
+`;
+
+const CommonTextarea = styled.textarea`
+  width: 90% !important;
+  height: 150px !important;
+  border: 3px solid rgba(255, 164, 228, 0.5);
+  border-radius: 13px;
+  padding: 10px 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: none;
 `;
 
 const SearchResults = styled.div`

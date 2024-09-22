@@ -2,27 +2,25 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 interface itemBox {
-  itemList: number[];
+  item_key: number;
 }
 
-const DetailBtnBox: React.FC<itemBox> = ({ itemList }) => {
+const ItemBtnBox: React.FC<itemBox> = ({ item_key }) => {
   const navigate = useNavigate();
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const token = sessionStorage.getItem("authToken");
 
   const handleAddItem = async () => {
     try {
-      for (const item_key of itemList) {
-        await axios.post(
-          `${backPort}/api/order/cart`,
-          { item_key, quantity: 1 },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-      }
+      await axios.post(
+        `${backPort}/api/order/cart`,
+        { item_key: item_key, quantity: 1 },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log("장바구니에 모든 아이템 추가 성공");
       navigate("/order");
     } catch (error) {
@@ -39,4 +37,4 @@ const DetailBtnBox: React.FC<itemBox> = ({ itemList }) => {
     </>
   );
 };
-export default DetailBtnBox;
+export default ItemBtnBox;
