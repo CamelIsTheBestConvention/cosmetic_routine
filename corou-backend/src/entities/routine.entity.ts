@@ -38,6 +38,6 @@ export class Routine {
     @OneToMany(() => RoutineDetail, routineDetail => routineDetail.routine, { cascade: true })
     routineDetails?: RoutineDetail[];
 
-    // @OneToMany(() => RoutineSkinRelation, relation => relation.routine, { cascade: true })
-    // user_skin_relations?: RoutineSkinRelation[];
+    @OneToMany(() => RoutineSkinRelation, routineSkinRelation => routineSkinRelation.routine, { cascade: true })
+    routine_skin_relations?: RoutineSkinRelation[];
 }
