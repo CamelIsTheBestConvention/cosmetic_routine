@@ -88,7 +88,7 @@ const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
             {
               paymentData,
             },
-            {
+            { 
               headers: {
                 Authorization: `Bearer ${channelKey}`,
               },

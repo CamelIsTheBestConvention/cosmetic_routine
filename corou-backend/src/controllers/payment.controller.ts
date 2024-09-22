@@ -6,7 +6,7 @@ const portoneService = container.resolve(PortoneService);
 
 export const createPayment = async (req: Request, res: Response): Promise<void> => {
     try {
-        const paymentData = req.body;
+        const paymentData = req.body.paymentData;
         const payment = await portoneService.createPayment(paymentData);
         res.status(201).json(payment);
     } catch (error) {
