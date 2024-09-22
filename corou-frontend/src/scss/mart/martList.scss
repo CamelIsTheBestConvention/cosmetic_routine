@@ -7,6 +7,16 @@
   width: 90%;
   margin: 0 auto 20px auto;
   position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 10px 0;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f8f8f8;
+    opacity: 0.8;
+    border-radius: 14px;
+  }
 
   label {
     display: flex;
@@ -65,13 +75,6 @@
 .martItemWrapper {
   width: 100%;
   display: flex;
-
-  &:hover {
-    background-color: #f8f8f8;
-    opacity: 0.8;
-    cursor: pointer;
-    border-radius: 14px;
-  }
 }
 
 .martItemImg {

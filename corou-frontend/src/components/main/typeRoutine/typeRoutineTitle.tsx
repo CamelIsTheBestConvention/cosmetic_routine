@@ -5,7 +5,7 @@ const TypeRoutineTitle: React.FC = () => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate("/about");
+    navigate("/routine");
   };
 
   return (
