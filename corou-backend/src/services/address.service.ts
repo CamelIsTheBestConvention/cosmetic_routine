@@ -10,7 +10,7 @@ export class AddressService {
     private userService: UserService,
     @inject(REPOSITORY_TOKENS.AddressRepository)
     private addressRepository: Repository<Address>
-  ) { }
+  ) {}
 
   // 사용자 주소 추가
   async addAddress(
@@ -36,6 +36,7 @@ export class AddressService {
     }
     const newAddress = this.addressRepository.create({
       user: foundUser,
+      address_name,
       name,
       addr,
       addr_detail,

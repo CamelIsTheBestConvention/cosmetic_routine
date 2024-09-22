@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
             <div className="profileImg">
               <div>
                 <img
-                  src={profile?.profileImg}
+                  src={`/assets/user/${userKey}.png`}
                   alt={`${profile?.username} 프로필 이미지`}
                 />
               </div>

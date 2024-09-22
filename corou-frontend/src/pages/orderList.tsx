@@ -31,6 +31,7 @@ const OrderList: React.FC = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(response.data);
         setOrders(response.data);
         setLoading(false);
       } catch (err) {

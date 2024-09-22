@@ -35,22 +35,22 @@ const Mart: React.FC = () => {
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
   useEffect(() => {
-    const fetchCartData = async () => {
-      try {
-        const response = await axios.get(`${backPort}/api/order/cart`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log("장바구니 데이터", response.data);
-        setCartList(response.data);
-      } catch (error) {
-        console.error("장바구니 데이터를 불러오는 중 오류 발생", error);
-      }
-    };
-
     fetchCartData();
   }, [backPort, token]);
+
+  const fetchCartData = async () => {
+    try {
+      const response = await axios.get(`${backPort}/api/order/cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("장바구니 데이터", response.data);
+      setCartList(response.data);
+    } catch (error) {
+      console.error("장바구니 데이터를 불러오는 중 오류 발생", error);
+    }
+  };
 
   const handleQuantityChange = (cartKey: number, newQuantity: number) => {
     setCartList((prevList) =>
@@ -81,6 +81,7 @@ const Mart: React.FC = () => {
         cartList={cartList}
         onQuantityChange={handleQuantityChange}
         onCheckedItemsChange={handleCheckedItemsChange}
+        refreshCartData={fetchCartData}
       />
       <PriceList
         cartList={cartList.filter((item) =>

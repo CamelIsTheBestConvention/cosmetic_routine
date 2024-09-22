@@ -3,6 +3,7 @@ import MainFooter from "../components/common/mainFooter";
 import AboutHeader from "../components/common/aboutHeader";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import styled from "styled-components";
 
 interface addressData {
   address_key: number;
@@ -81,14 +82,14 @@ const SetAddress: React.FC = () => {
   return (
     <>
       <AboutHeader Title="배송지" onBack={handleBack} />
-      <div>
+      <AddAddressBox>
         <span onClick={handleAddAddress}>배송지 추가</span>
-      </div>
-      <div>
+      </AddAddressBox>
+      <GetAddressWrapper>
         {addressList?.length > 0 ? (
           addressList?.map((address) => (
-            <div key={address?.address_key}>
-              <div>
+            <AddressBox key={address?.address_key}>
+              <AddressBoxTitle>
                 <h3>{address?.name}</h3>
                 <div>
                   <span onClick={() => handleEditAddress(address?.address_key)}>
@@ -98,21 +99,56 @@ const SetAddress: React.FC = () => {
                     삭제
                   </span>
                 </div>
-              </div>
-              <div>
+              </AddressBoxTitle>
+              <AddressBoxContent>
                 {/* <span>{address?.username}</span> */}
                 <span>{address?.addr}</span>
                 <span>{address?.addr_detail}</span>
-              </div>
+              </AddressBoxContent>
               {address?.is_default === "Y" && <div>기본 배송지</div>}
-            </div>
+            </AddressBox>
           ))
         ) : (
           <div>등록한 배송지가 없습니다.</div>
         )}
-      </div>
+      </GetAddressWrapper>
       <MainFooter />
     </>
   );
 };
 export default SetAddress;
+
+const AddAddressBox = styled.div`
+  width: 90%;
+  margin: 30px auto;
+  border-bottom: 1px solid #ffa4e4;
+  display: flex;
+  justify-content: flex-end;
+
+  span {
+    text-align: right;
+    color: #ff6de4;
+    font-size: 14px;
+    font-weight: 700;
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+`;
+
+const GetAddressWrapper = styled.div`
+  width: 80%;
+  margin: 0 auto;
+`;
+
+const AddressBox = styled.div`
+  width: 100%;
+  border: 2px solid #ffa4e4;
+  display: flex;
+  flex-direction: column;
+`;
+
+const AddressBoxTitle = styled.div`
+  display: flex;
+`;
+
+const AddressBoxContent = styled.div``;
