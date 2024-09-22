@@ -7,6 +7,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
+interface skinRelations {
+  routine_key: number;
+  attr_key: number;
+}
+
 interface routineItem {
   routine_key: string;
   for_age: number;
@@ -19,7 +24,13 @@ interface routineItem {
   user: { username: string };
   problem: number[];
   tags: string[];
-  firstItemKey?: number;
+  routine_skin_relations: skinRelations[];
+}
+
+interface allRoutineData {
+  routine: routineItem;
+  attr_keys: number[];
+  firstItemKey: number;
 }
 
 interface searchData {
@@ -29,7 +40,7 @@ interface searchData {
 const FilterList: React.FC<searchData> = ({ searchQuery }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [items, setItems] = useState<routineItem[]>([]);
+  const [items, setItems] = useState<allRoutineData[]>([]);
   const [sortOrder, setSortOrder] = useState("priceAsc");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -78,10 +89,11 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
 
         // 각 루틴의 아이템 키 가져오기
         const updatedItems = await Promise.all(
-          response.data.map(async (item: routineItem) => {
+          response.data.map(async (item: allRoutineData) => {
+            console.log("현재 아이템", item);
             try {
               const itemResponse = await axios.get(
-                `${backPort}/api/routine/${item?.routine_key}`
+                `${backPort}/api/routine/${item?.routine.routine_key}`
               );
               const firstItemKey =
                 itemResponse.data.routineDetails[0]?.item_key;
@@ -92,7 +104,7 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
               };
             } catch (error) {
               console.error(
-                `루틴의 제품 목록을 가져오는 중 에러 (${item.routine_key}):`,
+                `루틴의 제품 목록을 가져오는 중 에러 (${item.routine.routine_key}):`,
                 error
               );
               return item;
@@ -120,16 +132,24 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
 
     switch (selectedOrder) {
       case "priceAsc":
-        sortedArray.sort((a, b) => a.price_total - b.price_total);
+        sortedArray.sort(
+          (a, b) => a.routine.price_total - b.routine.price_total
+        );
         break;
       case "priceDesc":
-        sortedArray.sort((a, b) => b.price_total - a.price_total);
+        sortedArray.sort(
+          (a, b) => b.routine.price_total - a.routine.price_total
+        );
         break;
       case "ratingAsc":
-        sortedArray.sort((a, b) => a.average_rating - b.average_rating);
+        sortedArray.sort(
+          (a, b) => a.routine.average_rating - b.routine.average_rating
+        );
         break;
       case "ratingDesc":
-        sortedArray.sort((a, b) => b.average_rating - a.average_rating);
+        sortedArray.sort(
+          (a, b) => b.routine.average_rating - a.routine.average_rating
+        );
         break;
       default:
         break;
@@ -141,7 +161,7 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
   const toggleLike = (index: number) => {
     setItems((prevItems) =>
       prevItems.map((item, i) =>
-        i === index ? { ...item, isLiked: !item.isLiked } : item
+        i === index ? { ...item, isLiked: !item.routine.isLiked } : item
       )
     );
   };
@@ -198,15 +218,15 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
         {items.map((item, index) => (
           <div
             className="itemListWrapper"
-            key={item?.routine_key}
-            onClick={() => handleRoutineClick(item?.routine_key)}
+            key={item?.routine.routine_key}
+            onClick={() => handleRoutineClick(item?.routine.routine_key)}
           >
             <div className="itemListTitle">
               <div className="itemListFirstTitle">
-                <div>{item?.routine_name}</div>
+                <div>{item?.routine.routine_name}</div>
                 <div>
                   <img
-                    src={item.isLiked ? goodOn : goodOff}
+                    src={item.routine.isLiked ? goodOn : goodOff}
                     alt="좋아요"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -221,8 +241,8 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
                   <img src={star} alt="" />
                 </div>
                 <div>
-                  {Math.ceil(item?.average_rating * 10) / 10}{" "}
-                  <span>({item?.reviews})</span>
+                  {Math.ceil(item?.routine.average_rating * 10) / 10}{" "}
+                  <span>({item?.routine.reviews})</span>
                 </div>
               </div>
             </div>
@@ -234,18 +254,18 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
                 />
               </div>
               <div className="contentInfo">
-                <span>{item?.user.username}님의 루틴</span>
+                <span>{item?.routine.user.username}님의 루틴</span>
                 <div className="selectFilter">
-                  {getGenderDisplay(item?.for_gender)}
-                  <div>{item?.for_age}대</div>
-                  {item?.problem && item.problem.length > 0 && (
-                    <div>{item.problem.join(", ")}</div>
+                  {getGenderDisplay(item?.routine.for_gender)}
+                  <div>{item?.routine.for_age}대</div>
+                  {item?.routine.problem && item.routine.problem.length > 0 && (
+                    <div>{item.routine.problem.join(", ")}</div>
                   )}
                 </div>
                 <div className="contentTag">
-                  {item.tags && item.tags.length > 0 ? (
+                  {item.routine.tags && item.routine.tags.length > 0 ? (
                     <ul>
-                      {item.tags.map((tag, tagIndex) => (
+                      {item.routine.tags.map((tag, tagIndex) => (
                         <li key={tagIndex}>{tag}</li>
                       ))}
                     </ul>
@@ -254,7 +274,7 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
                   )}
                 </div>
                 <div className="contentPrice">
-                  종합 <span>₩ {item?.price_total}</span>
+                  종합 <span>₩ {item?.routine.price_total}</span>
                 </div>
               </div>
             </div>

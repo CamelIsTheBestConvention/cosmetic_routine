@@ -56,6 +56,7 @@ const NoticeBox = styled.div<{ isOpen: boolean }>`
   padding: 10px;
   cursor: pointer;
   transition: height 1s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const NoticeDate = styled.div`

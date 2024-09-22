@@ -14,7 +14,12 @@ interface userProfile {
   problem: string[];
 }
 
-interface RoutineItem {
+interface skinRelations {
+  routine_key: number;
+  attr_key: number;
+}
+
+interface routineItem {
   routine_key: string;
   for_age: number;
   for_gender: string;
@@ -26,6 +31,12 @@ interface RoutineItem {
   user: { username: string };
   problem: number[];
   tags: string[];
+  routine_skin_relations: skinRelations[];
+}
+
+interface allRoutineData {
+  routine: routineItem;
+  attr_keys: number[];
 }
 
 const TypeRoutineBox: React.FC = () => {
@@ -33,7 +44,7 @@ const TypeRoutineBox: React.FC = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const topRoutineRef = useRef<HTMLDivElement>(null);
-  const [typeRoutine, setTypeRoutine] = useState<RoutineItem[]>([]);
+  const [typeRoutine, setTypeRoutine] = useState<allRoutineData[]>([]);
   const [userData, setUserData] = useState<userProfile | null>(null);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const userKey = sessionStorage.getItem("userKey");
@@ -129,9 +140,9 @@ const TypeRoutineBox: React.FC = () => {
         <TypeRoutineBanner>
           {typeRoutine.slice(0, 3).map((routine) => (
             <BannerBox
-              key={routine.routine_key}
-              routine={routine}
-              onClick={() => handleDetailRoutine(routine.routine_key)}
+              key={routine.routine.routine_key}
+              routine={routine.routine}
+              onClick={() => handleDetailRoutine(routine.routine.routine_key)}
             />
           ))}
         </TypeRoutineBanner>
