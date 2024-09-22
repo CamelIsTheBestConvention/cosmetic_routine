@@ -4,6 +4,7 @@ import CompleteBtn from "../components/common/completeBtn";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import MainFooter from "../components/common/mainFooter";
+import styled from "styled-components";
 
 interface addressData {
   address_name: string;
@@ -97,7 +98,7 @@ const EditAddress: React.FC = () => {
         <div>
           <div>
             <span>배송지 이름</span>
-            <input
+            <Input
               type="text"
               name="address_name"
               placeholder="예) 우리 집"
@@ -107,7 +108,7 @@ const EditAddress: React.FC = () => {
           </div>
           <div>
             <span>성함</span>
-            <input
+            <Input
               type="text"
               name="name"
               placeholder="예) 문미새"
@@ -117,7 +118,7 @@ const EditAddress: React.FC = () => {
           </div>
           <div>
             <span>주소</span>
-            <input
+            <Input
               type="text"
               name="addr"
               placeholder="예) 서울특별시 강남구 역삼동"
@@ -127,7 +128,7 @@ const EditAddress: React.FC = () => {
           </div>
           <div>
             <span>상세 주소</span>
-            <input
+            <Input
               type="text"
               name="addr_detail"
               placeholder="예) 미새아파트 101동 101호"
@@ -137,7 +138,7 @@ const EditAddress: React.FC = () => {
           </div>
           <div>
             <span>우편번호</span>
-            <input
+            <Input
               type="text"
               name="zip"
               placeholder="예) 12345"
@@ -147,7 +148,7 @@ const EditAddress: React.FC = () => {
           </div>
           <div>
             <span>전화번호</span>
-            <input
+            <Input
               type="text"
               name="tel"
               placeholder="예) 01012345678"
@@ -157,7 +158,7 @@ const EditAddress: React.FC = () => {
           </div>
           <div>
             <span>요청</span>
-            <input
+            <Input
               type="text"
               name="request"
               placeholder="예) 문 앞에 놓아주세요."
@@ -167,7 +168,7 @@ const EditAddress: React.FC = () => {
           </div>
           <div>
             <span>기본 배송지로 설정</span>
-            <input
+            <Input
               type="checkbox"
               name="is_default"
               checked={addressData.is_default === "Y"}
@@ -186,3 +187,13 @@ const EditAddress: React.FC = () => {
   );
 };
 export default EditAddress;
+
+const Input = styled.input`
+  width: 90%;
+  border: 3px solid rgba(255, 164, 228, 0.5);
+  border-radius: 13px;
+  padding: 10px 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  outline: none;
+`;

@@ -81,12 +81,14 @@ const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
     IMP.request_pay(paymentData, async (response: any) => {
       console.log(paymentData);
       if (response.success) {
+        console.log("응답 데이터", response.data);
         console.log(1);
+        console.log("12312", response.imp_uid);
         try {
           const result = await axios.post(
             `${backPort}/api/payments`,
             {
-              paymentData,
+              imp_uid: response.imp_uid,
             },
             {
               headers: {
