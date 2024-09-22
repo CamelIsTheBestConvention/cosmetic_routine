@@ -1,3 +1,5 @@
+import axios from "axios";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 interface PaymentData {
@@ -18,10 +20,41 @@ interface totalPriceData {
 }
 
 const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
+  useEffect(() => {
+    const loadIMPScript = () => {
+      return new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = "https://cdn.iamport.kr/v1/iamport.js";
+        script.onload = () => resolve(window.IMP);
+        document.body.appendChild(script);
+      });
+    };
+
+    loadIMPScript().then((IMP) => {
+      if (!IMP) {
+        console.error("포트원(아임포트) 결제 모듈이 로드되지 않았습니다.");
+      }
+    });
+
+    return () => {
+      const script = document.querySelector(
+        "script[src='https://cdn.iamport.kr/v1/iamport.js']"
+      );
+      if (script) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
+
   const handlePayment = async () => {
     const { IMP } = window as any; // 타입스크립트에서 window 객체를 사용하는 방법
-    console.log(IMP);
-    const clientKey = process.env.PORTONE_CLIENT_KEY;
+    const clientKey = process.env.REACT_APP_PORTONE_CLIENT_KEY;
+    const backPort = process.env.REACT_APP_BACKEND_PORT;
+    const channelKey = process.env.REACT_APP_PORTONE_CHANNEL_KEY;
+
+    console.log("클라키", clientKey);
+    console.log("임프", IMP);
+    console.log("채널키", channelKey);
 
     if (!IMP) {
       console.error("포트원(아임포트) 결제 모듈이 로드되지 않았습니다.");
@@ -30,12 +63,12 @@ const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
 
     IMP.init(clientKey); // 포트원 가맹점 식별코드
 
-    const data: PaymentData = {
-      pg: "tosspayments", // PG사
+    const paymentData: PaymentData = {
+      pg: "uplus", // PG사
       pay_method: "card", // 결제수단
       merchant_uid: `mid_${new Date().getTime()}`, // 주문 고유 ID
       amount: totalPrice, // 결제 금액
-      name: "아임포트 결제 데이터", // 주문명
+      name: "corou 제품", // 주문명
       buyer_name: "문미새",
       buyer_tel: "010-1234-5678",
       buyer_email: "gildong@example.com",
@@ -45,26 +78,29 @@ const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
 
     // https://api.iamport.kr/users/getToken
 
-    IMP.request_pay(data, async (response: any) => {
+    IMP.request_pay(paymentData, async (response: any) => {
+      console.log(paymentData);
       if (response.success) {
+        console.log(1);
         try {
-          const res = await fetch("/api/payment/verify", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+          const result = await axios.post(
+            `${backPort}/api/payments`,
+            {
+              paymentData,
             },
-            body: JSON.stringify({
-              imp_uid: response.imp_uid, // 포트원 결제 고유 번호
-              merchant_uid: response.merchant_uid, // 주문 고유 번호
-            }),
-          });
-          const result = await res.json();
-          if (result.status === "success") {
+            {
+              headers: {
+                Authorization: `Bearer ${channelKey}`,
+              },
+            }
+          );
+
+          if (result.data.status === "success") {
             alert("결제가 정상적으로 완료되었습니다.");
-            console.log("결제 검증 성공:", result);
+            console.log("결제 검증 성공:", result.data);
           } else {
-            alert("결제 검증 실패: " + result.message);
-            console.error("결제 검증 실패:", result);
+            alert("결제 검증 실패: " + result.data.message);
+            console.error("결제 검증 실패:", result.data);
           }
         } catch (error) {
           console.error("서버로 결제 정보 전송 중 에러:", error);
