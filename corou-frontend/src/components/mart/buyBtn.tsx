@@ -85,11 +85,8 @@ const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
         console.log(1);
         console.log("12312", response.imp_uid);
         try {
-          const result = await axios.post(
-            `${backPort}/api/payments`,
-            {
-              imp_uid: response.imp_uid,
-            },
+          const result = await axios.get(
+            `${backPort}/api/payments/${response.imp_uid}`,
             { 
               headers: {
                 Authorization: `Bearer ${channelKey}`,
@@ -97,7 +94,8 @@ const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
             }
           );
 
-          if (result.data.status === "success") {
+          console.log(result);
+          if (result.data.status === "paid") {
             alert("결제가 정상적으로 완료되었습니다.");
             console.log("결제 검증 성공:", result.data);
           } else {

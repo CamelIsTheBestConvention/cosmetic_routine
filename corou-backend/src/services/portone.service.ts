@@ -27,30 +27,6 @@ export class PortoneService {
         }
     }
 
-    async createPayment(paymentData: any): Promise<string> {
-        try {
-            const accessToken = await this.fetchAccessToken();
-            console.log('Access Token:', accessToken);
-
-            console.log('Request URL:', `${portoneClient.defaults.baseURL}/payments/confirm`);
-            console.log('Request Data:', paymentData);
-
-            const response = await portoneClient.get('/payments', {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            const impUid = response.data.response.imp_uid;
-            console.log('Payment created with imp_uid:', impUid);
-
-            return impUid;
-        } catch (error: any) {
-            console.error('Error creating payment:', error.response?.data || error.message);
-            throw new Error('Failed to create payment');
-        }
-    }
 
     async getPayment(impUid: string): Promise<any> {
         try {
@@ -63,7 +39,7 @@ export class PortoneService {
                 }
             });
 
-            console.log('Payment details:', response.data.response);
+            console.log('Payment details:', response);
             return response.data.response;
         } catch (error) {
             console.error('Error querying payment:', error);

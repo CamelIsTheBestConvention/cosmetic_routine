@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { createPayment, getPayment } from '../controllers/payment.controller';
+import { getPayment } from '../controllers/payment.controller';
 
 const router = Router();
 
-router.post('/payments', createPayment);
-router.get('/payments/:impUid', getPayment);
+router.get('/payments/:imp_uid', getPayment);
 
 export default router;
