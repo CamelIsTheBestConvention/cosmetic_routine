@@ -1,5 +1,5 @@
-import 'reflect-metadata';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import 'reflect-metadata';
 import { Item } from './item.entity';
 import { ItemOrder } from './item-order.entity';
 
