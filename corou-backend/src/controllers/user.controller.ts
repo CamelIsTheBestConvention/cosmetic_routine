@@ -117,10 +117,11 @@ export class UserController {
         console.log(req.params);
         console.log(req.body);
         const { user_key } = req.params;
-        const { name, addr, addr_detail, zip, tel, request, is_default } = req.body;
+        const { address_name, name, addr, addr_detail, zip, tel, request, is_default } = req.body;
         try {
             const address = await this.addressService.addAddress(
                 Number(user_key),
+                address_name,
                 name,
                 addr,
                 addr_detail,
@@ -159,9 +160,9 @@ export class UserController {
 
     async updateAddress(req: Request, res: Response): Promise<void> {
         const { user_key, addr_key } = req.params;
-        const { name, addr, addr_detail, zip, tel, request, is_default } = req.body;
+        const { address_name, name, addr, addr_detail, zip, tel, request, is_default } = req.body;
         try {
-            const address = await this.addressService.updateAddress(Number(addr_key), name, addr, addr_detail, zip, tel, request, is_default);
+            const address = await this.addressService.updateAddress(Number(addr_key), address_name, name, addr, addr_detail, zip, tel, request, is_default);
             res.status(200).json(address);
         } catch (error: any) {
             res.status(400).json({ message: error.message });

@@ -50,7 +50,7 @@ export class ItemOrderService {
                     transactionalEntityManager
                 );
             }
-            
+
             return newItemOrder;
         });
         // const newItemOrder = this.itemOrderRepository.create({
@@ -66,9 +66,7 @@ export class ItemOrderService {
     // 사용자 주문 조회 
     async getItemOrderByUser(user_key: number): Promise<ItemOrder[]> {
         const itemOrders = await this.itemOrderRepository.find({ where: { user: { user_key } } });
-        if (!itemOrders.length) {
-            throw new Error('주문을 찾을 수 없습니다.');
-        }
+
         return itemOrders;
     }
 

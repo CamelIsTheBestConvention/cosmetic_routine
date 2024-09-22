@@ -39,6 +39,7 @@ export class OrderController {
         }
         const decoded = verifyToken(token);
         const user_key = decoded.user_key;
+        
         try {
             const orders = await this.itemOrderService.getItemOrderByUser(user_key);
             res.status(200).json(orders);

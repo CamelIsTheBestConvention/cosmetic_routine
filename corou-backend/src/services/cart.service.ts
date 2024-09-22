@@ -10,14 +10,19 @@ export class CartService {
     ) { }
 
     async addToCart(user_key: number, item_key: number, quantity: number): Promise<Cart> {
+        const existingItem = await this.cartRepository.findOne({ where: { user_key, item_key } });
+        if (existingItem) {
+            existingItem.quantity += quantity;
+            return this.cartRepository.save(existingItem);
+        }
         const cart = this.cartRepository.create({ user_key, item_key, quantity });
         return this.cartRepository.save(cart);
     }
 
     async getCart(user_key: number): Promise<Cart[]> {
-        return this.cartRepository.find({ 
+        return this.cartRepository.find({
             where: { user_key },
-            relations: ['item'] 
+            relations: ['item']
         });
     }
 
