@@ -3,42 +3,107 @@ import "../../scss/mart/martList.scss";
 import notItem from "../../img/notItem.png";
 
 interface itemData {
-  id: number;
-  brand: string;
-  name: string;
-  size: number;
-  price: number;
-  itemImg: string;
+  average_rating: number;
+  brand_name: string;
+  category: string;
+  description: string;
+  item_key: number;
+  item_name: string;
+  item_price: number;
+  volume: number;
 }
 
-interface itemListData {
-  itemList: itemData[];
+interface cartItem {
+  cart_key: number;
+  item: itemData;
+  item_key: number;
+  quantity: number;
+  user_key: number;
 }
 
-const MartList: React.FC<itemListData> = ({ itemList }) => {
-  const hasItem = itemList && itemList.length > 0;
+interface cartListData {
+  cartList: cartItem[];
+  onQuantityChange: (cartKey: number, newQuantity: number) => void;
+  onCheckedItemsChange: (checkedItems: number[]) => void;
+}
+
+const MartList: React.FC<cartListData> = ({
+  cartList,
+  onQuantityChange,
+  onCheckedItemsChange,
+}) => {
+  const hasItem = cartList && cartList.length > 0;
+  const [checkedItems, setCheckedItems] = useState<number[]>([]);
+
+  const handleQuantityInputChange = (
+    cartKey: number,
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newQuantity = parseInt(e.target.value, 10);
+    if (!isNaN(newQuantity) && newQuantity >= 1) {
+      onQuantityChange(cartKey, newQuantity);
+    }
+  };
+
+  const handleCheckboxChange = (cartKey: number) => {
+    setCheckedItems((prevCheckedItems) => {
+      const updatedCheckedItems = prevCheckedItems.includes(cartKey)
+        ? prevCheckedItems.filter((key) => key !== cartKey)
+        : [...prevCheckedItems, cartKey];
+
+      onCheckedItemsChange(updatedCheckedItems);
+      return updatedCheckedItems;
+    });
+  };
 
   return (
     <>
       <div className="martListWrapper">
         {hasItem ? (
-          <div className="martItem">
-            <label>
-              <input type="checkbox" name="" id="" />
-              <div className="martItemWrapper">
-                <div className="martItemImg">
-                  <img src={itemList[0]?.itemImg} alt="itemImg" />
+          cartList.map((cartItem) => (
+            <div className="martItem" key={cartItem.cart_key}>
+              <label>
+                <input
+                  type="checkbox"
+                  name="itemCheckbox"
+                  checked={checkedItems.includes(cartItem.cart_key)}
+                  onChange={() => handleCheckboxChange(cartItem.cart_key)}
+                />
+                <div className="martItemWrapper">
+                  <div className="martItemImg">
+                    <img
+                      src={`/assets/item/${cartItem?.item_key}.jpg`}
+                      alt={cartItem?.item.item_name}
+                    />
+                  </div>
+                  <div className="martItemInfo">
+                    <span>{cartItem?.item.brand_name}</span>
+                    <span>
+                      {cartItem?.item.item_name} / {cartItem?.item.volume}ml
+                    </span>
+                    <span className="itemQuantity">
+                      수량:{" "}
+                      <input
+                        type="number"
+                        value={cartItem?.quantity}
+                        onChange={(e) =>
+                          handleQuantityInputChange(cartItem.cart_key, e)
+                        }
+                        min="1"
+                        max="100"
+                      />
+                    </span>
+                    <span>
+                      ₩{" "}
+                      {(
+                        cartItem?.item.item_price * cartItem?.quantity
+                      ).toLocaleString()}
+                    </span>
+                  </div>
                 </div>
-                <div className="martItemInfo">
-                  <span>{itemList[0]?.brand}</span>
-                  <span>
-                    {itemList[0]?.name} & {itemList[0]?.size}
-                  </span>
-                  <p>₩ {itemList[0]?.price}</p>
-                </div>
-              </div>
-            </label>
-          </div>
+              </label>
+            </div>
+          ))
         ) : (
           <div className="notItemWrapper">
             <div>

@@ -13,7 +13,11 @@ interface PaymentData {
   buyer_postcode: string;
 }
 
-const BuyBtn: React.FC = () => {
+interface totalPriceData {
+  totalPrice: number;
+}
+
+const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
   const handlePayment = async () => {
     const { IMP } = window as any; // 타입스크립트에서 window 객체를 사용하는 방법
     const clientKey = process.env.PORTONE_CLIENT_KEY;
@@ -80,7 +84,9 @@ const BuyBtn: React.FC = () => {
             <span>총 0개</span>
           </label>
         </BuyCheck>
-        <button onClick={handlePayment}>000,000원 구매하기</button>
+        <button onClick={handlePayment}>
+          {totalPrice.toLocaleString()}원 구매하기
+        </button>
       </BuyBtnWrapper>
     </>
   );

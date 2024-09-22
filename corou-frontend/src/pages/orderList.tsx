@@ -17,6 +17,7 @@ const OrderList: React.FC = () => {
   const [orders, setOrders] = useState<orderItem[]>([]);
   const [loading, setLoading] = useState(true);
   const userKey = sessionStorage.getItem("userKey");
+  const token = sessionStorage.getItem("authToken");
 
   const handleBack = () => {
     navigate(-1);
@@ -25,7 +26,11 @@ const OrderList: React.FC = () => {
   useEffect(() => {
     const fetchOrderList = async () => {
       try {
-        const response = await axios.get(`${backPort}/api/user/1/order`);
+        const response = await axios.get(`${backPort}/api/order/itemorder`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setOrders(response.data);
         setLoading(false);
       } catch (err) {
@@ -81,23 +86,6 @@ const OrderList: React.FC = () => {
           ) : (
             <p>주문 내역이 없습니다.</p>
           )}
-
-          {/* 더미 */}
-          <div className="orderListBox">
-            <div className="boxTitle">
-              <span>24.09.17</span>
-              <span>주문상세</span>
-            </div>
-            <div className="boxContent">
-              <div>
-                <img src="" alt="" />
-              </div>
-              <div>
-                <span>아이템1 외 3건</span>
-                <p>₩ 00,000</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <MainFooter />
