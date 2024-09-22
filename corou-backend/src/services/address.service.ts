@@ -69,11 +69,12 @@ export class AddressService {
     }
 
     // 사용자 주소 삭제
-    async deleteAddress(address_key: number): Promise<Address> {
+    async deleteAddress(address_key: number): Promise<void> {
         const address = await this.addressRepository.findOneBy({ address_key });
         if (!address) {
             throw new Error('해당 주소를 찾을 수 없습니다.');
         }
-        return await this.addressRepository.remove(address);
+        await this.addressRepository.remove(address);
+        return;
     }
 }
