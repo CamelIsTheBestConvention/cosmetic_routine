@@ -1,6 +1,6 @@
 # corou: Cosmetic Routine
 
-![example](/images/example.png)
+![example](/images/phone.png)
 
 # 목차  
 
