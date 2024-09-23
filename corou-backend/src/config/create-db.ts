@@ -17,6 +17,7 @@ import { ItemOrder } from '../entities/item-order.entity';
 import { OrderDetail } from '../entities/order-detail.entity';
 import { Review } from '../entities/review.entity';
 import { Tag } from '../entities/tag.entity';
+import { Cart } from '../entities/cart.entity';
 
 dotenv.config({ path: '.env' }); // 상대적 위치가 아닌, 루트 위치에서 .env 파일을 찾아서 환경변수를 설정
 
@@ -37,7 +38,7 @@ const AppDataSource = new DataSource({
     database: DB_DATABASE,
     synchronize: true,
     logging: false,
-    entities: [User, Address, Routine, RoutineDetail, Item, SkinAttribute, UserSkinRelation, RoutineSkinRelation, RoutineTagRelation, ItemOrder, OrderDetail, Review, Tag],
+    entities: [User, Address, Routine, RoutineDetail, Item, SkinAttribute, UserSkinRelation, RoutineSkinRelation, RoutineTagRelation, ItemOrder, OrderDetail, Review, Tag, Cart],
 
 });
 
