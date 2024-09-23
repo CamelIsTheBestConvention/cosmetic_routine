@@ -23,3 +23,4 @@
 
 ## 아키텍처  
 
+![architecture](https://github.com/jaenam615/cosmetic_routine/blob/main/images/architecture.png?raw=true)
