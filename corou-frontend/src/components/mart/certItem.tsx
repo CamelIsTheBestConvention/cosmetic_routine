@@ -1,5 +1,3 @@
-import "../../../scss/main/item.scss";
-
 interface ItemProps {
   average_rating: number;
   category: string;
@@ -11,15 +9,13 @@ interface ItemProps {
 
 interface ItemComponentProps {
   item: ItemProps;
-  rank?: number;
   onClick?: () => void;
 }
 
-const Item: React.FC<ItemComponentProps> = ({ item, rank, onClick }) => {
+const CertItem: React.FC<ItemComponentProps> = ({ item }) => {
   return (
     <>
-      <div className="itemWrapper" onClick={onClick}>
-        <div className="num">{rank}</div>
+      <div className="itemWrapper">
         <div className="itemImg">
           <img
             src={`/assets/item/${item?.item_key}.jpg`}
@@ -35,4 +31,4 @@ const Item: React.FC<ItemComponentProps> = ({ item, rank, onClick }) => {
     </>
   );
 };
-export default Item;
+export default CertItem;

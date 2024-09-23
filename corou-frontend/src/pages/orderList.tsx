@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 import MainFooter from "../components/common/mainFooter";
 
 interface orderItem {
-  addr_key: number;
+  order_at: string;
+  order_key: number;
   price_total: number;
-  items: string[];
+  status: string;
 }
 
 const OrderList: React.FC = () => {
@@ -65,10 +66,10 @@ const OrderList: React.FC = () => {
               <div
                 className="orderListBox"
                 key={index}
-                onClick={() => handleOrderClick(order.addr_key)}
+                onClick={() => handleOrderClick(order?.order_key)}
               >
                 <div className="boxTitle">
-                  <span>{order?.addr_key}</span>
+                  <span>{order?.order_at}</span>
                   <span>주문상세</span>
                 </div>
                 <div className="boxContent">
@@ -77,7 +78,8 @@ const OrderList: React.FC = () => {
                   </div>
                   <div>
                     <span>
-                      {order.items[0]} 외 {order.items.length - 1}건
+                      {/* {order.items[0]} 외 {order.items.length - 1}건 */}
+                      총액 : {order?.price_total}, 상태 : {order?.status}
                     </span>
                     <p>₩ {order.price_total}</p>
                   </div>

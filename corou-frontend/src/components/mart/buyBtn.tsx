@@ -2,6 +2,25 @@ import axios from "axios";
 import { useEffect } from "react";
 import styled from "styled-components";
 
+interface itemData {
+  average_rating: number;
+  brand_name: string;
+  category: string;
+  description: string;
+  item_key: number;
+  item_name: string;
+  item_price: number;
+  volume: number;
+}
+
+interface cartItem {
+  cart_key: number;
+  item: itemData;
+  item_key: number;
+  quantity: number;
+  user_key: number;
+}
+
 interface PaymentData {
   pg: string;
   pay_method: string;
@@ -17,9 +36,10 @@ interface PaymentData {
 
 interface totalPriceData {
   totalPrice: number;
+  cartList: cartItem[];
 }
 
-const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
+const BuyBtn: React.FC<totalPriceData> = ({ cartList, totalPrice }) => {
   useEffect(() => {
     const loadIMPScript = () => {
       return new Promise((resolve) => {
@@ -76,8 +96,6 @@ const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
       buyer_postcode: "12345",
     };
 
-    // https://api.iamport.kr/users/getToken
-
     IMP.request_pay(paymentData, async (response: any) => {
       console.log(paymentData);
       if (response.success) {
@@ -87,15 +105,35 @@ const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
         try {
           const result = await axios.get(
             `${backPort}/api/payments/${response.imp_uid}`,
-            { 
+            {
               headers: {
                 Authorization: `Bearer ${channelKey}`,
               },
             }
           );
 
-          console.log(result);
+          console.log(result.data);
           if (result.data.status === "paid") {
+            const token = sessionStorage.getItem("authToken");
+            const payData = axios.post(
+              `${backPort}/api/order/itemorder`,
+              {
+                addr_key: 1,
+                price_total: totalPrice,
+                items: [
+                  {
+                    count: 1,
+                    purchase_price: 1000,
+                    item_key: 1,
+                  },
+                ],
+              },
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
             alert("결제가 정상적으로 완료되었습니다.");
             console.log("결제 검증 성공:", result.data);
           } else {
@@ -115,12 +153,6 @@ const BuyBtn: React.FC<totalPriceData> = ({ totalPrice }) => {
   return (
     <>
       <BuyBtnWrapper>
-        <BuyCheck>
-          <label>
-            <input type="checkbox" />
-            <span>총 0개</span>
-          </label>
-        </BuyCheck>
         <button onClick={handlePayment}>
           {totalPrice.toLocaleString()}원 구매하기
         </button>
