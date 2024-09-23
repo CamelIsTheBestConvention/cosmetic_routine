@@ -10,7 +10,7 @@ export class AddressService {
     private userService: UserService,
     @inject(REPOSITORY_TOKENS.AddressRepository)
     private addressRepository: Repository<Address>
-  ) {}
+  ) { }
 
   // 사용자 주소 추가
   async addAddress(
@@ -68,6 +68,7 @@ export class AddressService {
 
   // 사용자 주소 수정
   async updateAddress(
+    user_key: number,
     address_key: number,
     address_name: string,
     name: string,
@@ -82,9 +83,11 @@ export class AddressService {
     if (!address) {
       throw new Error("해당 주소를 찾을 수 없습니다.");
     }
+    console.log(address.user)
     if (is_default === "Y") {
+      console.log('in default change')
       await this.addressRepository.update(
-        { user: address.user },
+        { user: { user_key }, is_default: "Y" },
         { is_default: "N" }
       );
     }
