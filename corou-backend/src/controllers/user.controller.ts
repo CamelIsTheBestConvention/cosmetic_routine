@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
 import { injectable } from "tsyringe";
-import { verifyToken } from "../utils/jwt.utils";
+import { verifyToken, generateToken } from "../utils/jwt.utils";
 import { UserService } from "../services/user.service";
 import { AddressService } from "../services/address.service";
 import { UserSkinRelationService } from "../services/user-skin-relation.service";
 import { ItemOrderService } from "../services/item-order.service";
-import { generateToken } from "../utils/jwt.utils";
 
 @injectable()
 export class UserController {
@@ -162,7 +161,7 @@ export class UserController {
         const { user_key, addr_key } = req.params;
         const { address_name, name, addr, addr_detail, zip, tel, request, is_default } = req.body;
         try {
-            const address = await this.addressService.updateAddress(Number(addr_key), address_name, name, addr, addr_detail, zip, tel, request, is_default);
+            const address = await this.addressService.updateAddress(Number(user_key), Number(addr_key), address_name, name, addr, addr_detail, zip, tel, request, is_default);
             res.status(200).json(address);
         } catch (error: any) {
             res.status(400).json({ message: error.message });

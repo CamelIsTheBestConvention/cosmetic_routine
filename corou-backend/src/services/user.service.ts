@@ -85,6 +85,10 @@ export class UserService {
         user.password = '';
         return user;
     }
+
+    async getUserByEmail(email: string): Promise<User | null> {
+        return await this.userRepository.findOneBy({ email });
+    }
 }
 
 // const userRepository = AppDataSource.getRepository(User);
