@@ -1,4 +1,4 @@
-# cosmetic_routine
+# corou: Cosmetic Routine
 
 ![example](/images/example.png)
 
