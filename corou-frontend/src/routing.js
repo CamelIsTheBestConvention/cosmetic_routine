@@ -20,6 +20,8 @@ import Notice from "./pages/notice";
 import SetAddress from "./pages/setAddress";
 import AddAddress from "./pages/addAddress";
 import EditAddress from "./pages/editAddress";
+import Cert from "./pages/cert";
+import PopupAddress from "./pages/popupAddress";
 
 function Routing() {
   return (
@@ -46,10 +48,12 @@ function Routing() {
           <Route exact path="/mypage/orderList/:id" element={<OrderDetail />} />
           <Route exact path="/mypage/profileEdit" element={<ProfileEdit />} />
           <Route exact path="/order" element={<Mart />} />
+          <Route exact path="/order/cert" element={<Cert />} />
           <Route exact path="/add" element={<AddRoutine />} />
           <Route exact path="/item" element={<Ranking />} />
           <Route exact path="/item/:id" element={<RankingDetail />} />
           <Route exact path="/kakao/oauth" element={<Redirection />} />
+          <Route exact path="/popup" element={<PopupAddress />} />
         </Routes>
       </BrowserRouter>
     </TotalWrapper>

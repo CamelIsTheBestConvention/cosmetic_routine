@@ -7,6 +7,7 @@ import PriceList from "../components/mart/priceList";
 import MainFooter from "../components/common/mainFooter";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import MoveCertBtn from "../components/mart/moveCertBtn";
 
 interface itemData {
   average_rating: number;
@@ -74,6 +75,11 @@ const Mart: React.FC = () => {
     .filter((item) => checkedItems.includes(item.cart_key))
     .reduce((total, item) => total + item.item.item_price * item.quantity, 0);
 
+  const totalQuantity = cartList.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
   return (
     <>
       <AboutHeader Title={"장바구니"} onBack={handleBack} />
@@ -89,7 +95,11 @@ const Mart: React.FC = () => {
         )}
       />
       <Caution />
-      <BuyBtn totalPrice={totalPrice} />
+      <MoveCertBtn
+        cartList={cartList}
+        totalPrice={totalPrice}
+        totalQuantity={totalQuantity}
+      />
       <MainFooter />
     </>
   );
