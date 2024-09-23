@@ -19,8 +19,8 @@ const Redirection = () => {
         .then((response) => {
           const data = response.data;
           console.log(data);
-          console.log(data.result.user_id);
-          console.log(data.result.jwt);
+          // console.log(data.result.user_id);
+          // console.log(data.result.jwt);
 
           navigate("/");
         })
