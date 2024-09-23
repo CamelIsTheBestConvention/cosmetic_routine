@@ -7,7 +7,7 @@ export function setupKakaoRouter(): Router {
     const router = Router();
     const kakaoController = container.resolve(KakaoController)
 
-    router.post('/token', (req, res) => kakaoController.requestToken(req, res));
+    router.post('/login', (req, res) => kakaoController.kakaoLogin(req, res));
 
     return router;
 }
