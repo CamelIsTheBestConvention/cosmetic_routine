@@ -1,6 +1,18 @@
-# cosmetic_routine
+# corou: Cosmetic Routine
 
-![example](/images/example.png)
+![example](/images/phone.png)
+
+# 목차  
+
+- [팀](##-Team)
+- [Pre Development](##-Pre-Development)
+- [주요 기능](##-주요-기능)
+- [아키텍처](##-아키텍처)
+
+## Team  
+
+[**남재희**](https://www.github.com/jaenam615): 기획, 디자인, 백엔드 아키텍처, 서버 인프라, 인증, APIs, DB  
+[**문성준**](https://www.github.com/camelisthebestconvention): 프론트엔드 아키텍처, UI/UX    
 
 ## Pre Development  
 
@@ -12,7 +24,10 @@
 **ERD**  
 ![erd](/images/erd.png)  
 
-## Backend  
-
 [**API 스펙**](https://github.com/jaenam615/cosmetic_routine/blob/main/corou-backend/api-spec.md)
 
+## 주요 기능  
+
+## 아키텍처  
+
+![architecture](https://github.com/jaenam615/cosmetic_routine/blob/main/images/architecture.png?raw=true)
