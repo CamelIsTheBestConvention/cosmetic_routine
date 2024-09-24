@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../scss/mart/martList.scss";
 import notItem from "../../img/notItem.png";
 import axios from "axios";
@@ -39,6 +39,11 @@ const MartList: React.FC<cartListData> = ({
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const token = sessionStorage.getItem("authToken");
+
+  useEffect(() => {
+    const initialCheckedItems = cartList.map((item) => item.cart_key);
+    setCheckedItems(initialCheckedItems);
+  }, [cartList]);
 
   const handleQuantityInputChange = async (
     cartKey: number,

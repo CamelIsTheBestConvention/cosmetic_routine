@@ -58,12 +58,28 @@ const Cert: React.FC<totalPriceData> = () => {
   const selectAddress = useSelector(
     (state: any) => state.address.selectAddress
   );
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
+    fetchSelfInfo();
     if (!selectAddress) {
       fetchDefaultAddress();
     }
   }, [selectAddress]);
+
+  const fetchSelfInfo = async () => {
+    try {
+      const response = await axios.get(`${backPort}/api/user/${userKey}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setEmail(response.data.email);
+      console.log(response.data);
+    } catch (error) {
+      console.error("주소지를 불러오는 중 오류 발생", error);
+    }
+  };
 
   const fetchDefaultAddress = async () => {
     try {
@@ -150,7 +166,12 @@ const Cert: React.FC<totalPriceData> = () => {
             <span>{totalPrice}원</span>
           </div>
         </div>
-        <BuyBtn cartList={cartList} totalPrice={totalPrice} />
+        <BuyBtn
+          cartList={cartList}
+          totalPrice={totalPrice}
+          selectAddress={selectAddress}
+          email={email}
+        />
       </CertWrapper>
       <MainFooter />
     </>

@@ -1,6 +1,19 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
+interface addressData {
+  address_key: number;
+  address_name: string;
+  name: string;
+  addr: string;
+  addr_detail: string;
+  zip: string;
+  tel: string;
+  request: string;
+  is_default: string;
+}
 
 interface itemData {
   average_rating: number;
@@ -32,14 +45,24 @@ interface PaymentData {
   buyer_email: string;
   buyer_addr: string;
   buyer_postcode: string;
+  quantity: number;
 }
 
 interface totalPriceData {
   totalPrice: number;
   cartList: cartItem[];
+  selectAddress: addressData;
+  email: string;
 }
 
-const BuyBtn: React.FC<totalPriceData> = ({ cartList, totalPrice }) => {
+const BuyBtn: React.FC<totalPriceData> = ({
+  cartList,
+  totalPrice,
+  selectAddress,
+  email,
+}) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const loadIMPScript = () => {
       return new Promise((resolve) => {
@@ -88,20 +111,22 @@ const BuyBtn: React.FC<totalPriceData> = ({ cartList, totalPrice }) => {
       pay_method: "card", // 결제수단
       merchant_uid: `mid_${new Date().getTime()}`, // 주문 고유 ID
       amount: totalPrice, // 결제 금액
-      name: "corou 제품", // 주문명
-      buyer_name: "문미새",
-      buyer_tel: "010-1234-5678",
-      buyer_email: "gildong@example.com",
-      buyer_addr: "역삼로 123",
-      buyer_postcode: "12345",
+      name: `${cartList[0].item.item_name}${
+        cartList.length > 1 ? ` 외 ${cartList.length - 1}개` : ""
+      }`, // 주문명
+      buyer_name: selectAddress.name,
+      buyer_tel: selectAddress.tel,
+      buyer_email: email,
+      buyer_addr: `${selectAddress.addr} ${selectAddress.addr_detail}`,
+      buyer_postcode: selectAddress.zip,
+      quantity: cartList.length,
     };
+
+    console.log(paymentData);
 
     IMP.request_pay(paymentData, async (response: any) => {
       console.log(paymentData);
       if (response.success) {
-        console.log("응답 데이터", response.data);
-        console.log(1);
-        console.log("12312", response.imp_uid);
         try {
           const result = await axios.get(
             `${backPort}/api/payments/${response.imp_uid}`,
@@ -135,6 +160,9 @@ const BuyBtn: React.FC<totalPriceData> = ({ cartList, totalPrice }) => {
               }
             );
             alert("결제가 정상적으로 완료되었습니다.");
+            navigate("/pay/result", {
+              state: { paymentData, result: "success" },
+            });
             console.log("결제 검증 성공:", result.data);
           } else {
             alert("결제 검증 실패: " + result.data.message);
@@ -145,6 +173,9 @@ const BuyBtn: React.FC<totalPriceData> = ({ cartList, totalPrice }) => {
         }
       } else {
         alert("결제 실패");
+        navigate("/pay/result", {
+          state: { paymentData, result: "failed" },
+        });
         console.error("결제 실패:", response.error_msg);
       }
     });

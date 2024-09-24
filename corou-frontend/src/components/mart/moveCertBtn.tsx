@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -22,19 +22,6 @@ interface cartItem {
   user_key: number;
 }
 
-interface PaymentData {
-  pg: string;
-  pay_method: string;
-  merchant_uid: string;
-  amount: number;
-  name: string;
-  buyer_name: string;
-  buyer_tel: string;
-  buyer_email: string;
-  buyer_addr: string;
-  buyer_postcode: string;
-}
-
 interface totalPriceData {
   cartList: cartItem[];
   totalPrice: number;
@@ -47,6 +34,7 @@ const MoveCertBtn: React.FC<totalPriceData> = ({
   totalQuantity,
 }) => {
   const navigate = useNavigate();
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleMoveCert = () => {
     navigate("/order/cert", {
@@ -58,12 +46,20 @@ const MoveCertBtn: React.FC<totalPriceData> = ({
     });
   };
 
+  const handleCheckboxChange = () => {
+    setIsChecked((prevChecked) => !prevChecked);
+  };
+
   return (
     <>
       <BuyBtnWrapper>
         <BuyCheck>
           <label>
-            <input type="checkbox" />
+            {/* <input
+              type="checkbox"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            /> */}
             <span>총 {totalQuantity}개</span>
           </label>
         </BuyCheck>
