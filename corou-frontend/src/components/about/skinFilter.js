@@ -66,6 +66,20 @@ const SkinFilter = () => {
           />
           복합성
         </Label>
+
+        <Label
+          isSelected={selectedSkinType === "수부지"}
+          onClick={() => setSelectedSkinType("수부지")}
+        >
+          <input
+            type="radio"
+            name="skinType"
+            value="수부지"
+            checked={selectedSkinType === "수부지"}
+            onChange={handleRadioChange}
+          />
+          수부지
+        </Label>
       </SkinFilterWrapper>
     </>
   );

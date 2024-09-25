@@ -4,6 +4,24 @@ import RankingItem from "./rankingItem";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const filterList = [
+  "건성",
+  "중성",
+  "지성",
+  "복합성",
+  "수부지",
+  "봄웜톤",
+  "여름쿨톤",
+  "가을웜톤",
+  "겨울쿨톤",
+  "아토피",
+  "여드름",
+  "민감성",
+  "홍조",
+  "각질",
+  "속건조",
+];
+
 interface itemProps {
   average_rating: number;
   category: string;
@@ -27,10 +45,10 @@ const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
 
   const fetchRankingData = async (query: string) => {
     try {
-      const response = await axios.get(
-        `${backPort}/api/item${query ? `/search/${query}` : ""}`
-      );
-      // const response = await axios.get(`${backPort}/api/item`);
+      // const response = await axios.get(
+      //   `${backPort}/api/item${query ? `/search/${query}` : ""}`
+      // );
+      const response = await axios.get(`${backPort}/api/item${query}`);
       console.log("아이템 데이터", response.data);
       setRankingData(response.data);
     } catch (error) {
@@ -39,8 +57,24 @@ const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
   };
 
   useEffect(() => {
-    fetchRankingData(searchQuery);
+    let query = "";
+
+    if (subFilter) {
+      const indexSubFilter = getFilterIndex(subFilter);
+      query += `/search/${indexSubFilter}`;
+    }
+
+    if (searchQuery) {
+      query += `/search/${searchQuery}`;
+    }
+
+    fetchRankingData(query);
   }, [mainFilter, subFilter, searchQuery]);
+
+  const getFilterIndex = (filter: string): number => {
+    const index = filterList.indexOf(filter);
+    return index !== -1 ? index + 1 : 0;
+  };
 
   return (
     <>

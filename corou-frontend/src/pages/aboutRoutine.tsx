@@ -10,6 +10,7 @@ import { useState } from "react";
 const AboutRoutine: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filterList, setFilterList] = useState<number[]>([]);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
