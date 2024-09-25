@@ -1,6 +1,10 @@
 import { useRef, useState } from "react";
 import styled from "styled-components";
-import { categoryFilters, skinFilters, ageFilters } from "../../data/Data.js";
+import {
+  categoryFilters,
+  skinFilters,
+  problemFilters,
+} from "../../data/Data.js";
 
 interface RankingSubFilterProps {
   mainFilter: string;
@@ -47,8 +51,8 @@ const RankingSubFilter: React.FC<RankingSubFilterProps> = ({
       return categoryFilters;
     } else if (mainFilter === "skin") {
       return skinFilters;
-    } else if (mainFilter === "age") {
-      return ageFilters;
+    } else if (mainFilter === "problem") {
+      return problemFilters;
     } else {
       return [];
     }

@@ -45,10 +45,10 @@ const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
 
   const fetchRankingData = async (query: string) => {
     try {
-      // const response = await axios.get(
-      //   `${backPort}/api/item${query ? `/search/${query}` : ""}`
-      // );
-      const response = await axios.get(`${backPort}/api/item${query}`);
+      const response = await axios.get(
+        `${backPort}/api/item${query ? `/search/${query}` : ""}`
+      );
+      // const response = await axios.get(`${backPort}/api/item${query}`);
       console.log("아이템 데이터", response.data);
       setRankingData(response.data);
     } catch (error) {
@@ -57,24 +57,12 @@ const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
   };
 
   useEffect(() => {
-    let query = "";
-
-    if (subFilter) {
-      const indexSubFilter = getFilterIndex(subFilter);
-      query += `/search/${indexSubFilter}`;
-    }
-
-    if (searchQuery) {
-      query += `/search/${searchQuery}`;
-    }
-
-    fetchRankingData(query);
+    fetchRankingData(searchQuery);
   }, [mainFilter, subFilter, searchQuery]);
 
-  const getFilterIndex = (filter: string): number => {
-    const index = filterList.indexOf(filter);
-    return index !== -1 ? index + 1 : 0;
-  };
+  const filterRankingData = rankingData.filter((item) => {
+    return subFilter ? item.category === subFilter : true;
+  });
 
   return (
     <>
@@ -85,7 +73,7 @@ const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
           subFilter={subFilter}
           setSubFilter={setSubFilter}
         />
-        <RankingItem rankingData={rankingData} />
+        <RankingItem rankingData={filterRankingData} />
       </RankingListWrapper>
     </>
   );

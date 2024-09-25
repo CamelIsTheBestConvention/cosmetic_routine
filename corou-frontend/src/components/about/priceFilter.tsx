@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const PriceFilter = () => {
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
-  const [minCount, setMinCount] = useState("");
-  const [maxCount, setMaxCount] = useState("");
+interface PriceFilterProps {
+  minPrice: number;
+  setMinPrice: React.Dispatch<React.SetStateAction<number>>;
+  maxPrice: number;
+  setMaxPrice: React.Dispatch<React.SetStateAction<number>>;
+  minCount: number;
+  setMinCount: React.Dispatch<React.SetStateAction<number>>;
+  maxCount: number;
+  setMaxCount: React.Dispatch<React.SetStateAction<number>>;
+}
 
-  // const products = [
-  //   { id: 1, name: "Product A", price: 100 },
-  //   { id: 2, name: "Product B", price: 200 },
-  //   { id: 3, name: "Product C", price: 300 },
-  //   { id: 4, name: "Product D", price: 400 },
-  //   { id: 5, name: "Product E", price: 500 },
-  // ];
-
+const PriceFilter: React.FC<PriceFilterProps> = ({
+  minPrice,
+  setMinPrice,
+  maxPrice,
+  setMaxPrice,
+  minCount,
+  setMinCount,
+  maxCount,
+  setMaxCount,
+}) => {
   // const filteredProducts = products
   //   .filter((product) => {
   //     const price = product.price;
@@ -37,13 +44,13 @@ const PriceFilter = () => {
         <FilterInput
           type="text"
           value={minCount}
-          onChange={(e) => setMinCount(e.target.value)}
+          onChange={(e) => setMinCount(Number(e.target.value))}
         />
         ~
         <FilterInput
           type="text"
           value={maxCount}
-          onChange={(e) => setMaxCount(e.target.value)}
+          onChange={(e) => setMaxCount(Number(e.target.value))}
         />
       </AsideFilterWrapper>
 
@@ -52,30 +59,15 @@ const PriceFilter = () => {
         <FilterInput
           type="text"
           value={minPrice}
-          onChange={(e) => setMinPrice(e.target.value)}
+          onChange={(e) => setMinPrice(Number(e.target.value))}
         />
         ~
         <FilterInput
           type="text"
           value={maxPrice}
-          onChange={(e) => setMaxPrice(e.target.value)}
+          onChange={(e) => setMaxPrice(Number(e.target.value))}
         />
       </AsideFilterWrapper>
-
-      {/* <div>
-        <h3>제품 목록</h3>
-        {filteredProducts.length > 0 ? (
-          <ul>
-            {filteredProducts.map((product) => (
-              <li key={product.id}>
-                {product.name} - {product.price}원
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>해당 조건에 맞는 제품이 없습니다.</p>
-        )}
-      </div> */}
     </>
   );
 };

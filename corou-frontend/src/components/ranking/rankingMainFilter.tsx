@@ -30,10 +30,10 @@ const RankingMainFilter: React.FC<RankingMainFilterProps> = ({
           피부별
         </FilterItem>
         <FilterItem
-          isSelected={select === "age"}
-          onClick={() => handleSelect("age")}
+          isSelected={select === "problem"}
+          onClick={() => handleSelect("problem")}
         >
-          연령대별
+          트러블별
         </FilterItem>
       </RankingMainFilterWrapper>
     </>
