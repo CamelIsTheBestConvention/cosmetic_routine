@@ -42,8 +42,18 @@ const TopRoutineBox: React.FC = () => {
     const fetchRoutines = async () => {
       try {
         const response = await axios.get(`${backPort}/api/routine`);
-        setTopRoutine(response.data);
-        console.log("탑텐 데이터1", response.data);
+
+        const sortedData = response.data.sort(
+          (a: allRoutineData, b: allRoutineData) => {
+            if (b.routine.average_rating !== a.routine.average_rating) {
+              return b.routine.average_rating - a.routine.average_rating;
+            }
+            return b.routine.reviews - a.routine.reviews;
+          }
+        );
+
+        setTopRoutine(sortedData);
+        console.log("탑텐 데이터1", sortedData);
       } catch (error) {
         console.error("Error fetching routines:", error);
       }

@@ -1,16 +1,16 @@
 export const options = [
-  "여드름",
   "아토피",
+  "여드름",
   "민감성",
-  "저항성",
+  "홍조",
+  "각질",
+  "속건조",
+  "남성",
+  "여성",
   "10대",
   "20대",
   "30대",
   "40대+",
-  "모닝",
-  "나이트",
-  "남성",
-  "여성",
 ];
 
 export const items = [
@@ -103,16 +103,13 @@ export const categoryFilters = [
   "립밤",
 ];
 
-export const skinFilters = [
-  "건성",
-  "지성",
-  "중성",
-  "복합성",
-  "민감성",
-  "여드름",
-  "아토피",
-  "등등",
-  "등등등",
-];
+export const skinFilters = ["건성", "지성", "중성", "복합성", "수부지"];
 
-export const ageFilters = ["10대", "20대", "30대", "40대+"];
+export const problemFilters = [
+  "아토피",
+  "여드름",
+  "민감성",
+  "홍조",
+  "각질",
+  "속건조",
+];

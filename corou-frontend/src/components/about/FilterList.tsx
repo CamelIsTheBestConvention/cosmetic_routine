@@ -30,17 +30,34 @@ interface routineItem {
 interface allRoutineData {
   routine: routineItem;
   attr_keys: number[];
-  firstItemKey: number;
+  firstItemKey?: number;
 }
 
 interface searchData {
   searchQuery: string;
+  filters: number[];
+  items: allRoutineData[];
+  setItems: React.Dispatch<React.SetStateAction<allRoutineData[]>>;
+  minPrice: number;
+  maxPrice: number;
+  minCount: number;
+  maxCount: number;
+  itemAmount: number;
 }
 
-const FilterList: React.FC<searchData> = ({ searchQuery }) => {
+const FilterList: React.FC<searchData> = ({
+  searchQuery,
+  filters,
+  items,
+  setItems,
+  minPrice,
+  maxPrice,
+  minCount,
+  maxCount,
+  itemAmount,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [items, setItems] = useState<allRoutineData[]>([]);
   const [sortOrder, setSortOrder] = useState("priceAsc");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -85,11 +102,50 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
         const response = await axios.get(
           `${backPort}/api/routine${query ? `/search/${query}` : ""}`
         );
-        console.log("데이터", response.data);
+        console.log("가져온 루틴", response.data);
+        console.log("필터", filters);
+
+        // 체크박스 필터
+        const filteringItems = response.data.filter((item: allRoutineData) => {
+          if (filters.length === 0) return true;
+
+          const attrKeyFilter = filters
+            .filter((filter) => filter >= 1 && filter <= 11)
+            .every((filter) => item.attr_keys.includes(filter));
+
+          const genderFilter =
+            (filters.includes(12) && item.routine.for_gender === "M") ||
+            (filters.includes(13) && item.routine.for_gender === "F") ||
+            (filters.includes(12) &&
+              filters.includes(13) &&
+              item.routine.for_gender === "A") ||
+            (!filters.includes(12) && !filters.includes(13));
+
+          const ageFilter =
+            (filters.includes(14) && item.routine.for_age === 10) ||
+            (filters.includes(15) && item.routine.for_age === 20) ||
+            (filters.includes(16) && item.routine.for_age === 30) ||
+            (filters.includes(17) && item.routine.for_age === 40) ||
+            (!filters.includes(14) &&
+              !filters.includes(15) &&
+              !filters.includes(16) &&
+              !filters.includes(17));
+
+          console.log("필터 값:", filters);
+          console.log("현재 나이:", item.routine.for_age);
+          console.log("어트리 필터 결과:", attrKeyFilter);
+          console.log("젠더 필터 결과:", genderFilter);
+          console.log("나이 필터 결과:", ageFilter);
+
+          return attrKeyFilter && genderFilter && ageFilter;
+          // return attrKeyFilter && genderFilter;
+        });
+
+        console.log("필터링된 루틴", filteringItems);
 
         // 각 루틴의 아이템 키 가져오기
         const updatedItems = await Promise.all(
-          response.data.map(async (item: allRoutineData) => {
+          filteringItems.map(async (item: allRoutineData) => {
             console.log("현재 아이템", item);
             try {
               const itemResponse = await axios.get(
@@ -97,7 +153,7 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
               );
               const firstItemKey =
                 itemResponse.data.routineDetails[0]?.item_key;
-              console.log("첫번째 아이템키", firstItemKey);
+              itemAmount = itemResponse.data.routineDetails.length;
               return {
                 ...item,
                 firstItemKey,
@@ -112,7 +168,22 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
           })
         );
 
-        setItems(updatedItems);
+        // 가격 및 개수 필터링 추가
+        const finalItems = updatedItems.filter((item: allRoutineData) => {
+          const price = item.routine.price_total;
+          const itemCount = itemAmount || 1;
+
+          const isWithinPriceRange = price >= minPrice && price <= maxPrice;
+          const isWithinCountRange =
+            itemCount >= minCount && itemCount <= maxCount;
+
+          return isWithinPriceRange && isWithinCountRange;
+        });
+
+        console.log("최종 필터링된 루틴", finalItems);
+
+        // setItems(updatedItems);
+        setItems(finalItems);
       } catch (err) {
         console.error("아이템 가져오기 실패", err);
         setError("데이터를 불러오는데 실패했습니다.");
@@ -122,7 +193,7 @@ const FilterList: React.FC<searchData> = ({ searchQuery }) => {
     };
 
     fetchItems(searchQuery);
-  }, [backPort, searchQuery]);
+  }, [searchQuery, filters, minCount, maxCount, minPrice, maxPrice]);
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOrder = e.target.value;

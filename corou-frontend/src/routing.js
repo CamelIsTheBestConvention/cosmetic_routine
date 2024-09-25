@@ -22,6 +22,7 @@ import AddAddress from "./pages/addAddress";
 import EditAddress from "./pages/editAddress";
 import Cert from "./pages/cert";
 import PopupAddress from "./pages/popupAddress";
+import PaymentResult from "./pages/paymentResult";
 
 function Routing() {
   return (
@@ -54,6 +55,7 @@ function Routing() {
           <Route exact path="/item/:id" element={<RankingDetail />} />
           <Route exact path="/kakao/oauth" element={<Redirection />} />
           <Route exact path="/popup" element={<PopupAddress />} />
+          <Route exact path="/pay/result" element={<PaymentResult />} />
         </Routes>
       </BrowserRouter>
     </TotalWrapper>

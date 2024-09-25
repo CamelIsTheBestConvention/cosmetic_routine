@@ -34,6 +34,8 @@ const Mart: React.FC = () => {
   const token = sessionStorage.getItem("authToken");
   const [cartList, setCartList] = useState<cartItem[]>([]);
   const [checkedItems, setCheckedItems] = useState<number[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalQuantity, setTotalQuantity] = useState(0);
 
   useEffect(() => {
     fetchCartData();
@@ -48,10 +50,29 @@ const Mart: React.FC = () => {
       });
       console.log("장바구니 데이터", response.data);
       setCartList(response.data);
+      setCheckedItems(response.data.map((item: cartItem) => item.cart_key));
     } catch (error) {
       console.error("장바구니 데이터를 불러오는 중 오류 발생", error);
     }
   };
+
+  useEffect(() => {
+    const checkedItemsData = cartList.filter((item) =>
+      checkedItems.includes(item.cart_key)
+    );
+
+    const newTotalPrice = checkedItemsData.reduce(
+      (total, item) => total + item.item.item_price * item.quantity,
+      0
+    );
+    const newTotalQuantity = checkedItemsData.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+
+    setTotalPrice(newTotalPrice);
+    setTotalQuantity(newTotalQuantity);
+  }, [cartList, checkedItems]);
 
   const handleQuantityChange = (cartKey: number, newQuantity: number) => {
     setCartList((prevList) =>
@@ -70,15 +91,6 @@ const Mart: React.FC = () => {
   const handleBack = () => {
     navigate(-1);
   };
-
-  const totalPrice = cartList
-    .filter((item) => checkedItems.includes(item.cart_key))
-    .reduce((total, item) => total + item.item.item_price * item.quantity, 0);
-
-  const totalQuantity = cartList.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
 
   return (
     <>

@@ -5,11 +5,47 @@ import SkinFilter from "../components/about/skinFilter";
 import AboutHeader from "../components/common/aboutHeader";
 import MainFooter from "../components/common/mainFooter";
 import SearchBar from "../components/common/searchBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+interface skinRelations {
+  routine_key: number;
+  attr_key: number;
+}
+
+interface routineItem {
+  routine_key: string;
+  for_age: number;
+  for_gender: string;
+  isLiked: boolean;
+  price_total: number;
+  average_rating: number;
+  routine_name: string;
+  reviews: number;
+  user: { username: string };
+  problem: number[];
+  tags: string[];
+  routine_skin_relations: skinRelations[];
+}
+
+interface allRoutineData {
+  routine: routineItem;
+  attr_keys: number[];
+}
 
 const AboutRoutine: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [filterList, setFilterList] = useState<number[]>([]);
+  const [selectedFilters, setSelectedFilters] = useState<number[]>([]);
+  const [priceFilterValue, setPriceFilterValue] = useState<number[]>([]);
+  const [amountFilterValue, setAmountFilterValue] = useState<number[]>([]);
+  const [items, setItems] = useState<allRoutineData[]>([]);
+  const [minPrice, setMinPrice] = useState<number>(1);
+  const [maxPrice, setMaxPrice] = useState<number>(Infinity);
+  const [minCount, setMinCount] = useState<number>(1);
+  const [maxCount, setMaxCount] = useState<number>(100);
+  const [itemAmount, setItemAmount] = useState<number>(0);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -19,13 +55,70 @@ const AboutRoutine: React.FC = () => {
     navigate(-1);
   };
 
+  const updateSkinFilter = (skinType: number | null) => {
+    setFilterList((prevFilters) => {
+      const updatedFilters = prevFilters.filter((filter) => filter > 5);
+      if (skinType !== null && !updatedFilters.includes(skinType)) {
+        const sortFilter = [...updatedFilters, skinType];
+        return sortFilter.sort((a, b) => a - b);
+      }
+      return updatedFilters.sort((a, b) => a - b);
+    });
+  };
+
+  const updateDropdownFilter = (dropdownFilters: number[]) => {
+    setSelectedFilters(dropdownFilters);
+    setFilterList((prevFilters) => {
+      const updatedFilters = prevFilters.filter((filter) => filter <= 5);
+      const newFilters = [...updatedFilters, ...dropdownFilters];
+      return newFilters.sort((a, b) => a - b);
+    });
+  };
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_PORT}/api/routine`
+      );
+      setItems(response.data);
+    };
+
+    fetchItems();
+
+    console.log(minCount);
+    console.log(maxCount);
+    console.log(minPrice);
+    console.log(maxPrice);
+  }, [minCount, maxCount, minPrice, maxPrice]);
+
   return (
     <>
       <AboutHeader Title={"루틴"} onBack={handleBack} />
       <SearchBar onSearch={handleSearch} />
-      <SkinFilter />
-      <DropdownFilter />
-      <FilterList searchQuery={searchQuery} />
+      <SkinFilter onSkinChange={updateSkinFilter} />
+      <DropdownFilter
+        onFilterChange={updateDropdownFilter}
+        selectedFilters={selectedFilters}
+        minPrice={minPrice}
+        setMinPrice={setMinPrice}
+        maxPrice={maxPrice}
+        setMaxPrice={setMaxPrice}
+        minCount={minCount}
+        setMinCount={setMinCount}
+        maxCount={maxCount}
+        setMaxCount={setMaxCount}
+      />
+      <FilterList
+        searchQuery={searchQuery}
+        filters={filterList}
+        items={items}
+        setItems={setItems}
+        minPrice={minPrice}
+        maxPrice={maxPrice}
+        minCount={minCount}
+        maxCount={maxCount}
+        itemAmount={itemAmount}
+      />
       <MainFooter />
     </>
   );
