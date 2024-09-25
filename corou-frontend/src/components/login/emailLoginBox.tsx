@@ -33,6 +33,7 @@ const EmailLoginBox: React.FC = () => {
 
       const response = await axios.post(`${backPort}/api/user/login`, userData);
       console.log("로그인 성공", response.data);
+      alert("로그인에 성공하였습니다.");
 
       const token = response.data.token;
       const userKey = response.data.user.user_key;
@@ -49,6 +50,7 @@ const EmailLoginBox: React.FC = () => {
 
       window.location.href = "/";
     } catch (error) {
+      alert("아이디와 비밀번호를 확인해주세요.");
       console.log("로그인 실패", error);
     }
   };

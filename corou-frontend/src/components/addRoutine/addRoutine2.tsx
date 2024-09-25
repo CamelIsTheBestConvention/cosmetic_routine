@@ -5,7 +5,11 @@ import { useEffect, useRef, useState } from "react";
 import NextBtn from "../signup/nextBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { setRoutineItem } from "../../redux/slice/addRoutineSlice";
+import {
+  setRoutineItem,
+  setTotalPrice,
+  setItemList,
+} from "../../redux/slice/addRoutineSlice";
 import axios from "axios";
 
 interface itemData {
@@ -38,55 +42,100 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
       item_name: "",
     })
   );
+  const [allItemList, setAllItemList] = useState(
+    new Array(grade).fill({
+      average_rating: 0,
+      brand_name: "",
+      category: "",
+      description: "",
+      item_key: 0,
+      item_name: "",
+      item_price: 0,
+      volume: 0,
+    })
+  );
   const [searchResults, setSearchResults] = useState<itemData[][]>(
     new Array(grade).fill([])
   );
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const totalPrice = useSelector(
+    (state: RootState) => state.addRoutine.totalPrice
+  );
   const [searchQueries, setSearchQueries] = useState<string[]>(
     new Array(grade).fill("")
   );
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const itemList = useSelector((state: RootState) => state.addRoutine.itemList);
 
   useEffect(() => {
-    setAllRoutineItems(
-      new Array(grade).fill(null).map((_, index) => ({
+    // 남은 루틴 복구
+    const updatedItems = new Array(grade).fill(null).map((_, index) => {
+      if (index < routineItems.length) {
+        return { ...routineItems[index], step_number: index + 1 };
+      }
+      return {
         step_number: index + 1,
         step_name: "",
         description: "",
         item_key: "",
         item_name: "",
-      }))
-    );
-  }, [grade]);
+      };
+    });
+
+    if (updatedItems.length < allRoutineItems.length) {
+      for (let i = updatedItems.length; i < allRoutineItems.length; i++) {
+        updatedItems[i] = {
+          step_number: i + 1,
+          step_name: "",
+          description: "",
+          item_key: "",
+          item_name: "",
+        };
+      }
+    }
+    setAllRoutineItems(updatedItems);
+
+    // 남은 아이템 리스트 복구
+    const updatedItemsList = new Array(grade).fill(null).map((_, index) => {
+      if (index < itemList.length) {
+        return { ...itemList[index], step_number: index + 1 };
+      }
+      return {
+        average_rating: 0,
+        brand_name: "",
+        category: "",
+        description: "",
+        item_key: 0,
+        item_name: "",
+        item_price: 0,
+        volume: 0,
+      };
+    });
+
+    setAllItemList(updatedItemsList);
+
+    console.log("현재 가격", totalPrice);
+    console.log("올루틴 아이템", allRoutineItems);
+    console.log("올루틴 아이템 목록", allItemList);
+    console.log("리덕스루틴아이템", routineItems);
+    console.log("리덕스 루틴 아이템목록", itemList);
+  }, [grade, itemList, dispatch]);
 
   useEffect(() => {
-    if (routineItems.length < grade) {
-      setAllRoutineItems([
-        ...routineItems,
-        ...new Array(grade - routineItems.length)
-          .fill(null)
-          .map((_, index) => ({
-            step_number: routineItems.length + index + 1,
-            step_name: "",
-            description: "",
-            item_key: "",
-            item_name: "",
-          })),
-      ]);
-    } else {
-      setAllRoutineItems(
-        routineItems.map((item, index) => ({
-          ...item,
-          step_number: index + 1,
-        }))
-      );
-    }
-  }, [grade, routineItems]);
+    const total = itemList.reduce((acc, item) => acc + item.item_price, 0);
+    dispatch(setTotalPrice(total));
+  }, [itemList, dispatch]);
 
   const handleProductSelect = (index: number, product: itemData) => {
     const updatedItems = [...allRoutineItems];
+
+    const previousItem = updatedItems[index];
+    const previousItemPrice =
+      searchResults[index]?.find(
+        (searchItem) => searchItem.item_key === previousItem.item_key
+      )?.item_price || 0;
+
     updatedItems[index] = {
       ...updatedItems[index],
       item_key: product.item_key,
@@ -95,21 +144,23 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
 
     setAllRoutineItems(updatedItems);
     dispatch(setRoutineItem({ index, item: updatedItems[index] }));
+
+    const updatedItemList = [...itemList];
+    updatedItemList[index] = product;
+    dispatch(setItemList(updatedItemList));
+
     const updatedResults = [...searchResults];
     updatedResults[index] = [];
     setSearchResults(updatedResults);
+
     const updatedQueries = [...searchQueries];
     updatedQueries[index] = "";
     setSearchQueries(updatedQueries);
 
-    const resultTotalPrice = updatedItems.reduce((acc, item) => {
-      const selectedProduct = searchResults[index].find(
-        (searchItem) => searchItem.item_key === item.item_key
-      );
-      return acc + (selectedProduct ? selectedProduct.item_price : 0);
-    }, 0);
+    const selectedProductPrice = product.item_price;
 
-    setTotalPrice(resultTotalPrice);
+    const newTotalPrice = totalPrice - previousItemPrice + selectedProductPrice;
+    dispatch(setTotalPrice(newTotalPrice));
 
     if (inputRef.current) {
       inputRef.current.focus();
@@ -140,6 +191,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
           const clearedQueries = [...searchQueries];
           clearedQueries[index] = "";
           setSearchQueries(clearedQueries);
+
           const clearedResults = [...searchResults];
           clearedResults[index] = [];
           setSearchResults(clearedResults);
@@ -163,16 +215,6 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
       console.error("제품 검색 중 오류 발생", error);
     }
   };
-
-  // useEffect(() => {
-  //   const delayDeboundceFn = setTimeout(() => {
-  //     if (searchQuery.length > 1) {
-  //       searchItemData(searchQuery);
-  //     }
-  //   }, 300);
-
-  //   return () => clearTimeout(delayDeboundceFn);
-  // }, [searchQuery]);
 
   const handleInputBlur = (
     index: number,

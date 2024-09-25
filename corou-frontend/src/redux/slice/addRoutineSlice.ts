@@ -1,5 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface itemData {
+  item_key: number;
+  item_name: string;
+  item_price: number;
+  volume: number;
+  average_rating: number;
+  brand_name: string;
+  category: string;
+  description: string;
+}
+
 interface RoutineItem {
   step_number: number;
   step_name: string;
@@ -17,6 +28,8 @@ interface addRoutineState {
   grade: number;
   routineItem: RoutineItem[];
   tag: string[];
+  totalPrice: number;
+  itemList: itemData[];
 }
 
 const initialState: addRoutineState = {
@@ -34,6 +47,8 @@ const initialState: addRoutineState = {
     item_name: "",
   }),
   tag: [],
+  itemList: [],
+  totalPrice: 0,
 };
 
 const addRoutineSlice = createSlice({
@@ -56,7 +71,39 @@ const addRoutineSlice = createSlice({
       state.problem = action.payload;
     },
     setGrade: (state, action: PayloadAction<number>) => {
+      const newGrade = action.payload;
       state.grade = action.payload;
+
+      if (newGrade < state.routineItem.length) {
+        state.routineItem = state.routineItem.slice(0, newGrade);
+      } else {
+        for (let i = state.routineItem.length; i < newGrade; i++) {
+          state.routineItem.push({
+            step_number: i + 1,
+            step_name: "",
+            description: "",
+            item_key: "",
+            item_name: "",
+          });
+        }
+      }
+
+      if (newGrade < state.itemList.length) {
+        state.itemList = state.itemList.slice(0, newGrade);
+      } else {
+        for (let i = state.itemList.length; i < newGrade; i++) {
+          state.itemList.push({
+            item_key: 0,
+            item_name: "",
+            item_price: 0,
+            volume: 0,
+            average_rating: 0,
+            brand_name: "",
+            category: "",
+            description: "",
+          });
+        }
+      }
     },
     setRoutineItem: (
       state,
@@ -66,6 +113,20 @@ const addRoutineSlice = createSlice({
     },
     setTag: (state, action: PayloadAction<string[]>) => {
       state.tag = action.payload;
+    },
+    setItemList: (state, action: PayloadAction<itemData[]>) => {
+      state.itemList = action.payload;
+
+      state.totalPrice = state.itemList.reduce(
+        (acc, item) => acc + item.item_price,
+        0
+      );
+    },
+    clearSelectedItems: (state) => {
+      state.itemList = [];
+    },
+    setTotalPrice: (state, action: PayloadAction<number>) => {
+      state.totalPrice = action.payload;
     },
     resetAddRoutine(state) {
       return initialState;
@@ -82,6 +143,8 @@ export const {
   setGrade,
   setRoutineItem,
   setTag,
+  setItemList,
+  setTotalPrice,
   resetAddRoutine,
 } = addRoutineSlice.actions;
 export default addRoutineSlice.reducer;
