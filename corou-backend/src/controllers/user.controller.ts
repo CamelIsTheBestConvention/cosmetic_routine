@@ -111,6 +111,19 @@ export class UserController {
     async getSelf(req: Request, res: Response): Promise<void> {
         res.status(200).json({ message: "unimplemented" });
     }
+
+    async updateUser(req: Request, res: Response): Promise<void> {
+        const { user_key } = req.params;
+        const attributes = req.body;
+
+        try {
+            const user = await this.userService.updateUser(Number(user_key), attributes);
+            res.status(200).json(user);
+        } catch (error: any) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+
     async addAddress(req: Request, res: Response): Promise<void> {
         console.log("in add address");
         console.log(req.params);

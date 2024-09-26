@@ -89,6 +89,15 @@ export class UserService {
     async getUserByEmail(email: string): Promise<User | null> {
         return await this.userRepository.findOneBy({ email });
     }
+
+    async updateUser(user_key: number, attributes: number[]): Promise<User> {
+        const user = await this.userRepository.findOneBy({ user_key });
+        if (!user) {
+            throw new Error('해당 유저를 찾을 수 없습니다.');
+        }
+        await this.userSkinRelationService.updateUserSkinRelation(user_key, attributes);
+        return user;
+    }
 }
 
 // const userRepository = AppDataSource.getRepository(User);
