@@ -1,5 +1,5 @@
 import "../../scss/about/filterList.scss";
-import sortFilter from "../../img/sort.png";
+import notRoutine from "../../img/notRoutine.png";
 import goodOff from "../../img/goodOff.png";
 import goodOn from "../../img/goodOn.png";
 import star from "../../img/star.png";
@@ -63,47 +63,26 @@ const FilterList: React.FC<searchData> = ({
   const [error, setError] = useState<string | null>(null);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const token = sessionStorage.getItem("authToken");
-
   const buttonRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [displayItems, setDisplayItems] = useState<allRoutineData[]>([]);
+  const itemsPerPage = 3;
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (wrapperRef.current && buttonRef.current) {
-        const { scrollTop, clientHeight, scrollHeight } = wrapperRef.current;
-
-        // 스크롤이 있으면 sticky, 없으면 absolute
-        if (scrollHeight > clientHeight) {
-          buttonRef.current.style.position = "sticky";
-          buttonRef.current.style.bottom = "20px"; // 스크롤이 있을 때의 위치
-        } else {
-          buttonRef.current.style.position = "absolute";
-          buttonRef.current.style.bottom = "20px"; // 스크롤이 없을 때의 위치
-        }
-      }
-    };
-
-    const wrapperElement = wrapperRef.current;
-    wrapperElement?.addEventListener("scroll", handleScroll);
-
-    // 초기 실행
-    handleScroll();
-
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      wrapperElement?.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [items]);
 
   useEffect(() => {
     const fetchItems = async (query: string) => {
-      console.log(query);
+      setLoading(true);
       try {
         // 루틴 목록 가져오기
         const response = await axios.get(
           `${backPort}/api/routine${query ? `/search/${query}` : ""}`
         );
-        console.log("가져온 루틴", response.data);
-        console.log("필터", filters);
 
         // 체크박스 필터
         const filteringItems = response.data.filter((item: allRoutineData) => {
@@ -131,17 +110,8 @@ const FilterList: React.FC<searchData> = ({
               !filters.includes(16) &&
               !filters.includes(17));
 
-          console.log("필터 값:", filters);
-          console.log("현재 나이:", item.routine.for_age);
-          console.log("어트리 필터 결과:", attrKeyFilter);
-          console.log("젠더 필터 결과:", genderFilter);
-          console.log("나이 필터 결과:", ageFilter);
-
           return attrKeyFilter && genderFilter && ageFilter;
-          // return attrKeyFilter && genderFilter;
         });
-
-        console.log("필터링된 루틴", filteringItems);
 
         // 각 루틴의 아이템 키 가져오기
         const updatedItems = await Promise.all(
@@ -184,6 +154,7 @@ const FilterList: React.FC<searchData> = ({
 
         // setItems(updatedItems);
         setItems(finalItems);
+        setDisplayItems(finalItems.slice(0, itemsPerPage));
       } catch (err) {
         console.error("아이템 가져오기 실패", err);
         setError("데이터를 불러오는데 실패했습니다.");
@@ -194,6 +165,18 @@ const FilterList: React.FC<searchData> = ({
 
     fetchItems(searchQuery);
   }, [searchQuery, filters, minCount, maxCount, minPrice, maxPrice]);
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight
+    ) {
+      setDisplayItems((prevItems) => [
+        ...prevItems,
+        ...items.slice(prevItems.length, prevItems.length + itemsPerPage),
+      ]);
+    }
+  };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOrder = e.target.value;
@@ -227,6 +210,7 @@ const FilterList: React.FC<searchData> = ({
     }
 
     setItems(sortedArray);
+    setDisplayItems(sortedArray.slice(0, itemsPerPage));
   };
 
   const toggleLike = (index: number) => {
@@ -268,7 +252,11 @@ const FilterList: React.FC<searchData> = ({
   }
 
   if (error) {
-    return <p>{error}</p>;
+    return (
+      <div style={{ textAlign: "center" }}>
+        <p>{error}</p>
+      </div>
+    );
   }
 
   return (
@@ -286,71 +274,81 @@ const FilterList: React.FC<searchData> = ({
           </div>
           {/* <img src={sortFilter} alt="" /> */}
         </div>
-        {items.map((item, index) => (
-          <div
-            className="itemListWrapper"
-            key={item?.routine.routine_key}
-            onClick={() => handleRoutineClick(item?.routine.routine_key)}
-          >
-            <div className="itemListTitle">
-              <div className="itemListFirstTitle">
-                <div>{item?.routine.routine_name}</div>
-                <div>
+        {displayItems && displayItems.length > 0 ? (
+          displayItems.map((item, index) => (
+            <div
+              className="itemListWrapper"
+              key={item?.routine.routine_key}
+              onClick={() => handleRoutineClick(item?.routine.routine_key)}
+            >
+              <div className="itemListTitle">
+                <div className="itemListFirstTitle">
+                  <div>{item?.routine.routine_name}</div>
+                  <div>
+                    <img
+                      src={item.routine.isLiked ? goodOn : goodOff}
+                      alt="좋아요"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleLike(index);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </div>
+                </div>
+                <div className="itemListSecondTitle">
+                  <div>
+                    <img src={star} alt="" />
+                  </div>
+                  <div>
+                    {Math.ceil(item?.routine.average_rating * 10) / 10}{" "}
+                    <span>({item?.routine.reviews})</span>
+                  </div>
+                </div>
+              </div>
+              <div className="itemListContent">
+                <div className="contentImg">
                   <img
-                    src={item.routine.isLiked ? goodOn : goodOff}
-                    alt="좋아요"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleLike(index);
-                    }}
-                    style={{ cursor: "pointer" }}
+                    src={`/assets/item/${item?.firstItemKey}.jpg`}
+                    alt="루틴 첫번째 제품이미지"
                   />
                 </div>
-              </div>
-              <div className="itemListSecondTitle">
-                <div>
-                  <img src={star} alt="" />
-                </div>
-                <div>
-                  {Math.ceil(item?.routine.average_rating * 10) / 10}{" "}
-                  <span>({item?.routine.reviews})</span>
-                </div>
-              </div>
-            </div>
-            <div className="itemListContent">
-              <div className="contentImg">
-                <img
-                  src={`/assets/item/${item?.firstItemKey}.jpg`}
-                  alt="루틴 첫번째 제품이미지"
-                />
-              </div>
-              <div className="contentInfo">
-                <span>{item?.routine.user.username}님의 루틴</span>
-                <div className="selectFilter">
-                  {getGenderDisplay(item?.routine.for_gender)}
-                  <div>{item?.routine.for_age}대</div>
-                  {item?.routine.problem && item.routine.problem.length > 0 && (
-                    <div>{item.routine.problem.join(", ")}</div>
-                  )}
-                </div>
-                <div className="contentTag">
-                  {item.routine.tags && item.routine.tags.length > 0 ? (
-                    <ul>
-                      {item.routine.tags.map((tag, tagIndex) => (
-                        <li key={tagIndex}>{tag}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <ul></ul>
-                  )}
-                </div>
-                <div className="contentPrice">
-                  종합 <span>₩ {item?.routine.price_total}</span>
+                <div className="contentInfo">
+                  <span>{item?.routine.user.username}님의 루틴</span>
+                  <div className="selectFilter">
+                    {getGenderDisplay(item?.routine.for_gender)}
+                    <div>{item?.routine.for_age}대</div>
+                    {item?.routine.problem &&
+                      item.routine.problem.length > 0 && (
+                        <div>{item.routine.problem.join(", ")}</div>
+                      )}
+                  </div>
+                  <div className="contentTag">
+                    {item.routine.tags && item.routine.tags.length > 0 ? (
+                      <ul>
+                        {item.routine.tags.map((tag, tagIndex) => (
+                          <li key={tagIndex}>{tag}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <ul></ul>
+                    )}
+                  </div>
+                  <div className="contentPrice">
+                    종합 <span>₩ {item?.routine.price_total}</span>
+                  </div>
                 </div>
               </div>
             </div>
+          ))
+        ) : (
+          <div className="notItemWrapper">
+            <div>
+              <img src={notRoutine} alt="루틴 정보가 없습니다." />
+            </div>
+            <p>루틴 정보가 없습니다.</p>
           </div>
-        ))}
+        )}
         {token && (
           <div
             className="addRoutineBtn"

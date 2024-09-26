@@ -107,6 +107,14 @@ const RoutineReview: React.FC<ReviewProps> = ({ routine_key }) => {
     }
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchReviews();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [reviews]);
+
   // hoverRating을 설정하는 핸들러
   const handleMouseMove = (index: number, event: React.MouseEvent) => {
     const rect = event.currentTarget.getBoundingClientRect();

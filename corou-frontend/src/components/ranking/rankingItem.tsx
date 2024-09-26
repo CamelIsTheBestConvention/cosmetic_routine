@@ -2,6 +2,7 @@ import styled from "styled-components";
 import ReviewPoint from "../common/reviewPoint";
 import ItemBox from "./itemBox";
 import { useNavigate } from "react-router-dom";
+import notRanking from "../../img/notRanking.png";
 
 interface itemProps {
   average_rating: number;
@@ -29,16 +30,21 @@ const RankingItem: React.FC<rankingItemProps> = ({ rankingData }) => {
     <>
       <RankingItemWrapper>
         {rankingData.length > 0 ? (
-          rankingData.map((item, index) => (
+          rankingData.map((item) => (
             <ItemBox
-              key={index}
+              key={item.item_key}
               item={item}
-              rank={index + 1}
+              rank={rankingData.indexOf(item) + 1}
               onClick={() => handleItemClick(item.item_key)}
             />
           ))
         ) : (
-          <p>랭킹 정보가 없습니다.</p>
+          <div className="notItemWrapper">
+            <div>
+              <img src={notRanking} alt="랭킹 정보가 없습니다." />
+            </div>
+            <p>루틴 정보가 없습니다.</p>
+          </div>
         )}
       </RankingItemWrapper>
     </>
