@@ -42,6 +42,9 @@ const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
   const [subFilter, setSubFilter] = useState<string>("");
   const [rankingData, setRankingData] = useState<itemProps[]>([]);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const [displayItems, setDisplayItems] = useState<itemProps[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 3;
 
   const fetchRankingData = async (query: string) => {
     try {
@@ -51,6 +54,7 @@ const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
       // const response = await axios.get(`${backPort}/api/item${query}`);
       console.log("아이템 데이터", response.data);
       setRankingData(response.data);
+      setDisplayItems(response.data.slice(0, itemsPerPage));
     } catch (error) {
       console.error("랭킹 데이터 가져오기 실패:", error);
     }
@@ -60,7 +64,27 @@ const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
     fetchRankingData(searchQuery);
   }, [mainFilter, subFilter, searchQuery]);
 
-  const filterRankingData = rankingData.filter((item) => {
+  useEffect(() => {
+    setDisplayItems(rankingData.slice(0, currentPage * itemsPerPage));
+  }, [currentPage, rankingData]);
+
+  const handleScroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop >=
+      document.documentElement.offsetHeight
+    ) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const filterRankingData = displayItems.filter((item) => {
     return subFilter ? item.category === subFilter : true;
   });
 

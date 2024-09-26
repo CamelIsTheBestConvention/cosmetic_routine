@@ -47,7 +47,6 @@ const ItemReview: React.FC<ReviewProps> = ({ item_key }) => {
       const fetchedReviews = await Promise.all(
         response.data.map(async (review: ReviewItem) => {
           const username = await fetchUser(review.user_key);
-          console.log(username);
           return { ...review, username };
         })
       );
@@ -62,6 +61,14 @@ const ItemReview: React.FC<ReviewProps> = ({ item_key }) => {
   useEffect(() => {
     fetchReviews();
   }, [item_key]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetchReviews();
+    }, 30000);
+
+    return () => clearInterval(interval);
+  }, [reviews]);
 
   const handleReviewChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReviewText(e.target.value);

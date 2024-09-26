@@ -4,6 +4,7 @@ import "../scss/mypage/orderList.scss";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import MainFooter from "../components/common/mainFooter";
+import notOrder from "../img/notOrder.png";
 
 interface orderItem {
   order_at: string;
@@ -87,7 +88,12 @@ const OrderList: React.FC = () => {
               </div>
             ))
           ) : (
-            <p>주문 내역이 없습니다.</p>
+            <div className="notItemWrapper">
+              <div>
+                <img src={notOrder} alt="주문 정보가 없습니다." />
+              </div>
+              <p>주문 정보가 없습니다.</p>
+            </div>
           )}
         </div>
       </div>

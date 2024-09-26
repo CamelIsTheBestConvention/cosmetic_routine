@@ -4,6 +4,7 @@ import AboutHeader from "../components/common/aboutHeader";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import notAddress from "../img/notAddress.png";
 
 interface addressData {
   address_key: number;
@@ -122,7 +123,12 @@ const SetAddress: React.FC = () => {
             </AddressBox>
           ))
         ) : (
-          <div>등록한 배송지가 없습니다.</div>
+          <div className="notItemWrapper">
+            <div>
+              <img src={notAddress} alt="배송지 정보가 없습니다." />
+            </div>
+            <p>배송지 정보가 없습니다.</p>
+          </div>
         )}
       </GetAddressWrapper>
       <MainFooter />

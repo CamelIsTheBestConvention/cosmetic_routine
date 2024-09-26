@@ -49,6 +49,7 @@ const TypeRoutineBox: React.FC = () => {
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const userKey = sessionStorage.getItem("userKey");
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("authToken");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -128,6 +129,10 @@ const TypeRoutineBox: React.FC = () => {
     navigate(`/routine/${routine_key}`);
   };
 
+  const handleNextRoutine = () => {
+    navigate("/routine");
+  };
+
   return (
     <>
       <OutBox
@@ -137,15 +142,32 @@ const TypeRoutineBox: React.FC = () => {
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
       >
-        <TypeRoutineBanner>
-          {typeRoutine.slice(0, 3).map((routine) => (
-            <BannerBox
-              key={routine.routine.routine_key}
-              routine={routine.routine}
-              onClick={() => handleDetailRoutine(routine.routine.routine_key)}
-            />
-          ))}
-        </TypeRoutineBanner>
+        {token ? (
+          typeRoutine.length > 0 ? (
+            <TypeRoutineBanner>
+              {typeRoutine.slice(0, 3).map((routine) => (
+                <BannerBox
+                  key={routine.routine.routine_key}
+                  routine={routine.routine}
+                  onClick={() =>
+                    handleDetailRoutine(routine.routine.routine_key)
+                  }
+                />
+              ))}
+            </TypeRoutineBanner>
+          ) : (
+            <NoRoutineBox>
+              <p>맞춤 루틴이 없습니다.</p>
+              <p>루틴 페이지로 이동하시겠습니까?</p>
+              <button onClick={handleNextRoutine}>이동하기</button>
+            </NoRoutineBox>
+          )
+        ) : (
+          <NoLoginBox>
+            <p>로그인이 필요합니다.</p>
+            <button onClick={() => navigate("/login")}>로그인하기</button>
+          </NoLoginBox>
+        )}
       </OutBox>
     </>
   );
@@ -169,4 +191,52 @@ const TypeRoutineBanner = styled.div`
   margin: 20px 0;
   display: flex;
   justify-content: flex-start;
+`;
+
+const NoRoutineBox = styled.div`
+  width: 100%;
+  text-align: center;
+
+  p {
+    &:nth-child(1) {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    &:nth-child(2) {
+      font-size: 14px;
+      color: #848484;
+    }
+  }
+
+  button {
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    background-color: #ff5cd0;
+    color: white;
+    font-size: 17px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+`;
+
+const NoLoginBox = styled.div`
+  width: 100%;
+  text-align: center;
+
+  p {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  button {
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    background-color: #ff5cd0;
+    color: white;
+    font-size: 17px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
 `;
