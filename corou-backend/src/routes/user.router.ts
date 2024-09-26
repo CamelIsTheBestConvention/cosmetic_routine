@@ -24,6 +24,7 @@ export function setupUserRouter(): Router {
   router.post("/:user_key/address", authMiddleware, (req, res) => userController.addAddress(req, res));
 
   router.put("/:user_key/address/:addr_key", authMiddleware, (req, res) => userController.updateAddress(req, res));
+  router.put("/:user_key", authMiddleware, (req, res) => userController.updateUser(req, res));
 
   router.delete("/:user_key/address/:addr_key", authMiddleware, (req, res) => userController.deleteAddress(req, res));
 

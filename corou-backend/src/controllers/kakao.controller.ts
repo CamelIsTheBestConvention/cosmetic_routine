@@ -37,13 +37,12 @@ export class KakaoController {
       // 2. 액세스 토큰으로 카카오 사용자 정보 요청
       const kakaoUser = await this.kakaoService.getUserInfo(token.access_token);
 
-      // 카카오에서 받아온 이메일
-      //   const email = kakaoUser.kakao_account.email;
+      // 카카오에서 받아온 정보
       console.log(kakaoUser);
       const username = kakaoUser.kakao_account.profile.nickname;
       const email = `${username}@corou.com`;
 
-      // 3. 우리 서비스에 사용자가 존재하는지 확인
+      // 3. 서비스에 사용자가 존재하는지 확인
       let user = await this.userService.getUserByEmail(email);
 
       // 4. 사용자가 존재하지 않으면 자동으로 회원가입 처리
@@ -54,10 +53,9 @@ export class KakaoController {
 
       console.log("check here");
       // 5. 로그인 처리: 세션을 생성하거나 JWT 발급
-      // 예시: JWT 발급
       const jwtToken = generateToken({ user_key: user.user_key });
 
-      // 6. 프론트엔드에 JWT 전송 (또는 세션 생성)
+      // 6. 프론트엔드에 JWT 전송
       res.status(200).json({
         token: jwtToken,
         user: { user_key: user.user_key, username: user.username },
