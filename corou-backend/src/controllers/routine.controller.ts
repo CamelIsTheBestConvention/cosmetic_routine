@@ -67,7 +67,7 @@ export class RoutineController {
             });
 
             const routines = await this.routineService.getAllRoutines(
-                sort as string,
+            sort as string,
                 order as 'ASC' | 'DESC',
                 page ? parseInt(page as string) : undefined,
                 size ? parseInt(size as string) : undefined,

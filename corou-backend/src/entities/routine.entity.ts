@@ -4,6 +4,7 @@ import { User } from './user.entity';  // Import the User entity
 import { Review } from './review.entity';
 import { RoutineDetail } from './routine-detail.entity';
 import { RoutineSkinRelation } from './routine-skin-relation.entity';
+import { RoutineTagRelation } from './routine-tag-relation.entity';
 
 @Entity('routine')
 export class Routine {
@@ -40,4 +41,7 @@ export class Routine {
 
     @OneToMany(() => RoutineSkinRelation, routineSkinRelation => routineSkinRelation.routine, { cascade: true })
     routine_skin_relations?: RoutineSkinRelation[];
+
+    @OneToMany(() => RoutineTagRelation, routineTagRelation => routineTagRelation.routine, { cascade: true })
+    routine_tag_relations?: RoutineTagRelation[];
 }
