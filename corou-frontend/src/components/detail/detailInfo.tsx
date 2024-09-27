@@ -64,7 +64,9 @@ const DetailInfo: React.FC<detailRoutineData> = ({ data }) => {
   const [tagData, setTagData] = useState<string[]>([]);
 
   const handleEditRoutine = () => {
-    navigate(`/routine/${data.routine_key}/edit`, { state: { data } });
+    navigate(`/routine/${data.routine_key}/edit`, {
+      state: { routineData: data, tagData: tagData },
+    });
   };
 
   const handleDeleteRoutine = async () => {
@@ -87,23 +89,24 @@ const DetailInfo: React.FC<detailRoutineData> = ({ data }) => {
   useEffect(() => {
     const fetchTagData = async (data: routineData) => {
       try {
-        const tagName = data?.routine_tag_relations
-          .map((detail) => detail.tag_key)
-          .map(async (tag_key) => {
-            const response = await axios.get(`${backPort}/api/tag/${tag_key}`);
-            return response.data;
-          });
+        const tagNamePromises = data?.routine_tag_relations.map((detail) =>
+          axios.get(`${backPort}/api/tag/${detail.tag_key}`)
+        );
 
-        const result = await Promise.all(tagName);
+        const tagResponses = await Promise.all(tagNamePromises);
+        const result = tagResponses.map((response) => response.data);
+
         setTagData(result);
-        console.log(result);
+        console.log("태그 결과", result);
       } catch (error) {
         console.error("태그 데이터 가져오기 중 오류");
       }
     };
 
-    fetchTagData(data);
-  }, []);
+    if (data) {
+      fetchTagData(data);
+    }
+  }, [data]);
 
   return (
     <>

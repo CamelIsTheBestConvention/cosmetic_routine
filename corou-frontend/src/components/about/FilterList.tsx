@@ -156,7 +156,7 @@ const FilterList: React.FC<searchData> = ({
         // setItems(updatedItems);
         setItems(finalItems);
         // setItems(response.data);
-        console.log(items);
+        console.log(finalItems);
         setDisplayItems(finalItems.slice(0, itemsPerPage));
       } catch (err) {
         console.error("루틴 가져오기 실패", err);
