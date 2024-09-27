@@ -131,6 +131,12 @@ const addRoutineSlice = createSlice({
     resetAddRoutine(state) {
       return initialState;
     },
+    setAllData: (state, action: PayloadAction<addRoutineState>) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
   },
 });
 
@@ -146,5 +152,6 @@ export const {
   setItemList,
   setTotalPrice,
   resetAddRoutine,
+  setAllData,
 } = addRoutineSlice.actions;
 export default addRoutineSlice.reducer;

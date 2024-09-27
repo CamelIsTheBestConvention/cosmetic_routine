@@ -136,6 +136,18 @@ const RoutineReview: React.FC<ReviewProps> = ({ routine_key }) => {
     setHoverRating(0);
   };
 
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Asia/Seoul",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <>
       <ReviewWrapper>
@@ -173,7 +185,7 @@ const RoutineReview: React.FC<ReviewProps> = ({ routine_key }) => {
               <ReviewProfile>
                 <div>
                   <img
-                    src={`/assets/user/${review.user_key}.png`}
+                    src={`/assets/user/2.png`}
                     alt={`${review?.username} 이미지`}
                   />
                 </div>
@@ -193,7 +205,7 @@ const RoutineReview: React.FC<ReviewProps> = ({ routine_key }) => {
                       />
                     ))}
                   </Stars>
-                  <span>{review?.review_at}</span>
+                  <span>{formatDate(review?.review_at)}</span>
                 </ReviewContentTitle>
                 <ReviewContentContent>
                   {review.review_content}

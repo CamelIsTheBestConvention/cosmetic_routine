@@ -44,7 +44,7 @@ const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const [displayItems, setDisplayItems] = useState<itemProps[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 10;
 
   const fetchRankingData = async (query: string) => {
     try {

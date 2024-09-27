@@ -43,7 +43,7 @@ const RankingItem: React.FC<rankingItemProps> = ({ rankingData }) => {
             <div>
               <img src={notRanking} alt="랭킹 정보가 없습니다." />
             </div>
-            <p>루틴 정보가 없습니다.</p>
+            <p>제품 정보가 없습니다.</p>
           </div>
         )}
       </RankingItemWrapper>
