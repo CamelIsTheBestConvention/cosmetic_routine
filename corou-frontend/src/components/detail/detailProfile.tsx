@@ -12,7 +12,9 @@ const DetailProfile: React.FC<detailProfileData> = ({
   return (
     <>
       <div className="detailProfileWrapper">
-        <div>{/* <img src={profileImg} alt="프로필" /> */}</div>
+        <div>
+          <img src={`/assets/user/2.png`} alt="프로필" />
+        </div>
         <div>
           <span>{profileNickname}님의 루틴</span>
           <span>

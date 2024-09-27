@@ -5,7 +5,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 interface skinRelations {
-  routine_key: number;
   attr_key: number;
 }
 
@@ -26,7 +25,6 @@ interface routineItem {
 
 interface allRoutineData {
   routine: routineItem;
-  attr_keys: number[];
 }
 
 const TopRoutineBox: React.FC = () => {
@@ -34,7 +32,7 @@ const TopRoutineBox: React.FC = () => {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const topRoutineRef = useRef<HTMLDivElement>(null);
-  const [topRoutine, setTopRoutine] = useState<allRoutineData[]>([]);
+  const [topRoutine, setTopRoutine] = useState<routineItem[]>([]);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const navigate = useNavigate();
 
@@ -42,6 +40,8 @@ const TopRoutineBox: React.FC = () => {
     const fetchRoutines = async () => {
       try {
         const response = await axios.get(`${backPort}/api/routine`);
+
+        console.log(response.data);
 
         const sortedData = response.data.sort(
           (a: allRoutineData, b: allRoutineData) => {
@@ -112,9 +112,9 @@ const TopRoutineBox: React.FC = () => {
       <TopRoutineBanner>
         {topRoutine.slice(0, 10).map((routine) => (
           <BannerBox
-            key={routine.routine.routine_key}
-            routine={routine.routine}
-            onClick={() => handleDetailRoutine(routine.routine.routine_key)}
+            key={routine?.routine_key}
+            routine={routine}
+            onClick={() => handleDetailRoutine(routine.routine_key)}
           />
         ))}
       </TopRoutineBanner>

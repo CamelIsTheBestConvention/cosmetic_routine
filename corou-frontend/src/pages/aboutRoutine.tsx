@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 interface skinRelations {
-  routine_key: number;
   attr_key: number;
 }
 
@@ -23,14 +22,8 @@ interface routineItem {
   routine_name: string;
   reviews: number;
   user: { username: string };
-  problem: number[];
   tags: string[];
   routine_skin_relations: skinRelations[];
-}
-
-interface allRoutineData {
-  routine: routineItem;
-  attr_keys: number[];
 }
 
 const AboutRoutine: React.FC = () => {
@@ -40,7 +33,7 @@ const AboutRoutine: React.FC = () => {
   const [selectedFilters, setSelectedFilters] = useState<number[]>([]);
   const [priceFilterValue, setPriceFilterValue] = useState<number[]>([]);
   const [amountFilterValue, setAmountFilterValue] = useState<number[]>([]);
-  const [items, setItems] = useState<allRoutineData[]>([]);
+  const [items, setItems] = useState<routineItem[]>([]);
   const [minPrice, setMinPrice] = useState<number>(1);
   const [maxPrice, setMaxPrice] = useState<number>(Infinity);
   const [minCount, setMinCount] = useState<number>(1);
@@ -80,6 +73,7 @@ const AboutRoutine: React.FC = () => {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_PORT}/api/routine`
       );
+      console.log("음", response.data);
       setItems(response.data);
     };
 

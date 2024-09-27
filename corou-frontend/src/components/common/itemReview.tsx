@@ -172,7 +172,7 @@ const ItemReview: React.FC<ReviewProps> = ({ item_key }) => {
               <ReviewProfile>
                 <div>
                   <img
-                    src={`/assets/user/${review.user_key}.png`}
+                    src={`/assets/user/2.png`}
                     alt={`${review?.username} 이미지`}
                   />
                 </div>

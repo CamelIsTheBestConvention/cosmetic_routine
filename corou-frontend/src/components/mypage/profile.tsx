@@ -34,6 +34,7 @@ const Profile: React.FC = () => {
         })
         .then((response) => {
           setProfile(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.error("프로필 조회 실패", error);
@@ -56,7 +57,7 @@ const Profile: React.FC = () => {
             <div className="profileImg">
               <div>
                 <img
-                  src={`/assets/user/${userKey}.png`}
+                  src={`/assets/user/2.png`}
                   alt={`${profile?.username} 프로필 이미지`}
                 />
               </div>
