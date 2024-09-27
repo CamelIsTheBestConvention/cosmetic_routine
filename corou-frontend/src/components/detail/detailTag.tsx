@@ -4,10 +4,12 @@ import axios from "axios";
 
 interface detailTag {
   tag: number[];
+  tagData: string[];
+  setTagData: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const DetailTag: React.FC<detailTag> = ({ tag, tagData, setTagData }) => {
-  const [tagData, setTagData] = useState<string[]>([]);
+  // const [tagData, setTagData] = useState<string[]>([]);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   console.log(tag);
 
