@@ -84,6 +84,27 @@ const DetailInfo: React.FC<detailRoutineData> = ({ data }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchTagData = async (data: routineData) => {
+      try {
+        const tagName = data?.routine_tag_relations
+          .map((detail) => detail.tag_key)
+          .map(async (tag_key) => {
+            const response = await axios.get(`${backPort}/api/tag/${tag_key}`);
+            return response.data;
+          });
+
+        const result = await Promise.all(tagName);
+        setTagData(result);
+        console.log(result);
+      } catch (error) {
+        console.error("태그 데이터 가져오기 중 오류");
+      }
+    };
+
+    fetchTagData(data);
+  }, []);
+
   return (
     <>
       {data ? (
@@ -107,11 +128,7 @@ const DetailInfo: React.FC<detailRoutineData> = ({ data }) => {
             gender={data?.for_gender}
             age={data?.for_age}
           />
-          <DetailTag
-            tag={data?.routine_tag_relations.map((detail) => detail.tag_key)}
-            tagData={tagData}
-            setTagData={setTagData}
-          />
+          <DetailTag tagData={tagData} />
           <DetailGrade
             routineGrade={data?.steps}
             routineList={data?.routineDetails || []}
