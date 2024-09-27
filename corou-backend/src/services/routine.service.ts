@@ -196,7 +196,7 @@ export class RoutineService {
         routine.routine_name = routine_name ?? routine.routine_name;
         routine.steps = steps ?? routine.steps;
         routine.average_rating = average_rating ?? routine.average_rating;
-
+        11
         return await this.routineRepository.save(routine);
     }
     // 루틴 삭제
@@ -208,6 +208,9 @@ export class RoutineService {
             });
             if (!routine) {
                 throw new Error('해당 루틴을 찾을 수 없습니다.');
+            }
+            for (let i = 1; i <= routine.steps; i++) {
+                await this.routineDetailService.deleteRoutineDetail(i, routine_key);
             }
             await transactionalEntityManager.remove(routine);
             return routine;

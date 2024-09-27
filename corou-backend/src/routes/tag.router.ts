@@ -7,6 +7,6 @@ export function setupTagRouter(): Router {
     const tagController = container.resolve(TagController);
 
     router.get("/:tag_key", (req, res) => tagController.getTagByKey(req, res));
-
+    
     return router;
 }
