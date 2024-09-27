@@ -23,10 +23,6 @@ interface routineItem {
   routine_skin_relations: skinRelations[];
 }
 
-interface allRoutineData {
-  routine: routineItem;
-}
-
 const TopRoutineBox: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -44,11 +40,11 @@ const TopRoutineBox: React.FC = () => {
         console.log(response.data);
 
         const sortedData = response.data.sort(
-          (a: allRoutineData, b: allRoutineData) => {
-            if (b.routine.average_rating !== a.routine.average_rating) {
-              return b.routine.average_rating - a.routine.average_rating;
+          (a: routineItem, b: routineItem) => {
+            if (b.average_rating !== a.average_rating) {
+              return b.average_rating - a.average_rating;
             }
-            return b.routine.reviews - a.routine.reviews;
+            return b.reviews - a.reviews;
           }
         );
 

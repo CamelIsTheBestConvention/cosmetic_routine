@@ -10,7 +10,11 @@ import { setTag } from "../../redux/slice/addRoutineSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const EditRoutine3: React.FC = () => {
+interface lastEditPageData {
+  routine_key: number;
+}
+
+const EditRoutine3: React.FC<lastEditPageData> = ({ routine_key }) => {
   const dispatch = useDispatch();
   const title = useSelector((state: RootState) => state.addRoutine.title);
   const gender = useSelector((state: RootState) => state.addRoutine.gender);
@@ -22,6 +26,7 @@ const EditRoutine3: React.FC = () => {
   const routineItem = useSelector(
     (state: RootState) => state.addRoutine.routineItem
   );
+  console.log("sadf", routineItem);
   const tag = useSelector((state: RootState) => state.addRoutine.tag);
   const [tagInput, setTagInput] = useState(tag.join(", "));
 
@@ -48,9 +53,9 @@ const EditRoutine3: React.FC = () => {
       for_gender = gender[0];
     }
 
-    const filterRoutineItems = routineItem.map(({ item_name, ...rest }) => ({
-      ...rest,
-    }));
+    // const filterRoutineItems = routineItem.map(({ item_name, ...rest }) => ({
+    //   ...rest,
+    // }));
 
     const requestBody = {
       main: {
@@ -61,15 +66,15 @@ const EditRoutine3: React.FC = () => {
         for_age: age,
         for_problem: problem,
       },
-      details: filterRoutineItems,
+      details: routineItem,
       tags: tag,
     };
 
     console.log("요청할 body 데이터:", requestBody);
 
     try {
-      const response = await axios.post(
-        `${backPort}/api/routine`,
+      const response = await axios.put(
+        `${backPort}/api/routine/${routine_key}`,
         requestBody,
         {
           headers: {
