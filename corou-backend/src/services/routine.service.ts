@@ -116,7 +116,8 @@ export class RoutineService {
         page: number = 1,
         size: number = 10,
         filter?: { [key: string]: any }
-    ): Promise<{ routine: Routine, attr_keys: number[] }[]> {
+        // ): Promise<{ routine: Routine, attr_keys: number[] }[]> {
+    ): Promise<Routine[]> {
         const queryBuilder = this.routineRepository.createQueryBuilder('routine');
 
         // Apply filters if provided
@@ -138,19 +139,23 @@ export class RoutineService {
         queryBuilder.leftJoin('routine.user', 'user').addSelect(['user.username']);
 
         // Join with routine_skin_relation to get attr_key values
-        queryBuilder.leftJoinAndSelect('routine.routine_skin_relations', 'routineSkinRelation');
+        // queryBuilder.leftJoinAndSelect('routine.routine_skin_relations', 'routineSkinRelation')
+        queryBuilder.leftJoin('routine.routine_skin_relations', 'routineSkinRelation').addSelect('routineSkinRelation.attr_key');
 
         const routines = await queryBuilder.getMany();
+        console.log(routines);
 
-        // Construct an array of objects pairing each routine with its attr_key values
-        const routineWithAttrKeys = routines.map(routine => ({
-            routine,
-            attr_keys: routine.routine_skin_relations?.map(relation => relation.attr_key) || []
-        }));
+        return routines;
 
-        console.log(routineWithAttrKeys);
-        // console.log(routines)
-        return routineWithAttrKeys;
+        // // Construct an array of objects pairing each routine with its attr_key values
+        // const routineWithAttrKeys = routines.map(routine => ({
+        //     routine,
+        //     attr_keys: routine.routine_skin_relations?.map(relation => relation.attr_key) || []
+        // }));
+
+        // console.log(routineWithAttrKeys);
+        // // console.log(routines)
+        // return routineWithAttrKeys;
     }
     // 루틴 조회
     async getRoutineByKey(routine_key: number): Promise<Routine> {
@@ -165,8 +170,10 @@ export class RoutineService {
             .leftJoinAndSelect('routine.routineDetails', 'routineDetails')
             .leftJoin('routine.user', 'user')
             .addSelect(['user.username'])
-            // .leftJoinAndSelect('routine.reviews', 'reviews')
+            .leftJoinAndSelect('routine.routine_skin_relations', 'routineSkinRelation')
+            .leftJoinAndSelect('routine.routine_tag_relations', 'routineTagRelation')
             .where('routine.routine_key = :routine_key', { routine_key })
+            .andWhere('routineTagRelation.routine = :routine_key', { routine_key })
             .getOne();
         console.log(routine);
         if (!routine) {
