@@ -34,17 +34,12 @@ interface routineItem {
   routine_skin_relations: skinRelations[];
 }
 
-interface allRoutineData {
-  routine: routineItem;
-  attr_keys: number[];
-}
-
 const TypeRoutineBox: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const topRoutineRef = useRef<HTMLDivElement>(null);
-  const [typeRoutine, setTypeRoutine] = useState<allRoutineData[]>([]);
+  const [typeRoutine, setTypeRoutine] = useState<routineItem[]>([]);
   const [userData, setUserData] = useState<userProfile | null>(null);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const userKey = sessionStorage.getItem("userKey");
@@ -79,6 +74,7 @@ const TypeRoutineBox: React.FC = () => {
               for_gender: userData.gender,
             },
           });
+          console.log(response.data);
           setTypeRoutine(response.data);
           console.log("피부맞춤 데이터", response.data);
         } catch (error) {
@@ -147,11 +143,9 @@ const TypeRoutineBox: React.FC = () => {
             <TypeRoutineBanner>
               {typeRoutine.slice(0, 3).map((routine) => (
                 <BannerBox
-                  key={routine.routine.routine_key}
-                  routine={routine.routine}
-                  onClick={() =>
-                    handleDetailRoutine(routine.routine.routine_key)
-                  }
+                  key={routine.routine_key}
+                  routine={routine}
+                  onClick={() => handleDetailRoutine(routine.routine_key)}
                 />
               ))}
             </TypeRoutineBanner>
