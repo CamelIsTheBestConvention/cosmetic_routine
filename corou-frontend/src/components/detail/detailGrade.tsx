@@ -105,9 +105,9 @@ const DetailGrade: React.FC<detailGradeData> = ({
                   <ItemDescription style={{ margin: "10px 0" }}>
                     {routine.description}
                   </ItemDescription>
-                  <div className="detailItemEffect">
+                  {/* <div className="detailItemEffect">
                     제품 효능 박스(일단 보류)
-                  </div>
+                  </div> */}
                 </div>
               );
             })

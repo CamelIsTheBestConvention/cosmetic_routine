@@ -6,7 +6,7 @@ import { useState } from "react";
 import CompleteBtn from "../common/completeBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { setTag } from "../../redux/slice/addRoutineSlice";
+import { setTag } from "../../redux/slice/editRoutineSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -16,18 +16,18 @@ interface lastEditPageData {
 
 const EditRoutine3: React.FC<lastEditPageData> = ({ routine_key }) => {
   const dispatch = useDispatch();
-  const title = useSelector((state: RootState) => state.addRoutine.title);
-  const gender = useSelector((state: RootState) => state.addRoutine.gender);
-  const skin = useSelector((state: RootState) => state.addRoutine.skin);
-  const age = useSelector((state: RootState) => state.addRoutine.age);
-  const problem = useSelector((state: RootState) => state.addRoutine.problem);
-  const grade = useSelector((state: RootState) => state.addRoutine.grade);
+  const title = useSelector((state: RootState) => state.editRoutine.title);
+  const gender = useSelector((state: RootState) => state.editRoutine.gender);
+  const skin = useSelector((state: RootState) => state.editRoutine.skin);
+  const age = useSelector((state: RootState) => state.editRoutine.age);
+  const problem = useSelector((state: RootState) => state.editRoutine.problem);
+  const grade = useSelector((state: RootState) => state.editRoutine.grade);
   const navigate = useNavigate();
   const routineItem = useSelector(
-    (state: RootState) => state.addRoutine.routineItem
+    (state: RootState) => state.editRoutine.routineItem
   );
   console.log("sadf", routineItem);
-  const tag = useSelector((state: RootState) => state.addRoutine.tag);
+  const tag = useSelector((state: RootState) => state.editRoutine.tag);
   const [tagInput, setTagInput] = useState(tag.join(", "));
 
   const token = sessionStorage.getItem("authToken");

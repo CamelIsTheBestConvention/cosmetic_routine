@@ -91,96 +91,54 @@ const EditAddress: React.FC = () => {
     }
   };
 
+  const renderInputField = (
+    label: string,
+    name: keyof addressData,
+    placeholder: string
+  ) => (
+    <div>
+      <InputTitle>{label}</InputTitle>
+      <Input
+        type="text"
+        name={name}
+        placeholder={placeholder}
+        value={addressData[name]}
+        onChange={handleInputChange}
+      />
+    </div>
+  );
+
   return (
     <>
       <AboutHeader Title="배송지 수정" onBack={handleBack} />
       <form onSubmit={handleSubmit}>
-        <div>
-          <div>
-            <span>배송지 이름</span>
-            <Input
-              type="text"
-              name="address_name"
-              placeholder="예) 우리 집"
-              value={addressData.address_name}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <span>성함</span>
-            <Input
-              type="text"
-              name="name"
-              placeholder="예) 문미새"
-              value={addressData.name}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <span>주소</span>
-            <Input
-              type="text"
-              name="addr"
-              placeholder="예) 서울특별시 강남구 역삼동"
-              value={addressData.addr}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <span>상세 주소</span>
-            <Input
-              type="text"
-              name="addr_detail"
-              placeholder="예) 미새아파트 101동 101호"
-              value={addressData.addr_detail}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <span>우편번호</span>
-            <Input
-              type="text"
-              name="zip"
-              placeholder="예) 12345"
-              value={addressData.zip}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <span>전화번호</span>
-            <Input
-              type="text"
-              name="tel"
-              placeholder="예) 01012345678"
-              value={addressData.tel}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
-            <span>요청</span>
-            <Input
-              type="text"
-              name="request"
-              placeholder="예) 문 앞에 놓아주세요."
-              value={addressData.request}
-              onChange={handleInputChange}
-            />
-          </div>
-          <div>
+        <EditAddressWrapper>
+          {renderInputField("배송지 이름", "address_name", "예) 우리 집")}
+          {renderInputField("성함", "name", "예) 문미새")}
+          {renderInputField("주소", "addr", "예) 서울특별시 강남구 역삼동")}
+          {renderInputField(
+            "상세 주소",
+            "addr_detail",
+            "예) 미새아파트 101동 101호"
+          )}
+          {renderInputField("우편번호", "zip", "예) 12345")}
+          {renderInputField("전화번호", "tel", "예) 01012345678")}
+          {renderInputField("요청", "request", "예) 문 앞에 놓아주세요.")}
+          <DefaultAddressCheck>
             <span>기본 배송지로 설정</span>
-            <Input
+            <input
               type="checkbox"
               name="is_default"
               checked={addressData.is_default === "Y"}
               onChange={handleInputChange}
             />
-          </div>
+          </DefaultAddressCheck>
           <CompleteBtn
             text="저장"
             onClick={() => handleSubmit}
             disabled={false}
           />
-        </div>
+        </EditAddressWrapper>
       </form>
       <MainFooter />
     </>
@@ -193,7 +151,50 @@ const Input = styled.input`
   border: 3px solid rgba(255, 164, 228, 0.5);
   border-radius: 13px;
   padding: 10px 10px;
+  margin-top: 5px;
   margin-bottom: 10px;
   font-size: 14px;
   outline: none;
+`;
+
+const EditAddressWrapper = styled.div`
+  width: 80%;
+  margin: 0 auto;
+`;
+
+const InputTitle = styled.span`
+  font-weight: 700;
+`;
+
+const DefaultAddressCheck = styled.div`
+  display: flex;
+  justify-content: flex-start;
+
+  span {
+    font-weight: 700;
+    margin-right: 10px;
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid lightgray;
+    cursor: pointer;
+    margin-right: 10px;
+
+    &:checked {
+      background-color: rgba(255, 164, 228, 0.5);
+      border-color: rgba(255, 164, 228, 0.5);
+    }
+
+    &:checked::after {
+      content: "✓";
+      display: block;
+      color: black;
+      text-align: center;
+      line-height: 13px;
+      font-size: 15px;
+    }
+  }
 `;

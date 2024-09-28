@@ -12,22 +12,29 @@ import {
   setAge,
   setProblem,
   setGrade,
-} from "../../redux/slice/addRoutineSlice";
+} from "../../redux/slice/editRoutineSlice";
 import CommonCheckBox from "../common/commonCheckbox";
 import CommonRadioBox from "../common/commonRadiobox";
+import { useEffect } from "react";
 
 interface NextProps {
   onNext: () => void;
+  genderList: string[];
 }
 
-const EditRoutine1: React.FC<NextProps> = ({ onNext }) => {
+const EditRoutine1: React.FC<NextProps> = ({ onNext, genderList }) => {
   const dispatch = useDispatch();
-  const title = useSelector((state: RootState) => state.addRoutine.title);
-  const gender = useSelector((state: RootState) => state.addRoutine.gender);
-  const skin = useSelector((state: RootState) => state.addRoutine.skin);
-  const age = useSelector((state: RootState) => state.addRoutine.age);
-  const problem = useSelector((state: RootState) => state.addRoutine.problem);
-  const grade = useSelector((state: RootState) => state.addRoutine.grade);
+  const title = useSelector((state: RootState) => state.editRoutine.title);
+  const gender = useSelector((state: RootState) => state.editRoutine.gender);
+  console.log(gender);
+  const skin = useSelector((state: RootState) => state.editRoutine.skin);
+  const age = useSelector((state: RootState) => state.editRoutine.age);
+  const problem = useSelector((state: RootState) => state.editRoutine.problem);
+  const grade = useSelector((state: RootState) => state.editRoutine.grade);
+
+  useEffect(() => {
+    dispatch(setGender(genderList));
+  }, [dispatch, genderList]);
 
   const handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;

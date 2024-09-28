@@ -42,5 +42,9 @@ const TitleWrapper = styled.div`
     margin-bottom: 5px;
     font-size: 12px;
     cursor: pointer;
+
+    &:hover {
+      color: black;
+    }
   }
 `;

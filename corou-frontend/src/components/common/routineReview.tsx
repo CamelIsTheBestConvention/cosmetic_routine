@@ -171,7 +171,7 @@ const RoutineReview: React.FC<ReviewProps> = ({ routine_key }) => {
             <textarea
               value={reviewText}
               onChange={handleReviewChange}
-              placeholder="리뷰를 입력하세요.(100글자 제한)"
+              placeholder="리뷰는 수정할 수 없으니 신중하게 작성해주세요.(100글자 제한)"
               maxLength={100}
             />
             <button onClick={handleAddReview}>리뷰 작성</button>

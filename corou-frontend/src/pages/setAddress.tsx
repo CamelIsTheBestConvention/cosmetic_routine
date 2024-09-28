@@ -84,6 +84,13 @@ const SetAddress: React.FC = () => {
     }
   };
 
+  const defaultAddresses = addressList.filter(
+    (address) => address.is_default === "Y"
+  );
+  const otherAddresses = addressList.filter(
+    (address) => address.is_default !== "Y"
+  );
+
   return (
     <>
       <AboutHeader Title="배송지" onBack={handleBack} />
@@ -92,36 +99,67 @@ const SetAddress: React.FC = () => {
       </AddAddressBox>
       <GetAddressWrapper>
         {addressList?.length > 0 ? (
-          addressList?.map((address) => (
-            <AddressBox key={address?.address_key}>
-              <AddressBoxTitle>
-                <h3>{address?.address_name}</h3>
-                <div>
-                  <span onClick={() => handleEditAddress(address?.address_key)}>
-                    수정
+          <>
+            {defaultAddresses.map((address) => (
+              <AddressBox key={address.address_key}>
+                <AddressBoxTitle>
+                  <h3>{address.address_name}</h3>
+                  <div>
+                    <span
+                      onClick={() => handleEditAddress(address.address_key)}
+                    >
+                      수정
+                    </span>
+                    <span onClick={() => handledelAddress(address.address_key)}>
+                      삭제
+                    </span>
+                  </div>
+                </AddressBoxTitle>
+                <AddressBoxContent>
+                  <span>{address.name}</span>
+                  <span>
+                    {address.tel.slice(0, 3)}-{address.tel.slice(3, 7)}-
+                    {address.tel.slice(7, 11)}
                   </span>
-                  <span onClick={() => handledelAddress(address?.address_key)}>
-                    삭제
+                  <span>
+                    {address.addr}({address.zip})
                   </span>
-                </div>
-              </AddressBoxTitle>
-              <AddressBoxContent>
-                <span>{address?.name}</span>
-                <span>
-                  {address?.tel.slice(0, 3)}-{address?.tel.slice(3, 7)}-
-                  {address?.tel.slice(7, 11)}
-                </span>
-                <span>
-                  {address?.addr}({address?.zip})
-                </span>
-                <span>{address?.addr_detail}</span>
-                <span>요청 사항: {address?.request}</span>
-              </AddressBoxContent>
-              {address?.is_default === "Y" && (
+                  <span>{address.addr_detail}</span>
+                  <span>요청 사항: {address.request}</span>
+                </AddressBoxContent>
                 <DefaultAddr>기본 배송지</DefaultAddr>
-              )}
-            </AddressBox>
-          ))
+              </AddressBox>
+            ))}
+            {otherAddresses.map((address) => (
+              <AddressBox key={address.address_key}>
+                <AddressBoxTitle>
+                  <h3>{address.address_name}</h3>
+                  <div>
+                    <span
+                      onClick={() => handleEditAddress(address.address_key)}
+                    >
+                      수정
+                    </span>
+                    <span onClick={() => handledelAddress(address.address_key)}>
+                      삭제
+                    </span>
+                  </div>
+                </AddressBoxTitle>
+                <AddressBoxContent>
+                  <span>{address.name}</span>
+                  <span>
+                    {address.tel.slice(0, 3)}-{address.tel.slice(3, 7)}-
+                    {address.tel.slice(7, 11)}
+                  </span>
+                  <span>
+                    {address.addr}({address.zip})
+                  </span>
+                  <span>{address.addr_detail}</span>
+                  <span>요청 사항: {address.request}</span>
+                </AddressBoxContent>
+              </AddressBox>
+            ))}
+          </>
         ) : (
           <div className="notItemWrapper">
             <div>
@@ -151,6 +189,11 @@ const AddAddressBox = styled.div`
     font-weight: 700;
     margin-right: 10px;
     margin-bottom: 10px;
+    cursor: pointer;
+
+    &:hover {
+      color: #ff29d8;
+    }
   }
 `;
 
@@ -185,6 +228,10 @@ const AddressBoxTitle = styled.div`
       color: #848484;
       font-weight: 700;
       cursor: pointer;
+
+      &:hover {
+        color: black;
+      }
     }
   }
 `;

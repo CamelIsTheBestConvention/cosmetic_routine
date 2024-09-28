@@ -3,15 +3,19 @@ import React, { useState } from "react";
 
 interface SkinFilterProps {
   onSkinChange: (skinType: number) => void;
+  selectedSkinType: number | null;
+  setSelectedSkinType: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
-const SkinFilter: React.FC<SkinFilterProps> = ({ onSkinChange }) => {
-  const [selectedSkinType, setSelectedSkinType] = useState<number | null>(null);
-
+const SkinFilter: React.FC<SkinFilterProps> = ({
+  onSkinChange,
+  selectedSkinType,
+  setSelectedSkinType,
+}) => {
   const skinTypeMap: { [key: string]: number } = {
-    지성: 1,
-    건성: 2,
-    중성: 3,
+    건성: 1,
+    중성: 2,
+    지성: 3,
     복합성: 4,
     수부지: 5,
   };
@@ -25,7 +29,7 @@ const SkinFilter: React.FC<SkinFilterProps> = ({ onSkinChange }) => {
   return (
     <>
       <SkinFilterWrapper>
-        {["지성", "건성", "중성", "복합성", "수부지"].map((skin) => (
+        {["건성", "중성", "지성", "복합성", "수부지"].map((skin) => (
           <Label
             key={skin}
             isSelected={selectedSkinType === skinTypeMap[skin]}

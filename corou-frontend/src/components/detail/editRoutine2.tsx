@@ -9,7 +9,7 @@ import {
   setRoutineItem,
   setTotalPrice,
   setItemList,
-} from "../../redux/slice/addRoutineSlice";
+} from "../../redux/slice/editRoutineSlice";
 import axios from "axios";
 
 interface itemData {
@@ -29,9 +29,9 @@ interface NextProps {
 
 const EditRoutine2: React.FC<NextProps> = ({ onNext }) => {
   const dispatch = useDispatch();
-  const grade = useSelector((state: RootState) => state.addRoutine.grade);
+  const grade = useSelector((state: RootState) => state.editRoutine.grade);
   const routineItems = useSelector(
-    (state: RootState) => state.addRoutine.routineItem
+    (state: RootState) => state.editRoutine.routineItem
   );
   const [allRoutineItems, setAllRoutineItems] = useState(
     new Array(grade).fill({
@@ -58,7 +58,7 @@ const EditRoutine2: React.FC<NextProps> = ({ onNext }) => {
     new Array(grade).fill([])
   );
   const totalPrice = useSelector(
-    (state: RootState) => state.addRoutine.totalPrice
+    (state: RootState) => state.editRoutine.totalPrice
   );
   const [searchQueries, setSearchQueries] = useState<string[]>(
     new Array(grade).fill("")
@@ -66,7 +66,9 @@ const EditRoutine2: React.FC<NextProps> = ({ onNext }) => {
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const inputRef = useRef<HTMLInputElement>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const itemList = useSelector((state: RootState) => state.addRoutine.itemList);
+  const itemList = useSelector(
+    (state: RootState) => state.editRoutine.itemList
+  );
 
   useEffect(() => {
     // 남은 루틴 복구
@@ -260,6 +262,9 @@ const EditRoutine2: React.FC<NextProps> = ({ onNext }) => {
               placeholder="설명 (100글자 제한)"
               maxLength={100}
             />
+            <span style={{ fontSize: "14px", color: "#848484" }}>
+              제품은 다시 입력해주세요.
+            </span>
             <ItemSearchWrapper>
               <CommonInput
                 ref={inputRef}

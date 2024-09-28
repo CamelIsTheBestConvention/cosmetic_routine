@@ -135,6 +135,18 @@ const ItemReview: React.FC<ReviewProps> = ({ item_key }) => {
     setHoverRating(0);
   };
 
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Asia/Seoul",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <>
       <ReviewWrapper>
@@ -158,7 +170,7 @@ const ItemReview: React.FC<ReviewProps> = ({ item_key }) => {
             <textarea
               value={reviewText}
               onChange={handleReviewChange}
-              placeholder="리뷰를 입력하세요.(100글자 제한)"
+              placeholder="리뷰는 수정할 수 없으니 신중하게 작성해주세요.(100글자 제한)"
               maxLength={100}
             />
             <button onClick={handleAddReview}>리뷰 작성</button>
@@ -192,7 +204,7 @@ const ItemReview: React.FC<ReviewProps> = ({ item_key }) => {
                       />
                     ))}
                   </Stars>
-                  <span>{review?.review_at}</span>
+                  <span>formatDate({review?.review_at})</span>
                 </ReviewContentTitle>
                 <ReviewContentContent>
                   {review.review_content}

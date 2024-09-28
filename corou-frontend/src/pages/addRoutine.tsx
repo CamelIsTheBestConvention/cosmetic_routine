@@ -16,9 +16,11 @@ const AddRoutine: React.FC = () => {
   const location = useLocation();
   const fromPath = location.state?.from;
   const currentPath = window.location.pathname;
+  console.log(fromPath);
+  console.log(currentPath);
 
   useEffect(() => {
-    if (fromPath === "/routine" && currentPath === "/add") {
+    if (fromPath === "/routine" && currentPath === "/routine/add") {
       dispatch(resetAddRoutine());
     }
   }, [fromPath, currentPath, dispatch]);
