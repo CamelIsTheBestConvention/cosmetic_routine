@@ -185,36 +185,75 @@ export class RoutineService {
         return routine;
     }
     // 루틴 수정
-    async updateRoutine(user_key: number, routine_key: number, routine_name?: string, steps?: number, average_rating?: number): Promise<Routine> {
-        const routine = await this.routineRepository.findOneBy({ routine_key });
+    async updateRoutine(
+        user_key: number,
+        routine_key: number,
+        routine_name: string,
+        steps: number,
+        for_age: number,
+        for_gender: "M" | "F" | "A",
+        details: any
+    ): Promise<Routine> {
+        return this.dataSource.transaction(async transactionalEntityManager => {
+            const foundRoutine = await this.routineRepository.findOne({ where: { routine_key }, relations: ['user'] });
+            if (!foundRoutine) {
+                throw new Error('루틴을 찾지 못했습니다.');
+            }
+            if (foundRoutine.user.user_key !== user_key) {
+                throw new Error('수정 권한이 없습니다.');
+            }
+            const old_steps = foundRoutine.steps;
+            await transactionalEntityManager.update(Routine, { routine_key }, {
+                routine_name,
+                steps,
+                for_gender,
+                for_age,
+            })
+            if (steps <= old_steps) {
+                for (let i = 1; i <= steps; i++) {
+                    await this.routineDetailService.updateRoutineDetail(i, routine_key, details[i - 1].item_key, details[i - 1].step_name, details[i - 1].description, transactionalEntityManager);
+                }
+                if (steps < old_steps) {
+                    for (let i = steps + 1; i <= old_steps; i++) {
+                        await this.routineDetailService.deleteRoutineDetail(i, routine_key);
+                    }
+                }
+            } else {
+                for (let i = 1; i <= old_steps; i++) {
+
+                    await this.routineDetailService.updateRoutineDetail(i, routine_key, details[i - 1].item_key, details[i - 1].step_name, details[i - 1].description, transactionalEntityManager);
+                }
+                for (let i = old_steps + 1; i <= steps; i++) {
+                    await this.routineDetailService.createRoutineDetail(i, routine_key, details[i - 1].item_key, details[i - 1].step_name, details[i - 1].description, transactionalEntityManager)
+                }
+            }
+            const updatedRoutine = await transactionalEntityManager.findOne(Routine, { where: { routine_key } });
+            if (!updatedRoutine) {
+                throw new Error('루틴 업데이트에 오류가 발생했습니다.')
+            }
+            const total = await transactionalEntityManager
+                .createQueryBuilder()
+                .select('SUM(item_price)', 'total_price')
+                .from('routine_detail', 'rd')
+                .innerJoin('item', 'item', 'rd.item_key = item.item_key')
+                .where('rd.routine_key = :routine_key', { routine_key: updatedRoutine.routine_key })
+                .getRawOne();
+
+            updatedRoutine.price_total = total.total_price;
+
+            return updatedRoutine;
+        })
+    }
+    // 루틴 삭제
+    async deleteRoutine(routine_key: number): Promise<void> {
+        const routine = await this.routineRepository.findOne({
+            where: { routine_key },
+            relations: ['reviews', 'routineDetails', 'routine_skin_relations', 'routine_tag_relations']
+        })
         if (!routine) {
             throw new Error('해당 루틴을 찾을 수 없습니다.');
         }
-        if (routine.user.user_key !== user_key) {
-            throw new Error('해당 루틴의 작성자가 아닙니다.');
-        }
-        routine.routine_name = routine_name ?? routine.routine_name;
-        routine.steps = steps ?? routine.steps;
-        routine.average_rating = average_rating ?? routine.average_rating;
-        11
-        return await this.routineRepository.save(routine);
-    }
-    // 루틴 삭제
-    async deleteRoutine(routine_key: number): Promise<Routine> {
-        return this.dataSource.transaction(async transactionalEntityManager => {
-            const routine = await transactionalEntityManager.findOne(Routine, {
-                where: { routine_key },
-                relations: ['routineDetails']
-            });
-            if (!routine) {
-                throw new Error('해당 루틴을 찾을 수 없습니다.');
-            }
-            for (let i = 1; i <= routine.steps; i++) {
-                await this.routineDetailService.deleteRoutineDetail(i, routine_key);
-            }
-            await transactionalEntityManager.remove(routine);
-            return routine;
-        });
+        this.routineRepository.remove(routine);
     }
 
     async updateRoutineRating(routine_key: number, average_rating: number): Promise<void> {

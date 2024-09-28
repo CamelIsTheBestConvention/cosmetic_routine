@@ -11,7 +11,7 @@ export class RoutineTagRelation {
     @PrimaryColumn()
     tag_key!: number;
 
-    @ManyToOne(() => Routine)
+    @ManyToOne(() => Routine, routine => routine.routine_tag_relations, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'routine_key' })
     routine!: Routine;
 

@@ -11,7 +11,7 @@ export class RoutineSkinRelation {
     @PrimaryColumn()
     attr_key!: number;
 
-    @ManyToOne(() => Routine)
+    @ManyToOne(() => Routine, routine => routine.routine_skin_relations, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'routine_key' })
     routine!: Routine;
 

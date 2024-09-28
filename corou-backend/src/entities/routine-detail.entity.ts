@@ -20,11 +20,11 @@ export class RoutineDetail {
     @Column({ type: `varchar`, length: 255 })
     description?: string;
 
-    @ManyToOne(() => Routine, routine => routine.routine_key)
+    @ManyToOne(() => Routine, routine => routine.routineDetails, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'routine_key' })
     routine!: Routine;
 
-    @ManyToOne(() => Item, item => item.item_key)
+    @ManyToOne(() => Item)
     @JoinColumn({ name: 'item_key' })
     item!: Item;
 }

@@ -34,7 +34,7 @@ export class Review {
     @JoinColumn({ name: 'user_key' })
     user!: User;
 
-    @ManyToOne(() => Routine)
+    @ManyToOne(() => Routine, routine => routine.routine_tag_relations, { onDelete: 'CASCADE' })
     @JoinColumn({ name: 'routine_key' })
     routine?: Routine;
 
