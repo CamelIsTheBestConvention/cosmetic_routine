@@ -98,7 +98,7 @@ export class RoutineController {
         const decoded = verifyToken(token);
         const user_key = decoded.user_key;
         console.log('body: ', req.body)
-        const { routine_name, steps, for_gender, for_age } = req.body.main;
+        const { routine_name, steps, for_gender, for_age, for_skin, for_problem } = req.body.main;
         const routine_key = req.params.routine_key;
         const details = req.body.details;
         try {
@@ -109,6 +109,8 @@ export class RoutineController {
                 steps,
                 for_age,
                 for_gender,
+                for_skin, 
+                for_problem,
                 details
             );
             res.status(200).json(updatedRoutine);
