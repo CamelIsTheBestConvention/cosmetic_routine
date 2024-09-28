@@ -46,7 +46,7 @@ const ItemBtnBox: React.FC<itemBox> = ({ item_key }) => {
     <>
       <div className="detailBtnBoxWrapper">
         <button onClick={handleAddItem}>장바구니 추가</button>
-        <button onClick={handleBuyItem}>구매하기</button>
+        {/* <button onClick={handleBuyItem}>구매하기</button> */}
       </div>
     </>
   );

@@ -7,6 +7,8 @@ import MainFooter from "../components/common/mainFooter";
 import SearchBar from "../components/common/searchBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import styled from "styled-components";
+import ResetFilter from "../components/common/resetFilter";
 
 interface skinRelations {
   attr_key: number;
@@ -39,6 +41,7 @@ const AboutRoutine: React.FC = () => {
   const [minCount, setMinCount] = useState<number>(1);
   const [maxCount, setMaxCount] = useState<number>(100);
   const [itemAmount, setItemAmount] = useState<number>(0);
+  const [selectedSkinType, setSelectedSkinType] = useState<number | null>(null);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -85,11 +88,28 @@ const AboutRoutine: React.FC = () => {
     console.log(maxPrice);
   }, [minCount, maxCount, minPrice, maxPrice]);
 
+  const resetFilter = () => {
+    setSearchQuery("");
+    setFilterList([]);
+    setSelectedFilters([]);
+    setMinPrice(1);
+    setMaxPrice(Infinity);
+    setMinCount(1);
+    setMaxCount(100);
+    setItemAmount(0);
+    setSelectedSkinType(null);
+  };
+
   return (
     <>
       <AboutHeader Title={"루틴"} onBack={handleBack} />
       <SearchBar onSearch={handleSearch} />
-      <SkinFilter onSkinChange={updateSkinFilter} />
+      <ResetFilter resetFilter={resetFilter} />
+      <SkinFilter
+        onSkinChange={updateSkinFilter}
+        selectedSkinType={selectedSkinType}
+        setSelectedSkinType={setSelectedSkinType}
+      />
       <DropdownFilter
         onFilterChange={updateDropdownFilter}
         selectedFilters={selectedFilters}

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import AboutHeader from "../components/common/aboutHeader";
-import MainHeader from "../components/common/mainHeader";
 import SearchBar from "../components/common/searchBar";
 import RankingList from "../components/ranking/rankingList";
 import MainFooter from "../components/common/mainFooter";

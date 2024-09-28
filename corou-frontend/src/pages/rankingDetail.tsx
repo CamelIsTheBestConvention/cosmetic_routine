@@ -65,7 +65,7 @@ const RankingDetail: React.FC<ItemDetails> = () => {
               <span>정가</span>
               <span>{itemDetails.item_price}원 / 50ml</span>
             </ItemPrice>
-            <ItemEffect>제품 효과 박스</ItemEffect>
+            {/* <ItemEffect>제품 효과 박스</ItemEffect> */}
           </ItemInfo>
         </DetailItemBox>
       </RankingDetailWrapper>
@@ -85,7 +85,7 @@ const RankingDetailWrapper = styled.div`
 
 const DetailItemBox = styled.div`
   width: 90%;
-  margin: 20% auto 0 auto;
+  margin: 20% auto 40px auto;
 `;
 
 const ItemImg = styled.div`

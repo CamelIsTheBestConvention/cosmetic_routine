@@ -3,6 +3,7 @@ import RankingFilter from "./rankingFilter";
 import RankingItem from "./rankingItem";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import ResetFilter from "../common/resetFilter";
 
 const filterList = [
   "건성",
@@ -88,9 +89,17 @@ const RankingList: React.FC<RankingListProps> = ({ searchQuery }) => {
     return subFilter ? item.category === subFilter : true;
   });
 
+  const resetFilter = () => {
+    setMainFilter("");
+    setSubFilter("");
+    setCurrentPage(1);
+    fetchRankingData(searchQuery);
+  };
+
   return (
     <>
       <RankingListWrapper>
+        <ResetFilter resetFilter={resetFilter} />
         <RankingFilter
           mainFilter={mainFilter}
           setMainFilter={setMainFilter}

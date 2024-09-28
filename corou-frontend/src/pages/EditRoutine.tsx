@@ -15,7 +15,7 @@ import {
   setItemList,
   setTotalPrice,
   resetAddRoutine,
-} from "../redux/slice/addRoutineSlice";
+} from "../redux/slice/editRoutineSlice";
 import { useDispatch, useSelector } from "react-redux";
 import EditRoutine1 from "../components/detail/editRoutine1";
 import EditRoutine2 from "../components/detail/editRoutine2";
@@ -92,6 +92,8 @@ const EditRoutine: React.FC = () => {
           tempGenderList = ["F"];
         }
 
+        console.log(tempGenderList);
+
         setGenderList(tempGenderList);
         dispatch(setGender(tempGenderList));
 
@@ -128,7 +130,8 @@ const EditRoutine: React.FC = () => {
             step_name: item.step_name,
             description: item.description,
             item_key: item.item_key.toString(),
-            item_name: item.item_name,
+            // item_name: item.item_name,
+            item_name: "",
           };
           console.log(routineItem);
           dispatch(setRoutineItem({ index, item: routineItem }));
@@ -163,7 +166,9 @@ const EditRoutine: React.FC = () => {
     <>
       <AddRoutineWrapper>
         <AboutHeader Title={"루틴 등록"} onBack={handleBack} />
-        {step === 1 && <EditRoutine1 onNext={handleNext} />}
+        {step === 1 && (
+          <EditRoutine1 onNext={handleNext} genderList={genderList} />
+        )}
         {step === 2 && <EditRoutine2 onNext={handleNext} />}
         {step === 3 && <EditRoutine3 routine_key={routineData.routine_key} />}
         <MainFooter />

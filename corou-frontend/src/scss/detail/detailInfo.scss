@@ -188,9 +188,10 @@
         padding: 0;
         // width: 120px;
         // height: 120px;
-        width: 95%;
+        width: 350px;
+        height: 350px;
+
         margin: 0 auto;
-        height: 100%;
         border: 3px solid rgba(255, 164, 228, 0.5);
         border-radius: 15px;
 
@@ -218,7 +219,7 @@
             margin-bottom: 15px;
           }
           &:nth-child(3) {
-            font-size: 15px;
+            font-size: 19px;
           }
         }
       }
@@ -247,5 +248,9 @@
     padding: 15px 0;
     font-size: 16px;
     font-weight: normal !important;
+
+    &:hover {
+      border: 3px solid rgba(255, 99, 208, 0.5);
+    }
   }
 }
