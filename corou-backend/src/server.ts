@@ -7,6 +7,7 @@ import paymentRoutes from './routes/payment.router';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import app from './app';
+import createRateLimiter from './middlewares/rate-limit.middleware';
 
 dotenv.config();
 // const app = express();
@@ -22,6 +23,9 @@ app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ limit: '1mb', extended: true }));
 
 app.use(morgan('combined'));
+
+const rateLimiter = createRateLimiter();
+app.use(rateLimiter);
 
 app.use('/api', paymentRoutes);
 // app.use((req, res, next) => {

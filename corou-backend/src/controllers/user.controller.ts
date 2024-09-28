@@ -19,14 +19,6 @@ export class UserController {
             req.body;
 
         if (!email || !password || !username || !birth_date || !gender) {
-            console.log(
-                "missing fields:",
-                email,
-                password,
-                username,
-                birth_date,
-                gender
-            );
             res.status(400).json({ message: "모든 항목을 입력해주세요." });
             return;
         }
