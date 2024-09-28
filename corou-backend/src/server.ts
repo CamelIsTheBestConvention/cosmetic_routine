@@ -6,9 +6,10 @@ import { setupRoutes } from './routes/routes';
 import paymentRoutes from './routes/payment.router';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import app from './app';
 
 dotenv.config();
-const app = express();
+// const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
