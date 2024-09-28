@@ -2,14 +2,48 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AboutHeader from "../components/common/aboutHeader";
 import styled from "styled-components";
 import "../scss/mypage/edit.scss";
+import axios from "axios";
+import { useState } from "react";
+
+interface userProfile {
+  user_key: number;
+  username: string;
+  email: string;
+  password: string;
+  gender: string;
+  birth_date: string;
+}
 
 const ProfileEdit: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const profile = location.state?.profile;
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const userKey = sessionStorage.getItem("userKey");
+  const token = sessionStorage.getItem("authToken");
+  const [userData, setUserData] = useState<userProfile>(profile);
+  console.log(profile);
 
   const handleBack = () => {
     navigate(-1);
+  };
+
+  const handleEditProfile = async () => {
+    try {
+      const response = await axios.put(
+        `${backPort}/api/user/${userKey}`,
+        {
+          attributes: profile,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error("프로필 수정 중 에러 발생");
+    }
   };
 
   return (
@@ -20,7 +54,7 @@ const ProfileEdit: React.FC = () => {
         <div className="editWrapper">
           <div className="profileEdit">
             <div className="editImg">
-              <img src={profile?.profileImg} alt={profile?.username} />
+              <img src="/assets/user/2.png" alt={profile?.username} />
               <div>+</div>
             </div>
             {/* 유저이름 */}
@@ -34,11 +68,11 @@ const ProfileEdit: React.FC = () => {
           {/* 비밀번호 변경 버튼 */}
           <button className="inputCheckBtn">비밀번호 변경</button>
           {/* 트러블 특성 변경 버튼 */}
-          <button className="inputCheckBtn">
-            트러블 특성 변경(회원가입 3페이지)
-          </button>
+          <button className="inputCheckBtn">피부 타입 변경</button>
           {/* 변경 완료 버튼 */}
-          <button className="completeBtn">완료</button>
+          <button className="completeBtn" onClick={handleEditProfile}>
+            완료
+          </button>
         </div>
       </ProfileEditWrapper>
     </>

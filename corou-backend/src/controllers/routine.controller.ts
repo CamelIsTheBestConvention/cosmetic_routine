@@ -67,7 +67,7 @@ export class RoutineController {
             });
 
             const routines = await this.routineService.getAllRoutines(
-            sort as string,
+                sort as string,
                 order as 'ASC' | 'DESC',
                 page ? parseInt(page as string) : undefined,
                 size ? parseInt(size as string) : undefined,
@@ -97,12 +97,21 @@ export class RoutineController {
         }
         const decoded = verifyToken(token);
         const user_key = decoded.user_key;
-
-        const { routine_name, steps } = req.body;
+        console.log('body: ', req.body)
+        const { routine_name, steps, for_gender, for_age } = req.body.main;
         const routine_key = req.params.routine_key;
+        const details = req.body.details;
         try {
-            const routine = await this.routineService.updateRoutine(Number(user_key), Number(routine_key), routine_name, steps);
-            res.status(200).json(routine);
+            const updatedRoutine = await this.routineService.updateRoutine(
+                Number(user_key),
+                Number(routine_key),
+                routine_name,
+                steps,
+                for_age,
+                for_gender,
+                details
+            );
+            res.status(200).json(updatedRoutine);
         } catch (error) {
             res.status(500).json({ message: '루틴 수정에 실패했습니다.' });
         }
@@ -118,16 +127,16 @@ export class RoutineController {
         }
     }
 
-    async updateRoutineDetail(req: Request, res: Response): Promise<void> {
-        const { step_number, item_key, step_name, description } = req.body;
-        const routine_key = req.params.routine_key;
-        try {
-            const routineDetail = await this.routineDetailService.updateRoutineDetail(Number(routine_key), step_number, item_key, step_name, description);
-            res.status(200).json(routineDetail);
-        } catch (error) {
-            res.status(500).json({ message: '루틴 단계 수정에 실패했습니다.' });
-        }
-    }
+    // async updateRoutineDetail(req: Request, res: Response): Promise<void> {
+    //     const { step_number, item_key, step_name, description } = req.body;
+    //     const routine_key = req.params.routine_key;
+    //     try {
+    //         const routineDetail = await this.routineDetailService.updateRoutineDetail(Number(routine_key), step_number, item_key, step_name, description);
+    //         res.status(200).json(routineDetail);
+    //     } catch (error) {
+    //         res.status(500).json({ message: '루틴 단계 수정에 실패했습니다.' });
+    //     }
+    // }
 
     async deleteRoutineDetail(req: Request, res: Response): Promise<void> {
         const { step_number } = req.body;

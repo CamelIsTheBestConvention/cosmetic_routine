@@ -113,3 +113,17 @@ export const problemFilters = [
   "각질",
   "속건조",
 ];
+
+export const routineFilters = [
+  "건성",
+  "중성",
+  "지성",
+  "복합성",
+  "수부지",
+  "아토피",
+  "여드름",
+  "민감성",
+  "홍조",
+  "각질",
+  "속건조",
+];

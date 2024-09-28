@@ -5,7 +5,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 interface skinRelations {
-  routine_key: number;
   attr_key: number;
 }
 
@@ -24,17 +23,12 @@ interface routineItem {
   routine_skin_relations: skinRelations[];
 }
 
-interface allRoutineData {
-  routine: routineItem;
-  attr_keys: number[];
-}
-
 const TopRoutineBox: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const topRoutineRef = useRef<HTMLDivElement>(null);
-  const [topRoutine, setTopRoutine] = useState<allRoutineData[]>([]);
+  const [topRoutine, setTopRoutine] = useState<routineItem[]>([]);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const navigate = useNavigate();
 
@@ -43,12 +37,14 @@ const TopRoutineBox: React.FC = () => {
       try {
         const response = await axios.get(`${backPort}/api/routine`);
 
+        console.log(response.data);
+
         const sortedData = response.data.sort(
-          (a: allRoutineData, b: allRoutineData) => {
-            if (b.routine.average_rating !== a.routine.average_rating) {
-              return b.routine.average_rating - a.routine.average_rating;
+          (a: routineItem, b: routineItem) => {
+            if (b.average_rating !== a.average_rating) {
+              return b.average_rating - a.average_rating;
             }
-            return b.routine.reviews - a.routine.reviews;
+            return b.reviews - a.reviews;
           }
         );
 
@@ -112,9 +108,9 @@ const TopRoutineBox: React.FC = () => {
       <TopRoutineBanner>
         {topRoutine.slice(0, 10).map((routine) => (
           <BannerBox
-            key={routine.routine.routine_key}
-            routine={routine.routine}
-            onClick={() => handleDetailRoutine(routine.routine.routine_key)}
+            key={routine?.routine_key}
+            routine={routine}
+            onClick={() => handleDetailRoutine(routine.routine_key)}
           />
         ))}
       </TopRoutineBanner>

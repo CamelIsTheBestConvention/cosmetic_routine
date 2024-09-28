@@ -1,15 +1,19 @@
+import { useEffect, useState } from "react";
 import "../../scss/detail/detailInfo.scss";
+import axios from "axios";
 
 interface detailTag {
-  tag: string[];
+  tagData: string[];
 }
 
-const DetailTag: React.FC<detailTag> = ({ tag }) => {
+const DetailTag: React.FC<detailTag> = ({ tagData }) => {
+  console.log(tagData);
+
   return (
     <>
       <div className="detailTagWrapper">
         <ul>
-          {tag.map((tag, index) => (
+          {tagData.map((tag, index) => (
             <li key={index}>{tag}</li>
           ))}
         </ul>

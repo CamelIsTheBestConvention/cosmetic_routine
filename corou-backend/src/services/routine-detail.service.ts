@@ -57,20 +57,22 @@ export class RoutineDetailService {
     }
 
     // 루틴 상세 수정
-    async updateRoutineDetail(step_number: number, routine_key: number, item_key: number, step_name: string, description: string) {
-        const routineDetail = await this.routineDetailRepository.findOne({ where: { step_number, routine: { routine_key } } });
+    async updateRoutineDetail(step_number: number, routine_key: number, item_key: number, step_name: string, description: string, transactionalEntityManager: EntityManager) {
+        const routineDetail = await this.routineDetailRepository.findOne({
+            where: { step_number, routine_key },
+            relations: ['item']
+        });
         if (!routineDetail) {
             throw new Error('해당 루틴 상세 정보를 찾을 수 없습니다.');
         }
-
         if (item_key !== routineDetail.item.item_key) {
             const item = await this.itemService.getItemByKey(item_key);
             if (!item) {
                 throw new Error('해당 아이템을 찾을 수 없습니다.');
             }
+            routineDetail.item_key = item_key;
             routineDetail.item = item;
         }
-
         routineDetail.step_name = step_name;
         routineDetail.description = description;
 
