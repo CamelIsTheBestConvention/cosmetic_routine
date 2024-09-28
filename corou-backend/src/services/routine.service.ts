@@ -196,6 +196,8 @@ export class RoutineService {
                 for_gender,
                 for_age,
             })
+
+            await this.routineSkinRelationService.deleteRoutineSkinRelation(routine_key, transactionalEntityManager)
             await this.routineSkinRelationService.addRoutineSkinRelation(
                 routine_key,
                 for_skin,
