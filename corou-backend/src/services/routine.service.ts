@@ -147,24 +147,11 @@ export class RoutineService {
 
         return routines;
 
-        // // Construct an array of objects pairing each routine with its attr_key values
-        // const routineWithAttrKeys = routines.map(routine => ({
-        //     routine,
-        //     attr_keys: routine.routine_skin_relations?.map(relation => relation.attr_key) || []
-        // }));
-
-        // console.log(routineWithAttrKeys);
-        // // console.log(routines)
-        // return routineWithAttrKeys;
     }
     // 루틴 조회
     async getRoutineByKey(routine_key: number): Promise<Routine> {
         console.log(routine_key);
-        // const routine = await this.routineRepository.findOne({
-        //     where: { routine_key },
-        //     relations: ['routineDetails', 'user.username']
-        //     // relations: ['routineDetails', 'routineSkinRelations', 'routineTagRelations', 'user', 'reviews']
-        // });
+
         const routine = await this.dataSource
             .createQueryBuilder(Routine, 'routine')
             .leftJoinAndSelect('routine.routineDetails', 'routineDetails')
@@ -180,8 +167,6 @@ export class RoutineService {
             throw new Error('해당 루틴을 찾을 수 없습니다.');
         }
 
-        // const reviews = await this.reviewService.getReviewByRoutine(routine_key);
-        // return { ...routine, reviews };
         return routine;
     }
     // 루틴 수정
@@ -192,6 +177,8 @@ export class RoutineService {
         steps: number,
         for_age: number,
         for_gender: "M" | "F" | "A",
+        for_skin: number,
+        for_problem: Array<string>,
         details: any
     ): Promise<Routine> {
         return this.dataSource.transaction(async transactionalEntityManager => {
@@ -209,6 +196,18 @@ export class RoutineService {
                 for_gender,
                 for_age,
             })
+            await this.routineSkinRelationService.addRoutineSkinRelation(
+                routine_key,
+                for_skin,
+                transactionalEntityManager
+            );
+            for (const problem of for_problem) {
+                await this.routineSkinRelationService.addRoutineSkinRelation(
+                    routine_key,
+                    Number(problem),
+                    transactionalEntityManager
+                );
+            }
             if (steps <= old_steps) {
                 for (let i = 1; i <= steps; i++) {
                     await this.routineDetailService.updateRoutineDetail(i, routine_key, details[i - 1].item_key, details[i - 1].step_name, details[i - 1].description, transactionalEntityManager);
@@ -240,6 +239,8 @@ export class RoutineService {
                 .getRawOne();
 
             updatedRoutine.price_total = total.total_price;
+
+            await transactionalEntityManager.save(Routine, updatedRoutine);
 
             return updatedRoutine;
         })

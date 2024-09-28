@@ -34,4 +34,8 @@ export class RoutineSkinRelationService {
             }
         });
     }
+
+    async deleteRoutineSkinRelation(routine_key: number, attr_key: number, transactionalEntityManager: EntityManager): Promise<void> {
+        await this.routineSkinRelationRepository.delete({routine_key})
+    }
 }
