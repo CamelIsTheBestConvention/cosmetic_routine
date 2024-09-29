@@ -45,57 +45,25 @@ const PopupAddress: React.FC = () => {
     fetchAddressList();
   }, [userKey, token]);
 
-  const handleAddAddress = () => {
-    navigate("/mypage/addAddress");
-  };
-
-  const handleEditAddress = (address_key: number) => {
-    console.log(address_key);
-    navigate(`/mypage/editAddress/${address_key}`);
-  };
-
-  const handledelAddress = async (address_key: number) => {
-    if (window.confirm("배송지를 삭제하시겠습니까?")) {
-      try {
-        await axios.delete(
-          `${backPort}/api/user/${userKey}/address/${address_key}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setAddressList((prevList) =>
-          prevList.filter((address) => address.address_key !== address_key)
-        );
-
-        console.log("주소 삭제 성공");
-      } catch (error) {
-        console.error("주소 삭제 중 오류 발생:", error);
-      }
-    }
-  };
-
   const handleAddressSelect = (address_key: number) => {
     console.log(address_key);
     const selectedAddress = addressList.find(
       (address) => address.address_key === address_key
     );
     console.log(selectedAddress);
-    const data = dispatch(setSelectAddress(selectedAddress || null));
 
-    console.log(data.payload);
     if (selectedAddress) {
-      // window.close();
+      if (window.opener && !window.opener.closed) {
+        window.opener.handleAddressChange(selectedAddress);
+      }
+
+      window.close();
     }
   };
 
   return (
     <>
-      <AddAddressBox>
-        <span onClick={handleAddAddress}>배송지 추가</span>
-      </AddAddressBox>
+      <AddAddressBox></AddAddressBox>
       <GetAddressWrapper>
         {addressList?.length > 0 ? (
           addressList?.map((address) => (
@@ -105,14 +73,7 @@ const PopupAddress: React.FC = () => {
             >
               <AddressBoxTitle>
                 <h3>{address?.address_name}</h3>
-                <div>
-                  <span onClick={() => handleEditAddress(address?.address_key)}>
-                    수정
-                  </span>
-                  <span onClick={() => handledelAddress(address?.address_key)}>
-                    삭제
-                  </span>
-                </div>
+                <div></div>
               </AddressBoxTitle>
               <AddressBoxContent>
                 <span>{address?.name}</span>
@@ -165,13 +126,18 @@ const GetAddressWrapper = styled.div`
 
 const AddressBox = styled.div`
   width: 95%;
-  margin: 0 auto;
-  /* border: 2px solid #ffa4e4; */
+  margin: 0 auto 10px auto;
+  border: 2px solid #ffa4e4;
   display: flex;
   flex-direction: column;
   padding: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 12px;
+
+  &:hover {
+    background-color: #ffebf9;
+    cursor: pointer;
+  }
 `;
 
 const AddressBoxTitle = styled.div`

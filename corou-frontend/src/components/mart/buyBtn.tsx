@@ -62,6 +62,7 @@ const BuyBtn: React.FC<totalPriceData> = ({
   email,
 }) => {
   const navigate = useNavigate();
+  console.log("제품 리스트", cartList);
 
   useEffect(() => {
     const loadIMPScript = () => {
@@ -94,10 +95,11 @@ const BuyBtn: React.FC<totalPriceData> = ({
     const clientKey = process.env.REACT_APP_PORTONE_CLIENT_KEY;
     const backPort = process.env.REACT_APP_BACKEND_PORT;
     const channelKey = process.env.REACT_APP_PORTONE_CHANNEL_KEY;
-
-    console.log("클라키", clientKey);
-    console.log("임프", IMP);
-    console.log("채널키", channelKey);
+    const submitItemData = cartList.map((item: cartItem) => ({
+      count: item?.quantity,
+      purchase_price: item.item.item_price,
+      item_key: item.item_key,
+    }));
 
     if (!IMP) {
       console.error("포트원(아임포트) 결제 모듈이 로드되지 않았습니다.");
@@ -143,15 +145,9 @@ const BuyBtn: React.FC<totalPriceData> = ({
             const payData = axios.post(
               `${backPort}/api/order/itemorder`,
               {
-                addr_key: 1,
+                addr_key: selectAddress.address_key,
                 price_total: totalPrice,
-                items: [
-                  {
-                    count: 1,
-                    purchase_price: 1000,
-                    item_key: 1,
-                  },
-                ],
+                items: submitItemData,
               },
               {
                 headers: {

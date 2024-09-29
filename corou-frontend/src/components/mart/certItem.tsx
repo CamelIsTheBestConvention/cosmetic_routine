@@ -1,3 +1,5 @@
+import styled from "styled-components";
+
 interface ItemProps {
   average_rating: number;
   category: string;
@@ -15,7 +17,7 @@ interface ItemComponentProps {
 const CertItem: React.FC<ItemComponentProps> = ({ item }) => {
   return (
     <>
-      <div className="itemWrapper">
+      <CertItemWrapper>
         <div className="itemImg">
           <img
             src={`/assets/item/${item?.item_key}.jpg`}
@@ -25,10 +27,15 @@ const CertItem: React.FC<ItemComponentProps> = ({ item }) => {
         <div className="itemInfo">
           <p>브랜드</p>
           <p>{item?.item_name} & 용량</p>
-          <p>₩ {item?.item_price}</p>
+          <p>₩ {(item?.item_price).toLocaleString()}</p>
         </div>
-      </div>
+      </CertItemWrapper>
     </>
   );
 };
 export default CertItem;
+
+const CertItemWrapper = styled.div`
+  width: 100%;
+  display: flex;
+`;

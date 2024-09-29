@@ -12,5 +12,5 @@ interface addressData {
 
 interface Window {
   IMP: any;
-  handleAddressChange: (address: addressData) => void;
+  handleAddressChange: (newAddress: addressData) => void | null;
 }

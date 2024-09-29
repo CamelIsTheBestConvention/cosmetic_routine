@@ -45,8 +45,8 @@ const OrderList: React.FC = () => {
     fetchOrderList();
   }, [backPort]);
 
-  const handleOrderClick = (addr_key: number) => {
-    navigate(`/mypage/orderList/${addr_key}`);
+  const handleOrderClick = (order_key: number) => {
+    navigate(`/mypage/orderList/${order_key}`);
   };
 
   return (

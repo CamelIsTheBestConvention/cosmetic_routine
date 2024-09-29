@@ -279,7 +279,7 @@ const FilterList: React.FC<searchData> = ({
               <div className="itemListTitle">
                 <div className="itemListFirstTitle">
                   <div>{item?.routine_name}</div>
-                  <div>
+                  {/* <div>
                     <img
                       src={item.isLiked ? goodOn : goodOff}
                       alt="좋아요"
@@ -289,7 +289,7 @@ const FilterList: React.FC<searchData> = ({
                       }}
                       style={{ cursor: "pointer" }}
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <div className="itemListSecondTitle">
                   <div>
@@ -297,7 +297,7 @@ const FilterList: React.FC<searchData> = ({
                   </div>
                   <div>
                     {Math.ceil(item?.average_rating * 10) / 10}{" "}
-                    <span>({item?.reviews})</span>
+                    {/* <span>({item?.reviews})</span> */}
                   </div>
                 </div>
               </div>

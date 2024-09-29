@@ -22,6 +22,8 @@ const ProfileEdit: React.FC = () => {
   const userKey = sessionStorage.getItem("userKey");
   const token = sessionStorage.getItem("authToken");
   const [userData, setUserData] = useState<userProfile>(profile);
+  const [currentPw, setCurrentPw] = useState<string>("");
+  const [newPw, setNewPw] = useState<string>("");
   console.log(profile);
 
   const handleBack = () => {
@@ -46,6 +48,33 @@ const ProfileEdit: React.FC = () => {
     }
   };
 
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.put(
+        `${backPort}/api/user/${userKey}/changepassword`,
+        {
+          currentPassword: currentPw,
+          newPassword: newPw,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log(response.data);
+    } catch (error) {
+      console.error("비밀번호 변경 중 에러", error);
+    }
+  };
+
+  const handleAttrChangeNext = () => {
+    navigate("/mypage/profileEdit/attrChange");
+  };
+
   return (
     <>
       <ProfileEditWrapper>
@@ -67,8 +96,28 @@ const ProfileEdit: React.FC = () => {
           </div>
           {/* 비밀번호 변경 버튼 */}
           <button className="inputCheckBtn">비밀번호 변경</button>
+          {/* <form> */}
+          <input
+            type="password"
+            placeholder="현재 비밀번호"
+            value={currentPw}
+            onChange={(e) => setCurrentPw(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="새 비밀번호"
+            value={newPw}
+            onChange={(e) => setNewPw(e.target.value)}
+          />
+          <input type="password" placeholder="새 비밀번호 확인" />
+          <button type="button" onClick={handlePasswordChange}>
+            변경
+          </button>
+          {/* </form> */}
           {/* 트러블 특성 변경 버튼 */}
-          <button className="inputCheckBtn">피부 타입 변경</button>
+          <button className="inputCheckBtn" onClick={handleAttrChangeNext}>
+            피부 타입 변경
+          </button>
           {/* 변경 완료 버튼 */}
           <button className="completeBtn" onClick={handleEditProfile}>
             완료

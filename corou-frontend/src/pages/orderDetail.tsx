@@ -16,9 +16,10 @@ interface OrderDetailData {
 
 const OrderDetail: React.FC = () => {
   const navigate = useNavigate();
-  const { orderKey } = useParams<{ orderKey: string }>();
+  const { id } = useParams<{ id: string }>();
   const userKey = sessionStorage.getItem("userKey");
   const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const token = sessionStorage.getItem("authToken");
 
   const [orderDetailData, setOrderDetailData] =
     useState<OrderDetailData | null>(null);
@@ -30,11 +31,20 @@ const OrderDetail: React.FC = () => {
 
   useEffect(() => {
     const fetchOrderDetail = async () => {
+      console.log(userKey);
+      console.log(id);
       try {
-        if (userKey && orderKey) {
+        if (userKey && id) {
           const response = await axios.get(
-            `${backPort}/api/user/${userKey}/order/${orderKey}`
+            `${backPort}/api/order/itemorder/${id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
+
+          console.log("주문데이터", response.data);
           setOrderDetailData(response.data);
         }
       } catch (err) {
@@ -45,7 +55,7 @@ const OrderDetail: React.FC = () => {
     };
 
     fetchOrderDetail();
-  }, [userKey, orderKey]);
+  }, [userKey, id]);
 
   if (loading) {
     return <div>로딩 중...</div>;
@@ -61,10 +71,10 @@ const OrderDetail: React.FC = () => {
       <div className="orderListWrapper">
         <div className="orderListFilter">
           <div>
-            <p>전체</p>
-            <p>배송</p>
-            <p>배송완료</p>
-            <p>주문취소</p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
           </div>
         </div>
         <PayDetailInfo />

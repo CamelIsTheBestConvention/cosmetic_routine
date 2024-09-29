@@ -29,13 +29,11 @@ const TopRoutineBoxInfo: React.FC<routineData> = ({ routine }) => {
           <h2>{routine?.routine_name}</h2>
           <div>
             <img src={Star} alt="평점" />
-            <span>
-              {routine?.average_rating} <span>({routine?.reviews})</span>
-            </span>
+            <span>{routine?.average_rating}</span>
           </div>
         </div>
         <div className="infoRight">
-          <img src={goodOff} alt="좋아요" />
+          {/* <img src={goodOff} alt="좋아요" /> */}
         </div>
       </div>
     </>
