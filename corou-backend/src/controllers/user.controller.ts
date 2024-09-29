@@ -118,10 +118,10 @@ export class UserController {
 
     async changePassword(req: Request, res: Response): Promise<void> {
         const { user_key } = req.params;
-        const { password } = req.body;
+        const { currentPassword, newPassword } = req.body;
 
         try {
-            await this.userService.changePassword(Number(user_key), password);
+            await this.userService.changePassword(Number(user_key), currentPassword, newPassword);
             res.status(200).json({ message: '패스워드가 성공적으로 변경되었습니다.' });
         } catch (error: any) {
             res.status(400).json({ message: error.message });
