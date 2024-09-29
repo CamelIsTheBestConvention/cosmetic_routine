@@ -98,6 +98,12 @@ export class UserService {
         await this.userSkinRelationService.updateUserSkinRelation(user_key, attributes);
         return user;
     }
+
+    async changePassword(user_key: number, password: string): Promise<void> {
+        const hashedPassword = await hashPassword(password);
+        await this.userRepository.update({ user_key }, { password: hashedPassword })
+        return;
+    }
 }
 
 // const userRepository = AppDataSource.getRepository(User);
