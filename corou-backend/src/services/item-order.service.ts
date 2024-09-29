@@ -21,7 +21,7 @@ export class ItemOrderService {
         user_key: number,
         addr_key: number,
         price_total: number,
-        items: { count: number, purchase_price: number, item_key: number }[]
+        items: Array<{ count: number, purchase_price: number, item_key: number }>
     ): Promise<ItemOrder> {
         const user = await this.userService.getUserByKey(user_key);
         if (!user) {

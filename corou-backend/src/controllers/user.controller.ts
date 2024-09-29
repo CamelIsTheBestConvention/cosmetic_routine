@@ -106,11 +106,23 @@ export class UserController {
 
     async updateUser(req: Request, res: Response): Promise<void> {
         const { user_key } = req.params;
-        const attributes = req.body;
+        const { attributes } = req.body;
 
         try {
             const user = await this.userService.updateUser(Number(user_key), attributes);
             res.status(200).json(user);
+        } catch (error: any) {
+            res.status(400).json({ message: error.message });
+        }
+    }
+
+    async changePassword(req: Request, res: Response): Promise<void> {
+        const { user_key } = req.params;
+        const { password } = req.body;
+
+        try {
+            await this.userService.changePassword(Number(user_key), password);
+            res.status(200).json({ message: '패스워드가 성공적으로 변경되었습니다.' });
         } catch (error: any) {
             res.status(400).json({ message: error.message });
         }
