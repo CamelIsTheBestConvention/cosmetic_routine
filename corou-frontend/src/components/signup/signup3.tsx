@@ -19,6 +19,8 @@ import {
 } from "../../redux/slice/signupSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+// import SHA256 from "crypto-js/sha256";
+// import bcrypt from "bcryptjs";
 
 const Signup3: React.FC = () => {
   const dispatch = useDispatch();
@@ -98,6 +100,9 @@ const Signup3: React.FC = () => {
         birth_date.slice(4, 6) +
         "-" +
         birth_date.slice(6, 8);
+
+      // const hashedPassword = await bcrypt.hash(password.trim(), 10);
+      // console.log("해싱된 비번", hashedPassword);
 
       const userData = {
         email: email,

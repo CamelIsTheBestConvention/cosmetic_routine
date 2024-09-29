@@ -46,9 +46,9 @@ const MoveCertBtn: React.FC<totalPriceData> = ({
     });
   };
 
-  const handleCheckboxChange = () => {
-    setIsChecked((prevChecked) => !prevChecked);
-  };
+  // const handleCheckboxChange = () => {
+  //   setIsChecked((prevChecked) => !prevChecked);
+  // };
 
   return (
     <>

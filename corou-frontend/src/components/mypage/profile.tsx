@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
   }, [backPort]);
 
   const moveProfileEdit = () => {
-    navigate("/mypage/profileEdit", { state: { profile } });
+    navigate("/mypage/profileEdit");
   };
 
   return (
@@ -68,7 +68,7 @@ const Profile: React.FC = () => {
                 <CommonTag key={index} tagName={item} />
               ))} */}
             </div>
-            <button onClick={moveProfileEdit}>프로필 수정</button>
+            <button onClick={moveProfileEdit}>프로필 정보</button>
           </>
         ) : (
           <div className="goLoginBox">
