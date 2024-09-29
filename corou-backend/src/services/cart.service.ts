@@ -27,7 +27,11 @@ export class CartService {
     }
 
     async deleteCart(cart_key: number): Promise<void> {
-        await this.cartRepository.delete(cart_key);
+        await this.cartRepository.delete({ cart_key });
+    }
+
+    async deleteAllCart(user_key: number): Promise<void> {
+        await this.cartRepository.delete({ user_key });
     }
 
     async updateCart(cart_key: number, quantity: number): Promise<void> {

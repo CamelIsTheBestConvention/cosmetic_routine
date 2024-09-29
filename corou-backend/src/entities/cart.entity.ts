@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 't
 import { User } from './user.entity';
 import { Item } from './item.entity';
 
-@Entity()
+@Entity('cart')
 export class Cart {
     @PrimaryGeneratedColumn()
     cart_key!: number;
@@ -20,7 +20,7 @@ export class Cart {
     @JoinColumn({ name: 'user_key' })
     user!: User;
 
-    @ManyToOne(() => Item, (item) => item.carts)    
+    @ManyToOne(() => Item, (item) => item.carts)
     @JoinColumn({ name: 'item_key' })
     item!: Item;
 }

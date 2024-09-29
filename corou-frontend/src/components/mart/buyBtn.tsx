@@ -95,6 +95,7 @@ const BuyBtn: React.FC<totalPriceData> = ({
     const clientKey = process.env.REACT_APP_PORTONE_CLIENT_KEY;
     const backPort = process.env.REACT_APP_BACKEND_PORT;
     const channelKey = process.env.REACT_APP_PORTONE_CHANNEL_KEY;
+    const token = sessionStorage.getItem("authToken");
     const submitItemData = cartList.map((item: cartItem) => ({
       count: item?.quantity,
       purchase_price: item.item.item_price,
@@ -134,7 +135,7 @@ const BuyBtn: React.FC<totalPriceData> = ({
             `${backPort}/api/payments/${response.imp_uid}`,
             {
               headers: {
-                Authorization: `Bearer ${channelKey}`,
+                Authorization: `Bearer ${channelKey} ${token}`,
               },
             }
           );

@@ -3,14 +3,12 @@ import express from 'express';
 import cors from 'cors';
 import { initializeDatabase } from './config/ormconfig';
 import { setupRoutes } from './routes/routes';
-import paymentRoutes from './routes/payment.router';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import app from './app';
 import createRateLimiter from './middlewares/rate-limit.middleware';
 
 dotenv.config();
-// const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors({
@@ -27,11 +25,6 @@ app.use(morgan('combined'));
 const rateLimiter = createRateLimiter();
 app.use(rateLimiter);
 
-app.use('/api', paymentRoutes);
-// app.use((req, res, next) => {
-//     console.log('body:', req.body);
-//     next();
-// });
 
 async function startServer() {
     try {

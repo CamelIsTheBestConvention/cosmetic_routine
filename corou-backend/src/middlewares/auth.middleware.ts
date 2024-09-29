@@ -11,7 +11,6 @@ export const authMiddleware = (
   next: NextFunction
 ) => {
   const authHeader = req.headers.authorization;
-  console.log("오쓰헤더", authHeader);
   if (!authHeader) {
     return res.status(401).json({ message: "토큰이 제공되지 않았습니다." });
   }
