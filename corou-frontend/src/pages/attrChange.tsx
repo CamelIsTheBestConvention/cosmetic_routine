@@ -7,6 +7,7 @@ import SignupGuide from "../components/signup/signupGuide";
 import { useNavigate } from "react-router-dom";
 import CommonCheckBox from "../components/common/commonCheckbox";
 import AboutHeader from "../components/common/aboutHeader";
+import MainFooter from "../components/common/mainFooter";
 
 const AttrChange: React.FC = () => {
   const [attribute, setAttribute] = useState<number[]>([]);
@@ -75,6 +76,7 @@ const AttrChange: React.FC = () => {
       );
 
       alert("타입 수정 성공");
+      navigate("/mypage/profileEdit");
       console.log("타입 수정 성공", response.data);
     } catch (error) {
       alert("타입 수정 실패");
@@ -88,7 +90,7 @@ const AttrChange: React.FC = () => {
   return (
     <>
       <AboutHeader Title="타입 수정" onBack={handleBack} />
-      <div>
+      <AttrChangeWrapper>
         {/* <form action=""> */}
         <SignupGuide text="어떤 피부 타입인가요?" />
         <SkinBox1>
@@ -220,11 +222,17 @@ const AttrChange: React.FC = () => {
         </TroubleBox>
         <CompleteBtn text="저장" disabled={false} onClick={handleSubmit} />
         {/* </form> */}
-      </div>
+      </AttrChangeWrapper>
+      <MainFooter />
     </>
   );
 };
 export default AttrChange;
+
+const AttrChangeWrapper = styled.div`
+  width: 90%;
+  margin: 0 auto;
+`;
 
 const SkinBox1 = styled.div`
   width: 100%;

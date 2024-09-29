@@ -4,6 +4,7 @@ import CommonInput from "../common/commonInput";
 import PwVisible from "../common/pwVisible";
 import axios from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import SHA256 from "crypto-js/sha256";
 
 interface MyTokenPayload extends JwtPayload {
   exp: number;
@@ -23,9 +24,13 @@ const EmailLoginBox: React.FC = () => {
     e.preventDefault();
 
     try {
+      const hashedPassword = SHA256(password.trim()).toString();
+      console.log(email);
+      console.log("해싱된 비번2", hashedPassword);
+
       const userData = {
         email,
-        password,
+        password: hashedPassword,
       };
 
       console.log(userData);

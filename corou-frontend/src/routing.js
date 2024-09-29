@@ -25,6 +25,7 @@ import PopupAddress from "./pages/popupAddress";
 import PaymentResult from "./pages/paymentResult";
 import EditRoutine from "./pages/EditRoutine";
 import AttrChange from "./pages/attrChange";
+import PwChange from "./pages/pwChange";
 
 function Routing() {
   return (
@@ -53,6 +54,11 @@ function Routing() {
             exact
             path="/mypage/profileEdit/attrChange"
             element={<AttrChange />}
+          />
+          <Route
+            exact
+            path="/mypage/profileEdit/pwChange"
+            element={<PwChange />}
           />
           <Route exact path="/routine" element={<AboutRoutine />} />
           <Route exact path="/routine/add" element={<AddRoutine />} />
