@@ -3,6 +3,7 @@ import { ItemOrder } from '../entities/item-order.entity';
 import { UserService } from './user.service';
 import { AddressService } from './address.service';
 import { OrderDetailService } from './order-detail.service';
+import { CartService } from './cart.service';
 import { injectable, inject } from 'tsyringe';
 import { REPOSITORY_TOKENS } from '../config/constants';
 
@@ -13,6 +14,7 @@ export class ItemOrderService {
         private userService: UserService,
         private addressService: AddressService,
         private orderDetailService: OrderDetailService,
+        private cartService: CartService,
         private dataSource: DataSource,
     ) { }
 
@@ -38,29 +40,27 @@ export class ItemOrderService {
                 address,
                 order_at: new Date(),
                 status: 'ORDERED',
-                price_total
+                price_total,
+                order_details: []
             });
-
+            console.log('before registering items');
             for (const item of items) {
-                await this.orderDetailService.createOrderDetail(
+                console.log('registering detail');
+                console.log('item: ', item);
+                const orderDetail = await this.orderDetailService.createOrderDetail(
                     item.count,
                     item.purchase_price,
                     item.item_key,
                     newItemOrder.order_key,
                     transactionalEntityManager
                 );
+                console.log('made detail')
+                newItemOrder.order_details.push(orderDetail);
             }
+            await this.cartService.deleteAllCart(user_key);
 
             return newItemOrder;
         });
-        // const newItemOrder = this.itemOrderRepository.create({
-        //     user,
-        //     address,
-        //     order_at: new Date(),
-        //     status: 'ORDERED',
-        //     price_total
-        // });
-        // return await this.itemOrderRepository.save(newItemOrder);
     }
 
     // 사용자 주문 조회 
@@ -72,18 +72,19 @@ export class ItemOrderService {
 
     // 주문 조회 by key
     async getItemOrderByKey(order_key: number, user_key: number): Promise<ItemOrder> {
+        console.log('inside')
         const itemOrder = await this.itemOrderRepository.findOne(
             {
                 where: { order_key },
-                relations: ['orderDetails']
+                relations: ['order_details']
             });
+        console.log(itemOrder)
         if (!itemOrder) {
             throw new Error('주문을 찾을 수 없습니다.');
         }
         if (itemOrder.user.user_key !== user_key) {
             throw new Error('주문 조회 권한이 없습니다.');
         }
-        const orderDetails = await this.orderDetailService.getAllOrderDetail(order_key);
         return itemOrder;
     }
 
@@ -97,9 +98,3 @@ export class ItemOrderService {
         return await this.itemOrderRepository.save(itemOrder);
     }
 }
-
-// declare const userService: UserService;
-// declare const addressService: AddressService;
-
-// const itemOrderRepository = AppDataSource.getRepository(ItemOrder);
-// const itemOrderService = new ItemOrderService(itemOrderRepository, userService, addressService);

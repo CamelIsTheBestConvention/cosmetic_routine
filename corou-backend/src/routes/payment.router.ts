@@ -1,8 +1,13 @@
 import { Router } from 'express';
-import { getPayment } from '../controllers/payment.controller';
+import { PaymentController } from '../controllers/payment.controller';
+import { container } from 'tsyringe';
 
-const router = Router();
+export function setupPaymentRouter(): Router {
+    const router = Router();
 
-router.get('/payments/:imp_uid', getPayment);
+    const paymentController = container.resolve(PaymentController);
 
-export default router;
+    router.get('/:imp_uid', (req, res) => paymentController.getPayment(req, res));
+
+    return router;
+}
