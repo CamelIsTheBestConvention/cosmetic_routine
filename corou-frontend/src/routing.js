@@ -24,6 +24,7 @@ import Cert from "./pages/cert";
 import PopupAddress from "./pages/popupAddress";
 import PaymentResult from "./pages/paymentResult";
 import EditRoutine from "./pages/EditRoutine";
+import AttrChange from "./pages/attrChange";
 
 function Routing() {
   return (
@@ -48,6 +49,11 @@ function Routing() {
           <Route exact path="/mypage/orderList" element={<OrderList />} />
           <Route exact path="/mypage/orderList/:id" element={<OrderDetail />} />
           <Route exact path="/mypage/profileEdit" element={<ProfileEdit />} />
+          <Route
+            exact
+            path="/mypage/profileEdit/attrChange"
+            element={<AttrChange />}
+          />
           <Route exact path="/routine" element={<AboutRoutine />} />
           <Route exact path="/routine/add" element={<AddRoutine />} />
           <Route exact path="/routine/:id" element={<DetailRoutine />} />

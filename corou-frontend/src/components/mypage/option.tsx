@@ -38,6 +38,10 @@ const Option: React.FC = () => {
     navigate("/login");
   };
 
+  const handleNotAccess = () => {
+    alert("접근할 수 없습니다.");
+  };
+
   return (
     <>
       <OptionWrapper>
@@ -46,9 +50,9 @@ const Option: React.FC = () => {
           <SettingBox name="배송지 관리" onClick={handleSetAddress} />
         </SettingWrapper1>
         <SettingWrapper2>
-          <SettingBox name="고객센터" onClick={handleOrderList} />
-          <SettingBox name="1:1 문의 내역" onClick={handleOrderList} />
-          <SettingBox name="상품 문의 내역" onClick={handleOrderList} />
+          <SettingBox name="고객센터" onClick={handleNotAccess} />
+          <SettingBox name="1:1 문의 내역" onClick={handleNotAccess} />
+          <SettingBox name="상품 문의 내역" onClick={handleNotAccess} />
           <SettingBox name="공지사항" onClick={handleNotice} />
         </SettingWrapper2>
         {token && <Logout onClick={handleLogout}>로그아웃</Logout>}
