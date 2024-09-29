@@ -72,6 +72,7 @@ export const initializeDatabase = async () => {
         for (const repo of repositories) {
             container.register(repo.name, { useValue: AppDataSource.getRepository(repo.entity) });
         }
+        
     } catch (error) {
         console.error('Error initializing database:', error);
     }
