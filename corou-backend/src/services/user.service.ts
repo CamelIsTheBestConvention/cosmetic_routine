@@ -99,8 +99,17 @@ export class UserService {
         return user;
     }
 
-    async changePassword(user_key: number, password: string): Promise<void> {
-        const hashedPassword = await hashPassword(password);
+    async changePassword(user_key: number, currentPassword: string, newPassword: string): Promise<void> {
+
+        const user = await this.userRepository.findOneBy({ user_key })
+        if (!user) {
+            throw new Error('존재하지 않는 회원입니다.');
+        }
+        const isPasswordCorrect = await comparePassword(currentPassword, user.password);
+        if (!isPasswordCorrect) {
+            throw new Error('현재 비밀번호가 일치하지 않습니다.');
+        }
+        const hashedPassword = await hashPassword(newPassword);
         await this.userRepository.update({ user_key }, { password: hashedPassword })
         return;
     }
