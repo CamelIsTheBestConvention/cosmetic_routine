@@ -59,6 +59,7 @@ const Cert: React.FC<totalPriceData> = () => {
     (state: any) => state.address.selectAddress
   );
   const [email, setEmail] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchSelfInfo();
@@ -113,22 +114,46 @@ const Cert: React.FC<totalPriceData> = () => {
   };
 
   const handleAddressModalOpen = () => {
+    setIsModalOpen(true);
+
     const popup = window.open(
       "/popup",
       "배송지 변경",
       "width=450,height=700,scrollbars=yes"
     );
 
+    const handleFocus = () => {
+      setIsModalOpen(false);
+      window.removeEventListener("focus", handleFocus);
+    };
+
     if (popup) {
       (popup as Window).handleAddressChange = (newAddress) => {
         console.log("주소 업데이트됨:", newAddress);
         dispatch(setSelectAddress(newAddress));
       };
+
+      popup.onbeforeunload = () => {
+        window.addEventListener("focus", handleFocus);
+      };
+
+      const handlePopupClose = setInterval(() => {
+        if (popup.closed) {
+          setIsModalOpen(false);
+          clearInterval(handlePopupClose);
+        }
+      }, 500);
     }
+  };
+
+  const onOverlay = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    console.log("Overlay clicked, but modal should not close.");
   };
 
   return (
     <>
+      {isModalOpen && <Overlay onClick={onOverlay} />}
       <AboutHeader Title="주문서" onBack={handleBack} />
       <CertWrapper>
         <AddressBox>
@@ -253,4 +278,14 @@ const CertItemBox = styled.div`
   span {
     font-weight: 700;
   }
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 `;
