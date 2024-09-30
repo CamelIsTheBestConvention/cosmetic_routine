@@ -16,10 +16,11 @@ interface orderItem {
 const OrderList: React.FC = () => {
   const navigate = useNavigate();
   const backPort = process.env.REACT_APP_BACKEND_PORT;
-  const [orders, setOrders] = useState<orderItem[]>([]);
-  const [loading, setLoading] = useState(true);
   const userKey = sessionStorage.getItem("userKey");
   const token = sessionStorage.getItem("authToken");
+  const [orders, setOrders] = useState<orderItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<string>("전체");
 
   const handleBack = () => {
     navigate(-1);
@@ -49,21 +50,47 @@ const OrderList: React.FC = () => {
     navigate(`/mypage/orderList/${order_key}`);
   };
 
+  const statusMapping: { [key: string]: string } = {
+    ORDERED: "주문완료",
+    DELIVERING: "배송중",
+    COMPLETE: "배송완료",
+    CANCELED: "주문취소",
+  };
+
+  const filteredOrders = orders.filter((order) => {
+    if (filter === "전체") return true;
+    if (filter === "주문완료") return order.status === "ORDERED";
+    if (filter === "배송중") return order.status === "DELIVERING";
+    if (filter === "배송완료") return order.status === "COMPLETE";
+    if (filter === "주문취소") return order.status === "CANCELED";
+    return false;
+  });
+
   return (
     <>
       <AboutHeader Title="주문 내역" onBack={handleBack} />
       <div className="orderListWrapper">
         <div className="orderListFilter">
           <div>
-            <p>전체</p>
-            <p>배송</p>
-            <p>배송완료</p>
-            <p>주문취소</p>
+            {["전체", "주문완료", "배송중", "배송완료", "주문취소"].map(
+              (item) => (
+                <p
+                  key={item}
+                  onClick={() => setFilter(item)}
+                  style={{
+                    color: filter === item ? "#fd73d4" : "black",
+                    fontWeight: filter === item ? "bold" : "normal",
+                  }}
+                >
+                  {item}
+                </p>
+              )
+            )}
           </div>
         </div>
         <div className="orderListContent">
-          {orders.length > 0 ? (
-            orders.map((order, index) => (
+          {filteredOrders.length > 0 ? (
+            filteredOrders.map((order, index) => (
               <div
                 className="orderListBox"
                 key={index}
@@ -80,7 +107,8 @@ const OrderList: React.FC = () => {
                   <div>
                     <span>
                       {/* {order.items[0]} 외 {order.items.length - 1}건 */}
-                      총액 : {order?.price_total}, 상태 : {order?.status}
+                      총액 : {order?.price_total}, 상태 :{" "}
+                      {statusMapping[order.status] || order.status}
                     </span>
                     <p>₩ {order.price_total}</p>
                   </div>

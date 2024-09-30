@@ -98,6 +98,7 @@ const RankingSubFilterWrapper = styled.div`
 const FilterItem = styled.div<{ isSelected: boolean }>`
   cursor: pointer;
   text-align: center;
+  color: ${({ isSelected }) => (isSelected ? "#fd73d4" : "black")};
   font-weight: ${({ isSelected }) => (isSelected ? "bold" : "normal")};
   white-space: nowrap;
   min-width: 50px;

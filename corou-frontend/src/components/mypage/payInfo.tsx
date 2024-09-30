@@ -1,6 +1,10 @@
 import "../../scss/mypage/payInfo.scss";
 
-const PayInfo: React.FC = () => {
+interface priceData {
+  priceTotal: number | undefined;
+}
+
+const PayInfo: React.FC<priceData> = ({ priceTotal }) => {
   return (
     <>
       <div className="payInfoWrapper">
@@ -13,15 +17,15 @@ const PayInfo: React.FC = () => {
         </div>
         <div className="itemPrice">
           <span>상품 금액</span>
-          <span>21,000원</span>
+          <span>{priceTotal?.toLocaleString()}원</span>
         </div>
         <div className="discountPrice">
           <span>할인 금액</span>
-          <span>-11,760원 ▽</span>
+          <span>-0원 ▽</span>
         </div>
         <div className="savingsPrice">
           <span>적립금</span>
-          <span>-851원 ▽</span>
+          <span>-0원 ▽</span>
         </div>
         <div className="deliveryPrice">
           <span>배송비</span>
@@ -30,12 +34,12 @@ const PayInfo: React.FC = () => {
         <div className="payPrice">
           <span>결제 금액</span>
           <span>
-            <span>60%</span> 8,389원
+            <span>0%</span> {priceTotal?.toLocaleString()}원
           </span>
         </div>
         <div className="payMethod">
           <span>결제 수단</span>
-          <span>네이버페이-현대카드(일시불)</span>
+          <span>신한카드(일시불)</span>
         </div>
       </div>
     </>

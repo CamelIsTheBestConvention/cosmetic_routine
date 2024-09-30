@@ -35,14 +35,14 @@ const DetailBtnBox: React.FC<itemBox> = ({ itemList }) => {
     }
   };
 
-  const handleBuyItem = () => {
-    if (token) {
-      alert("아직 개발 중입니다.");
-    } else {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
-    }
-  };
+  // const handleBuyItem = () => {
+  //   if (token) {
+  //     alert("아직 개발 중입니다.");
+  //   } else {
+  //     alert("로그인이 필요합니다.");
+  //     navigate("/login");
+  //   }
+  // };
 
   return (
     <>

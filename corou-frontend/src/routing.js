@@ -26,6 +26,7 @@ import PaymentResult from "./pages/paymentResult";
 import EditRoutine from "./pages/EditRoutine";
 import AttrChange from "./pages/attrChange";
 import PwChange from "./pages/pwChange";
+import PrivateRoute from "./privateRoute";
 
 function Routing() {
   return (
@@ -33,43 +34,93 @@ function Routing() {
       <BrowserRouter>
         <ScrollToTop />
         <Routes>
+          {/* private path == PrivateRoute */}
           <Route exact path="/" element={<Main />} />
           <Route exact path="/login" element={<SocialLogin />} />
           <Route exact path="/login/email" element={<EmailLogin />} />
-          <Route exact path="/kakao/oauth" element={<Redirection />} />
+          <Route
+            exact
+            path="/kakao/oauth"
+            element={<PrivateRoute element={<Redirection />} />}
+          />
           <Route exact path="/register" element={<Signup />} />
           <Route exact path="/mypage" element={<Mypage />} />
           <Route exact path="/mypage/notice" element={<Notice />} />
-          <Route exact path="/mypage/setAddress" element={<SetAddress />} />
-          <Route exact path="/mypage/addAddress" element={<AddAddress />} />
+
+          <Route
+            exact
+            path="/mypage/setAddress"
+            element={<PrivateRoute element={<SetAddress />} />}
+          />
+          <Route
+            exact
+            path="/mypage/addAddress"
+            element={<PrivateRoute element={<AddAddress />} />}
+          />
           <Route
             exact
             path="/mypage/editAddress/:id"
-            element={<EditAddress />}
+            element={<PrivateRoute element={<EditAddress />} />}
           />
-          <Route exact path="/mypage/orderList" element={<OrderList />} />
-          <Route exact path="/mypage/orderList/:id" element={<OrderDetail />} />
-          <Route exact path="/mypage/profileEdit" element={<ProfileEdit />} />
+          <Route
+            exact
+            path="/mypage/orderList"
+            element={<PrivateRoute element={<OrderList />} />}
+          />
+          <Route
+            exact
+            path="/mypage/orderList/:id"
+            element={<PrivateRoute element={<OrderDetail />} />}
+          />
+          <Route
+            exact
+            path="/mypage/profileEdit"
+            element={<PrivateRoute element={<ProfileEdit />} />}
+          />
           <Route
             exact
             path="/mypage/profileEdit/attrChange"
-            element={<AttrChange />}
+            element={<PrivateRoute element={<AttrChange />} />}
           />
           <Route
             exact
             path="/mypage/profileEdit/pwChange"
-            element={<PwChange />}
+            element={<PrivateRoute element={<PwChange />} />}
           />
           <Route exact path="/routine" element={<AboutRoutine />} />
-          <Route exact path="/routine/add" element={<AddRoutine />} />
+          <Route
+            exact
+            path="/routine/add"
+            element={<PrivateRoute element={<AddRoutine />} />}
+          />
           <Route exact path="/routine/:id" element={<DetailRoutine />} />
-          <Route exact path="/routine/:id/edit" element={<EditRoutine />} />
+          <Route
+            exact
+            path="/routine/:id/edit"
+            element={<PrivateRoute element={<EditRoutine />} />}
+          />
           <Route exact path="/item" element={<Ranking />} />
           <Route exact path="/item/:id" element={<RankingDetail />} />
-          <Route exact path="/order" element={<Mart />} />
-          <Route exact path="/order/cert" element={<Cert />} />
-          <Route exact path="/popup" element={<PopupAddress />} />
-          <Route exact path="/pay/result" element={<PaymentResult />} />
+          <Route
+            exact
+            path="/order"
+            element={<PrivateRoute element={<Mart />} />}
+          />
+          <Route
+            exact
+            path="/order/cert"
+            element={<PrivateRoute element={<Cert />} />}
+          />
+          <Route
+            exact
+            path="/popup"
+            element={<PrivateRoute element={<PopupAddress />} />}
+          />
+          <Route
+            exact
+            path="/pay/result"
+            element={<PrivateRoute element={<PaymentResult />} />}
+          />
         </Routes>
       </BrowserRouter>
     </TotalWrapper>
