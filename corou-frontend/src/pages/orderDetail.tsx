@@ -7,10 +7,29 @@ import PayDetailInfo from "../components/mypage/payDetailInfo";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+interface ItemDetails {
+  average_rating: number;
+  brand_name: string;
+  category: string;
+  description: string;
+  item_key: number;
+  item_name: string;
+  item_price: number;
+  volume: number;
+}
+
+interface OrderDetails {
+  item_key: number;
+  count: number;
+  order_key: number;
+  purchase_price: number;
+}
+
 interface OrderDetailData {
   order_key: number;
   order_at: string;
-  status: string[];
+  order_details: OrderDetails[];
+  status: string;
   price_total: number;
 }
 
@@ -20,9 +39,9 @@ const OrderDetail: React.FC = () => {
   const userKey = sessionStorage.getItem("userKey");
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const token = sessionStorage.getItem("authToken");
-
   const [orderDetailData, setOrderDetailData] =
     useState<OrderDetailData | null>(null);
+  const [orderItemData, setOrderItemData] = useState<ItemDetails[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleBack = () => {
@@ -43,9 +62,22 @@ const OrderDetail: React.FC = () => {
               },
             }
           );
-
-          console.log("주문데이터", response.data);
           setOrderDetailData(response.data);
+          console.log(response.data);
+
+          const itemRequests = response.data.order_details.map(
+            (item: { item_key: number }) =>
+              axios.get(`${backPort}/api/item/key/${item.item_key}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+          );
+
+          const itemResponses = await Promise.all(itemRequests);
+          const items = itemResponses.map((res) => res.data);
+          setOrderItemData(items);
+          console.log(items);
         }
       } catch (err) {
         console.error("데이터 불러오기 실패", err);
@@ -77,8 +109,11 @@ const OrderDetail: React.FC = () => {
             <p></p>
           </div>
         </div>
-        <PayDetailInfo />
-        <PayInfo />
+        <PayDetailInfo
+          orderDetailData={orderDetailData}
+          orderItemData={orderItemData}
+        />
+        <PayInfo priceTotal={orderDetailData?.price_total} />
       </div>
       <MainFooter />
     </>

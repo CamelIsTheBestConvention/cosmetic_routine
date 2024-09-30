@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const MainFooter = () => {
   const navigate = useNavigate();
+  const token = sessionStorage.getItem("authToken");
 
   const handleMoveItem = () => {
     navigate("/item");
@@ -23,7 +24,17 @@ const MainFooter = () => {
   };
 
   const handleMoveOrder = () => {
-    navigate("/order");
+    if (!token) {
+      if (
+        confirm(
+          "로그인 정보가 없어 장바구니로 이동할 수 없습니다.\n로그인 페이지로 이동하시겠습니까?"
+        )
+      ) {
+        navigate("/login");
+      }
+    } else {
+      navigate("/order");
+    }
   };
 
   const handleMoveMypage = () => {
