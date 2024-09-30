@@ -6,17 +6,32 @@ import { useEffect, useState } from "react";
 import MainFooter from "../components/common/mainFooter";
 import notOrder from "../img/notOrder.png";
 
+interface OrderDetails {
+  item_key: number;
+  count: number;
+  order_key: number;
+  purchase_price: number;
+}
+
+interface OrderDetailData {
+  order_key: number;
+  order_at: string;
+  order_details: OrderDetails[];
+  status: string;
+  price_total: number;
+}
+
 interface orderItem {
   order_at: string;
   order_key: number;
   price_total: number;
   status: string;
+  item_key: number;
 }
 
 const OrderList: React.FC = () => {
   const navigate = useNavigate();
   const backPort = process.env.REACT_APP_BACKEND_PORT;
-  const userKey = sessionStorage.getItem("userKey");
   const token = sessionStorage.getItem("authToken");
   const [orders, setOrders] = useState<orderItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -34,8 +49,30 @@ const OrderList: React.FC = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
-        setOrders(response.data);
+
+        const orderDetails = await Promise.all(
+          response.data.map((order: orderItem) =>
+            axios
+              .get(`${backPort}/api/order/itemorder/${order.order_key}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((res) => {
+                const orderData: OrderDetailData = res.data;
+                return {
+                  ...order,
+                  item_key:
+                    orderData.order_details.length > 0
+                      ? orderData.order_details[0].item_key
+                      : undefined,
+                };
+              })
+          )
+        );
+
+        console.log(orderDetails);
+        setOrders(orderDetails);
         setLoading(false);
       } catch (err) {
         console.error("데이터 불러오기 실패", err);
@@ -102,15 +139,17 @@ const OrderList: React.FC = () => {
                 </div>
                 <div className="boxContent">
                   <div>
-                    <img src="" alt="" />
+                    <img
+                      src={`${process.env.PUBLIC_URL}/assets/item/${order.item_key}.jpg`}
+                      alt="주문내역 썸네일"
+                    />
                   </div>
                   <div>
                     <span>
                       {/* {order.items[0]} 외 {order.items.length - 1}건 */}
-                      총액 : {order?.price_total}, 상태 :{" "}
-                      {statusMapping[order.status] || order.status}
+                      상태 : {statusMapping[order.status] || order.status}
                     </span>
-                    <p>₩ {order.price_total}</p>
+                    <p>₩ {order.price_total.toLocaleString()}</p>
                   </div>
                 </div>
               </div>

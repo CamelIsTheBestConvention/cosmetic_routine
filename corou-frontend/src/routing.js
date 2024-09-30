@@ -134,7 +134,8 @@ const TotalWrapper = styled.div`
   min-height: 100vh;
   background-color: white;
   margin: 0 auto;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+  /* border-left: 1px solid black;
+  border-right: 1px solid black; */
+  background-color: white;
   position: relative;
 `;

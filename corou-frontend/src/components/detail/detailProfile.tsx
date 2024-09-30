@@ -17,9 +17,9 @@ const DetailProfile: React.FC<detailProfileData> = ({
         </div>
         <div>
           <span>{profileNickname}님의 루틴</span>
-          <span>
+          {/* <span>
             피부타입 <span>64%</span> 일치
-          </span>
+          </span> */}
         </div>
       </div>
     </>
