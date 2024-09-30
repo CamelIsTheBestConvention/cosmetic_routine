@@ -60,7 +60,7 @@ const ProfileEdit: React.FC = () => {
   return (
     <>
       <ProfileEditWrapper>
-        <AboutHeader Title="프로필 수정" onBack={handleBack} />
+        <AboutHeader Title="프로필 정보" onBack={handleBack} />
         {/* 프로필이미지 */}
         <div className="editWrapper">
           <div className="profileEdit">
