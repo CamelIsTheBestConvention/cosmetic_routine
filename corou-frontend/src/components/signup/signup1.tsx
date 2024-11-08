@@ -115,6 +115,7 @@ const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
             placeholderValue="이메일"
             value={email}
             onChange={(e) => dispatch(setEmail(e.target.value))}
+            readOnly={Boolean(location.state?.email)}
           />
           <InputCheck valid={emailValid}>√ 이메일 확인</InputCheck>
           <CommonInput
@@ -122,6 +123,7 @@ const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
             placeholderValue="비밀번호"
             value={password}
             onChange={(e) => dispatch(setPassword(e.target.value))}
+            readOnly={Boolean(location.state?.password)}
           />
           <InputCheck valid={passwordLengthValid}>√ 8자리 이상</InputCheck>
           <InputCheck valid={passwordComplexityValid}>
@@ -132,6 +134,7 @@ const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
             placeholderValue="비밀번호 확인"
             value={passwordConfirm}
             onChange={(e) => dispatch(setPasswordConfirm(e.target.value))}
+            readOnly={Boolean(location.state?.password)}
           />
           <InputCheck valid={password === passwordConfirm}>
             √ 비밀번호 동일
@@ -156,7 +159,7 @@ const SignupBox = styled.div`
   margin: 50px auto;
 `;
 
-const InputCheck = styled.div<{ valid: boolean }>`
+const InputCheck = styled.div<{ valid: boolean}>`
   font-size: 11px;
   margin-left: 10px;
   margin-bottom: 5px;

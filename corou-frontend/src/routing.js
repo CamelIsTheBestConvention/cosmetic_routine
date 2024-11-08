@@ -41,7 +41,7 @@ function Routing() {
           <Route
             exact
             path="/kakao/oauth"
-            element={<PrivateRoute element={<Redirection />} />}
+            element={<Redirection />}
           />
           <Route exact path="/register" element={<Signup />} />
           <Route exact path="/mypage" element={<Mypage />} />

@@ -230,7 +230,7 @@ export class RoutineService {
             }
             const updatedRoutine = await transactionalEntityManager.findOne(Routine, { where: { routine_key } });
             if (!updatedRoutine) {
-                throw new Error('루틴 업데이트에 오류가 발생했습니다.')
+                throw new Error('루틴 t업데이트에 오류가 발생했습니다.')
             }
             const total = await transactionalEntityManager
                 .createQueryBuilder()
