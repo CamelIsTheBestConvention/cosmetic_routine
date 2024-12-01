@@ -42,9 +42,3 @@ export class OrderDetailService {
         return orderDetails;
     }
 }
-
-// declare const itemOrderService: ItemOrderService;
-// declare const itemService: ItemService;
-
-// const orderDetailRepository = AppDataSource.getRepository(OrderDetail);
-// const orderDetailService = new OrderDetailService(orderDetailRepository, itemOrderService, itemService);

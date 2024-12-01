@@ -44,10 +44,7 @@ export class ItemOrderService {
                 price_total,
                 order_details: [],
             });
-            console.log("before registering items");
             for (const item of items) {
-                console.log("registering detail");
-                console.log("item: ", item);
                 const orderDetail = await this.orderDetailService.createOrderDetail(
                     item.count,
                     item.purchase_price,
@@ -55,7 +52,6 @@ export class ItemOrderService {
                     newItemOrder.order_key,
                     transactionalEntityManager
                 );
-                console.log("made detail");
                 newItemOrder.order_details.push(orderDetail);
             }
             await this.cartService.deleteAllCart(user_key);
@@ -78,18 +74,13 @@ export class ItemOrderService {
         order_key: number,
         user_key: number
     ): Promise<ItemOrder> {
-        console.log("inside");
         const itemOrder = await this.itemOrderRepository.findOne({
             where: { order_key },
             relations: ["order_details"],
         });
-        console.log(itemOrder);
         if (!itemOrder) {
             throw new Error("주문을 찾을 수 없습니다.");
         }
-        // if (itemOrder.user.user_key !== user_key) {
-        //     throw new Error('주문 조회 권한이 없습니다.');
-        // }
         return itemOrder;
     }
 

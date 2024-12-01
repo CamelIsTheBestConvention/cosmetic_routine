@@ -28,7 +28,6 @@ export class RoutineDetailService {
         if (!item) {
             throw new Error('해당 아이템을 찾을 수 없습니다.');
         }
-        console.log('step adding');
         const routineDetail = this.routineDetailRepository.create({
             step_number,
             routine_key,
@@ -38,7 +37,6 @@ export class RoutineDetailService {
         });
         try {
             const savedDetail = await transactionalEntityManager.save(RoutineDetail, routineDetail);
-            console.log('Routine Detail Saved:', savedDetail);
             return savedDetail;
             // return transactionalEntityManager.save(RoutineDetail, routineDetail);
         } catch (error) {
