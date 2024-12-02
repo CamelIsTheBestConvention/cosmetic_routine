@@ -17,5 +17,5 @@ export default TopRoutine;
 const TopRoutineWrapper = styled.div`
   width: 80%;
   margin: 0 auto;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 `;

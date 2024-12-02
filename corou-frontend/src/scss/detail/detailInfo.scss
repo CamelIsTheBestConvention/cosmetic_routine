@@ -1,6 +1,6 @@
 .detailInfoWrapper {
   width: 90%;
-  margin: 0 auto;
+  margin: 50px auto 0 auto;
 
   h4 {
     font-size: 24px;
@@ -55,6 +55,13 @@
         border: 1px solid #ffa4e4;
         border-radius: 50%;
         margin: 5px 10px 0 5px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+        }
       }
 
       &:nth-child(2) {
@@ -83,7 +90,7 @@
 
   // 체크사항 css
   .detailCheckWrapper {
-    width: 55%;
+    width: 70%;
     text-align: center;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -98,10 +105,14 @@
 
     ul {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       font-size: 14px;
       color: #616161;
       margin-left: -15px;
+
+      li {
+        padding: 0 5px;
+      }
     }
   }
 
@@ -151,8 +162,8 @@
     .detailGradeItem {
       width: 110%;
       margin: 20px 0 20px -5%;
-      border-top: 2px solid #a0a0a0;
-      border-bottom: 2px solid #a0a0a0;
+      // border-top: 2px solid #a0a0a0;
+      // border-bottom: 2px solid #a0a0a0;
     }
   }
 }
@@ -172,21 +183,33 @@
   // 제품 정보
   .detailItemInfo {
     width: 100%;
-    display: flex;
+    // display: flex;
     justify-content: flex-start;
     margin: 10px 0;
 
     div {
       &:nth-child(1) {
         padding: 0;
-        width: 120px;
-        height: 120px;
+        // width: 120px;
+        // height: 120px;
+        width: 350px;
+        height: 350px;
+
+        margin: 0 auto;
         border: 3px solid rgba(255, 164, 228, 0.5);
         border-radius: 15px;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 11px;
+        }
       }
       &:nth-child(2) {
         display: flex;
         flex-direction: column;
+        margin-top: 5px;
         margin-left: 10px;
         padding: 0;
 
@@ -200,7 +223,7 @@
             margin-bottom: 15px;
           }
           &:nth-child(3) {
-            font-size: 15px;
+            font-size: 19px;
           }
         }
       }
@@ -217,7 +240,7 @@
 // 장바구니,구매 버튼 css
 .detailBtnBoxWrapper {
   width: 80%;
-  margin: 0 auto;
+  margin: 0 auto 30px auto;
   display: flex;
   justify-content: space-evenly;
 
@@ -229,5 +252,9 @@
     padding: 15px 0;
     font-size: 16px;
     font-weight: normal !important;
+
+    &:hover {
+      border: 3px solid rgba(255, 99, 208, 0.5);
+    }
   }
 }

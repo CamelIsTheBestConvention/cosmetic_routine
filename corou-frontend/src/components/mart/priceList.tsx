@@ -1,14 +1,34 @@
 import "../../scss/mart/priceList.scss";
 
-interface itemPrice {
-  price: number;
+interface itemData {
+  average_rating: number;
+  brand_name: string;
+  category: string;
+  description: string;
+  item_key: number;
+  item_name: string;
+  item_price: number;
+  volume: number;
 }
 
-interface itemListData {
-  itemList: itemPrice[];
+interface cartItem {
+  cart_key: number;
+  item: itemData;
+  item_key: number;
+  quantity: number;
+  user_key: number;
 }
 
-const PriceList: React.FC<itemListData> = ({ itemList }) => {
+interface cartListData {
+  cartList: cartItem[];
+}
+
+const PriceList: React.FC<cartListData> = ({ cartList }) => {
+  const totalItemPrice = cartList.reduce(
+    (total, cartItem) => total + cartItem.item.item_price * cartItem.quantity,
+    0
+  );
+
   return (
     <>
       <div className="priceListWrapper">
@@ -16,7 +36,7 @@ const PriceList: React.FC<itemListData> = ({ itemList }) => {
           <h3>구매 금액</h3>
           <div>
             <span>상품 금액</span>
-            {/* <span>{itemList[0].price}원</span> */}
+            <span>{totalItemPrice.toLocaleString()}원</span>
           </div>
           <div>
             <span>할인 금액</span>
@@ -29,7 +49,7 @@ const PriceList: React.FC<itemListData> = ({ itemList }) => {
 
           <div>
             <span>총 구매 금액</span>
-            {/* <span>{itemList[0].price}원</span> */}
+            <span>{totalItemPrice.toLocaleString()}원</span>
           </div>
           <div>
             <span>적립혜택 예상</span>

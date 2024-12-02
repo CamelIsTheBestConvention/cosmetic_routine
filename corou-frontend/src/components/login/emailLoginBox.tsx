@@ -4,6 +4,8 @@ import CommonInput from "../common/commonInput";
 import PwVisible from "../common/pwVisible";
 import axios from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+// import SHA256 from "crypto-js/sha256";
+// import bcrypt from "bcryptjs";
 
 interface MyTokenPayload extends JwtPayload {
   exp: number;
@@ -23,6 +25,10 @@ const EmailLoginBox: React.FC = () => {
     e.preventDefault();
 
     try {
+      // const hashedPassword = await bcrypt.hash(password.trim(), 10);
+      console.log(email);
+      // console.log("해싱된 비번2", hashedPassword);
+
       const userData = {
         email,
         password,
@@ -33,18 +39,24 @@ const EmailLoginBox: React.FC = () => {
 
       const response = await axios.post(`${backPort}/api/user/login`, userData);
       console.log("로그인 성공", response.data);
+      alert("로그인에 성공하였습니다.");
 
       const token = response.data.token;
+      const userKey = response.data.user.user_key;
+      const userName = response.data.user.username;
       const decodedToken = jwtDecode<MyTokenPayload>(token);
       const expirationTime = decodedToken.exp * 1000;
 
       sessionStorage.setItem("authToken", token);
+      sessionStorage.setItem("userKey", userKey);
+      sessionStorage.setItem("userName", userName);
       sessionStorage.setItem("tokenExpiration", expirationTime.toString());
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       window.location.href = "/";
     } catch (error) {
+      alert("아이디와 비밀번호를 확인해주세요.");
       console.log("로그인 실패", error);
     }
   };

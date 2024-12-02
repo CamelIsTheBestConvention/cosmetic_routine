@@ -2,12 +2,13 @@ import styled from "styled-components";
 
 interface SettingName {
   name: string;
+  onClick: () => void;
 }
 
-const SettingBox: React.FC<SettingName> = ({ name }) => {
+const SettingBox: React.FC<SettingName> = ({ name, onClick }) => {
   return (
     <>
-      <SettingBoxWrapper>
+      <SettingBoxWrapper onClick={onClick}>
         <div>{name}</div>
         <div>&gt;</div>
       </SettingBoxWrapper>
@@ -22,4 +23,5 @@ const SettingBoxWrapper = styled.div`
 
   font-size: 13px;
   margin-bottom: 20px;
+  cursor: pointer;
 `;

@@ -13,6 +13,12 @@
     background-color: rgba(255, 164, 228, 0.5);
     font-size: 15px;
     padding: 5px 10px;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.8;
+      background-color: rgba(255, 164, 228, 0.8);
+    }
   }
 }
 
@@ -25,13 +31,21 @@
     width: 88px;
     height: 88px;
     margin: 0 auto;
-    border: 1.5px solid #ffa4e4;
+    border: 2px solid #ffa4e4;
     border-radius: 50%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
   }
 
   p {
     font-size: 20px;
     text-align: center;
+    font-weight: 700;
   }
 }
 
@@ -42,4 +56,18 @@
   text-align: center;
   grid-template-columns: repeat(4, 1fr);
   gap: 5px;
+}
+
+.goLoginBox {
+  font-size: 18px;
+  text-align: center;
+
+  p {
+    color: #848484;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px 0;
+  }
 }

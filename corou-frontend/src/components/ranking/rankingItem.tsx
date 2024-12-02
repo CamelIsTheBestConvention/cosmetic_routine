@@ -1,18 +1,51 @@
 import styled from "styled-components";
 import ReviewPoint from "../common/reviewPoint";
 import ItemBox from "./itemBox";
+import { useNavigate } from "react-router-dom";
+import notRanking from "../../img/notRanking.png";
 
-const RankingItem: React.FC = () => {
+interface itemProps {
+  average_rating: number;
+  category: string;
+  description: string;
+  item_key: number;
+  item_name: string;
+  item_price: number;
+  brand_name: string;
+  volume: number;
+}
+
+interface rankingItemProps {
+  rankingData: itemProps[];
+}
+
+const RankingItem: React.FC<rankingItemProps> = ({ rankingData }) => {
+  const navigate = useNavigate();
+
+  const handleItemClick = (id: number) => {
+    navigate(`/item/${id}`);
+  };
+
   return (
     <>
       <RankingItemWrapper>
-        <ItemBox />
-        <ItemBox />
-        <ItemBox />
-        <ItemBox />
-        <ItemBox />
-        <ItemBox />
-        <ItemBox />
+        {rankingData.length > 0 ? (
+          rankingData.map((item) => (
+            <ItemBox
+              key={item.item_key}
+              item={item}
+              rank={rankingData.indexOf(item) + 1}
+              onClick={() => handleItemClick(item.item_key)}
+            />
+          ))
+        ) : (
+          <div className="notItemWrapper">
+            <div>
+              <img src={notRanking} alt="랭킹 정보가 없습니다." />
+            </div>
+            <p>제품 정보가 없습니다.</p>
+          </div>
+        )}
       </RankingItemWrapper>
     </>
   );

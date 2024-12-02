@@ -17,6 +17,7 @@ export default ReviewPoint;
 
 const ReviewPointWrapper = styled.div`
   display: flex;
+  flex-direction: row !important;
   margin-top: 10px;
 
   img {

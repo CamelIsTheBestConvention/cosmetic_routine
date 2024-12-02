@@ -1,12 +1,27 @@
 import styled from "styled-components";
 import PageCount from "../common/pageCount";
 import CommonInput from "../common/commonInput";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import NextBtn from "../signup/nextBtn";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { setRoutineItem } from "../../redux/slice/addRoutineSlice";
+import {
+  setRoutineItem,
+  setTotalPrice,
+  setItemList,
+} from "../../redux/slice/addRoutineSlice";
 import axios from "axios";
+
+interface itemData {
+  item_key: number;
+  item_name: string;
+  item_price: number;
+  volume: number;
+  average_rating: number;
+  brand_name: string;
+  category: string;
+  description: string;
+}
 
 interface NextProps {
   onNext: () => void;
@@ -19,69 +34,199 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
     (state: RootState) => state.addRoutine.routineItem
   );
   const [allRoutineItems, setAllRoutineItems] = useState(
-    new Array(grade).fill({ order: "", description: "", itemName: "" })
+    new Array(grade).fill({
+      step_number: 0,
+      step_name: "",
+      description: "",
+      item_key: "",
+      item_name: "",
+    })
   );
-  const [searchResults, setSearchResults] = useState<string[]>([]);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [allItemList, setAllItemList] = useState(
+    new Array(grade).fill({
+      average_rating: 0,
+      brand_name: "",
+      category: "",
+      description: "",
+      item_key: 0,
+      item_name: "",
+      item_price: 0,
+      volume: 0,
+    })
+  );
+  const [searchResults, setSearchResults] = useState<itemData[][]>(
+    new Array(grade).fill([])
+  );
+  const totalPrice = useSelector(
+    (state: RootState) => state.addRoutine.totalPrice
+  );
+  const [searchQueries, setSearchQueries] = useState<string[]>(
+    new Array(grade).fill("")
+  );
   const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const itemList = useSelector((state: RootState) => state.addRoutine.itemList);
 
   useEffect(() => {
-    setAllRoutineItems(
-      new Array(grade).fill({ order: "", description: "", itemName: "" })
-    );
-  }, [grade]);
+    // 남은 루틴 복구
+    const updatedItems = new Array(grade).fill(null).map((_, index) => {
+      if (index < routineItems.length) {
+        return { ...routineItems[index], step_number: index + 1 };
+      }
+      return {
+        step_number: index + 1,
+        step_name: "",
+        description: "",
+        item_key: "",
+        item_name: "",
+      };
+    });
 
-  // useEffect(() => {
-  //   const sum = searchResults.reduce(
-  //     (acc, product) => acc + parseFloat(product.price || "0"),
-  //     0
-  //   );
-  //   setTotalPrice(sum);
-  // }, [searchResults]);
-
-  const handleRoutineItemChange = (
-    index: number,
-    key: keyof (typeof routineItems)[0],
-    value: string
-  ) => {
-    const updatedItems = [...allRoutineItems];
-    updatedItems[index] = { ...updatedItems[index], [key]: value };
+    if (updatedItems.length < allRoutineItems.length) {
+      for (let i = updatedItems.length; i < allRoutineItems.length; i++) {
+        updatedItems[i] = {
+          step_number: i + 1,
+          step_name: "",
+          description: "",
+          item_key: "",
+          item_name: "",
+        };
+      }
+    }
     setAllRoutineItems(updatedItems);
-    dispatch(setRoutineItem(updatedItems[index]));
 
-    if (key === "itemName" && value.length > 2) {
-      searchItemData(value);
+    // 남은 아이템 리스트 복구
+    const updatedItemsList = new Array(grade).fill(null).map((_, index) => {
+      if (index < itemList.length) {
+        return { ...itemList[index], step_number: index + 1 };
+      }
+      return {
+        average_rating: 0,
+        brand_name: "",
+        category: "",
+        description: "",
+        item_key: 0,
+        item_name: "",
+        item_price: 0,
+        volume: 0,
+      };
+    });
+
+    setAllItemList(updatedItemsList);
+
+    console.log("현재 가격", totalPrice);
+    console.log("올루틴 아이템", allRoutineItems);
+    console.log("올루틴 아이템 목록", allItemList);
+    console.log("리덕스루틴아이템", routineItems);
+    console.log("리덕스 루틴 아이템목록", itemList);
+  }, [grade, itemList, dispatch]);
+
+  useEffect(() => {
+    const total = itemList.reduce((acc, item) => acc + item.item_price, 0);
+    dispatch(setTotalPrice(total));
+  }, [itemList, dispatch]);
+
+  const handleProductSelect = (index: number, product: itemData) => {
+    const updatedItems = [...allRoutineItems];
+
+    const previousItem = updatedItems[index];
+    const previousItemPrice =
+      searchResults[index]?.find(
+        (searchItem) => searchItem.item_key === previousItem.item_key
+      )?.item_price || 0;
+
+    updatedItems[index] = {
+      ...updatedItems[index],
+      item_key: product.item_key,
+      item_name: product.item_name,
+    };
+
+    setAllRoutineItems(updatedItems);
+    dispatch(setRoutineItem({ index, item: updatedItems[index] }));
+
+    const updatedItemList = [...itemList];
+    updatedItemList[index] = product;
+    dispatch(setItemList(updatedItemList));
+
+    const updatedResults = [...searchResults];
+    updatedResults[index] = [];
+    setSearchResults(updatedResults);
+
+    const updatedQueries = [...searchQueries];
+    updatedQueries[index] = "";
+    setSearchQueries(updatedQueries);
+
+    const selectedProductPrice = product.item_price;
+
+    const newTotalPrice = totalPrice - previousItemPrice + selectedProductPrice;
+    dispatch(setTotalPrice(newTotalPrice));
+
+    if (inputRef.current) {
+      inputRef.current.focus();
     }
   };
 
-  const searchItemData = async (query: string) => {
+  const handleRoutineItemChange = (
+    index: number,
+    key: keyof (typeof allRoutineItems)[0],
+    value: string
+  ) => {
+    const updatedItem = { ...allRoutineItems[index], [key]: value };
+    const updatedItems = [...allRoutineItems];
+    updatedItems[index] = updatedItem;
+
+    setAllRoutineItems(updatedItems);
+    dispatch(setRoutineItem({ index, item: updatedItem }));
+
+    if (key === "item_name") {
+      const updatedQueries = [...searchQueries];
+      updatedQueries[index] = value;
+      setSearchQueries(updatedQueries);
+
+      if (value.length > 1) {
+        searchItemData(value, index);
+      } else {
+        const delayDeboundceFn = setTimeout(() => {
+          const clearedQueries = [...searchQueries];
+          clearedQueries[index] = "";
+          setSearchQueries(clearedQueries);
+
+          const clearedResults = [...searchResults];
+          clearedResults[index] = [];
+          setSearchResults(clearedResults);
+        }, 300);
+
+        return () => clearTimeout(delayDeboundceFn);
+      }
+    }
+  };
+
+  const searchItemData = async (query: string, index: number) => {
+    console.log(`단계 ${index + 1}에서 "${query}" 검색`);
     try {
-      const response = await axios.get(`${backPort}/api/item/${query}`);
+      const response = await axios.get(`${backPort}/api/item/search/${query}`);
       console.log(response.data);
 
-      setSearchResults(response.data.item || []);
+      const updatedResults = [...searchResults];
+      updatedResults[index] = response.data || [];
+      setSearchResults(updatedResults);
     } catch (error) {
       console.error("제품 검색 중 오류 발생", error);
     }
   };
 
-  const handleProductSelect = (
+  const handleInputBlur = (
     index: number,
-    productName: string,
-    productPrice: string
+    key: keyof (typeof allRoutineItems)[0],
+    value: string
   ) => {
-    const updatedItems = [...allRoutineItems];
-    updatedItems[index] = { ...updatedItems[index], itemName: productName };
-    setAllRoutineItems(updatedItems);
-    dispatch(setRoutineItem(updatedItems[index]));
-    setSearchResults([]);
+    handleRoutineItemChange(index, key, value);
   };
 
-  const isButtonDisabled = allRoutineItems.every(
+  const isButtonDisabled = allRoutineItems.some(
     (item) =>
-      item.order.trim() !== "" &&
-      item.description.trim() !== "" &&
-      item.itemName.trim() !== ""
+      !item.step_name?.trim() || !item.description?.trim() || !item.item_key
   );
 
   return (
@@ -95,40 +240,61 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
               <CommonInput
                 typeValue="text"
                 placeholderValue="예) 세안"
-                value={item.order}
+                value={item.step_name}
                 onChange={(e) =>
-                  handleRoutineItemChange(index, "order", e.target.value)
+                  handleRoutineItemChange(index, "step_name", e.target.value)
+                }
+                onBlur={(e) =>
+                  handleInputBlur(index, "step_name", e.target.value)
                 }
               />
             </RoutineGradeTitle>
-            <CommonInput
-              typeValue="text"
-              placeholderValue="설명"
+            <CommonTextarea
               value={item.description}
               onChange={(e) =>
                 handleRoutineItemChange(index, "description", e.target.value)
               }
+              onBlur={(e) =>
+                handleInputBlur(index, "description", e.target.value)
+              }
+              placeholder="설명 (100글자 제한)"
+              maxLength={100}
             />
             <ItemSearchWrapper>
               <CommonInput
+                ref={inputRef}
                 typeValue="text"
                 placeholderValue="제품명"
-                value={item.itemName}
+                value={item.item_name}
                 onChange={(e) =>
-                  handleRoutineItemChange(index, "itemName", e.target.value)
+                  handleRoutineItemChange(index, "item_name", e.target.value)
                 }
+                // onBlur={(e) =>
+                //   handleInputBlur(index, "item_name", e.target.value)
+                // }
               />
-              {searchResults.length > 0 && (
+              {searchResults[index] && searchResults[index].length > 0 && (
                 <SearchResults>
-                  {searchResults.map((product, productIndex) => (
+                  {searchResults[index].map((item, itemIndex) => (
                     <ProductItem
-                      key={productIndex}
-                      // onClick={
-                      //   () => handleProductSelect(index, product.name, product.price);
-                      // }
+                      key={itemIndex}
+                      onClick={() => handleProductSelect(index, item)}
                     >
-                      {/* <span>{product.name}</span>
-                      <span>₩ {product.price}</span> */}
+                      <div className="martItemWrapper">
+                        <div className="martItemImg">
+                          <img
+                            src={`/assets/item/${item?.item_key}.jpg`}
+                            alt={`${item?.item_name} 이미지`}
+                          />
+                        </div>
+                        <div className="martItemInfo">
+                          <span>{item?.brand_name}</span>
+                          <span>
+                            {item?.item_name} & {item?.volume}ml
+                          </span>
+                          <p>₩ {item?.item_price}</p>
+                        </div>
+                      </div>
                     </ProductItem>
                   ))}
                 </SearchResults>
@@ -142,7 +308,7 @@ const AddRoutine2: React.FC<NextProps> = ({ onNext }) => {
           <span>
             종합 <span>₩ {totalPrice.toLocaleString()}</span>
           </span>
-          <NextBtn onClick={onNext} disabled={!isButtonDisabled} />
+          <NextBtn onClick={onNext} disabled={isButtonDisabled} />
         </div>
       </RoutinePriceWrapper>
     </>
@@ -184,6 +350,7 @@ const RoutinePriceWrapper = styled.div`
   bottom: 0;
   background-color: white;
   z-index: 1000;
+  margin-bottom: 50px;
 
   div {
     width: 70%;
@@ -207,5 +374,22 @@ const ItemSearchWrapper = styled.div`
   position: relative;
 `;
 
-const SearchResults = styled.div``;
+const CommonTextarea = styled.textarea`
+  width: 90% !important;
+  height: 150px !important;
+  border: 3px solid rgba(255, 164, 228, 0.5);
+  border-radius: 13px;
+  padding: 10px 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  outline: none;
+  resize: none;
+`;
+
+const SearchResults = styled.div`
+  width: 97%;
+  border: 3px solid rgba(255, 164, 228, 0.5);
+  border-radius: 14px;
+  margin-top: -10px;
+`;
 const ProductItem = styled.div``;

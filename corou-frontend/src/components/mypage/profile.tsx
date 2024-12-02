@@ -2,54 +2,80 @@ import { useEffect, useState } from "react";
 import "../../scss/mypage/profile.scss";
 import CommonTag from "../common/commonTag";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface userProfile {
-  nickname: string;
+  username: string;
+  email: string;
+  gender: string;
+  password: string;
+  birth_date: string;
   profileImg: string;
-  trouble: string[];
+  problem: string[];
 }
 
 const Profile: React.FC = () => {
   const [profile, setProfile] = useState<userProfile | null>(null);
   const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const navigate = useNavigate();
+  const [hasToken, setHasToken] = useState<boolean>(false);
+  const userKey = sessionStorage.getItem("userKey");
 
   useEffect(() => {
-    axios
-      .get(`${backPort}/api/user/self`)
-      .then((response) => {
-        setProfile(response.data);
-      })
-      .catch((error) => {
-        console.error("프로필 조회 실패", error);
-        setProfile(null);
-      });
-  }, []);
+    const token = sessionStorage.getItem("authToken");
+
+    if (token) {
+      setHasToken(true);
+      axios
+        .get(`${backPort}/api/user/${userKey}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setProfile(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("프로필 조회 실패", error);
+          setProfile(null);
+        });
+    } else {
+      setHasToken(false);
+    }
+  }, [backPort]);
+
+  const moveProfileEdit = () => {
+    navigate("/mypage/profileEdit");
+  };
 
   return (
     <>
       <div className="profileWrapper">
-        <div className="profileImg">
-          <div>
-            <img
-              src={profile?.profileImg}
-              alt={`${profile?.nickname} 프로필`}
-            />
+        {hasToken ? (
+          <>
+            <div className="profileImg">
+              <div>
+                <img
+                  src={`/assets/user/2.png`}
+                  alt={`${profile?.username} 프로필 이미지`}
+                />
+              </div>
+              <p>{profile?.username}</p>
+            </div>
+            <div className="selectFilter">
+              {/* {profile?.trouble.map((item, index) => (
+                <CommonTag key={index} tagName={item} />
+              ))} */}
+            </div>
+            <button onClick={moveProfileEdit}>프로필 정보</button>
+          </>
+        ) : (
+          <div className="goLoginBox">
+            <p>로그인 또는 회원가입을 해주세요.</p>
+            <button onClick={() => navigate("/login")}>로그인하러 가기</button>
           </div>
-          <p>{profile?.nickname}</p>
-        </div>
-        <div className="selectFilter">
-          {/* <CommonTag tagName="건성" />
-          <CommonTag tagName="남성" />
-          <CommonTag tagName="30대" />
-          <CommonTag tagName="민감성" />
-          <CommonTag tagName="겨울쿨" />
-          <CommonTag tagName="등" />
-          <CommonTag tagName="등등" /> */}
-          {profile?.trouble.map((item, index) => (
-            <CommonTag key={index} tagName={item} />
-          ))}
-        </div>
-        <button>프로필 수정</button>
+        )}
       </div>
     </>
   );

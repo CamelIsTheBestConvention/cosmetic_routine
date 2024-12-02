@@ -13,6 +13,7 @@ import {
 } from "../../redux/slice/signupSlice";
 import { RootState } from "../../redux/store";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 interface NextProps {
   onStepChange: (step: number) => void;
@@ -20,6 +21,7 @@ interface NextProps {
 
 const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const email = useSelector((state: RootState) => state.signup.email);
   const password = useSelector((state: RootState) => state.signup.password);
@@ -41,6 +43,18 @@ const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
     /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[a-zA-Z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 
   useEffect(() => {
+    if (location.state?.email) {
+      dispatch(setEmail(location.state.email));
+    }
+    if (location.state?.password) {
+      dispatch(setPassword(location.state.password));
+    }
+    if (location.state?.password) {
+      dispatch(setPasswordConfirm(location.state.password));
+    }
+  }, [location.state, dispatch]);
+
+  useEffect(() => {
     const isEmailValid = emailRegex.test(email);
     const isPasswordLengthValid = passwordLengthRegex.test(password);
     const isPasswordComplexityValid = passwordComplexityRegex.test(password);
@@ -59,7 +73,9 @@ const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
 
   const handleEmailCheck = async () => {
     try {
-      const response = await axios.get(`${backPort}/api/check/${email}`);
+      const response = await axios.get(
+        `${backPort}/api/user/checkemail/${email}`
+      );
 
       const message = response.data.message;
 
@@ -99,6 +115,7 @@ const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
             placeholderValue="이메일"
             value={email}
             onChange={(e) => dispatch(setEmail(e.target.value))}
+            readOnly={Boolean(location.state?.email)}
           />
           <InputCheck valid={emailValid}>√ 이메일 확인</InputCheck>
           <CommonInput
@@ -106,6 +123,7 @@ const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
             placeholderValue="비밀번호"
             value={password}
             onChange={(e) => dispatch(setPassword(e.target.value))}
+            readOnly={Boolean(location.state?.password)}
           />
           <InputCheck valid={passwordLengthValid}>√ 8자리 이상</InputCheck>
           <InputCheck valid={passwordComplexityValid}>
@@ -116,6 +134,7 @@ const Signup1: React.FC<NextProps> = ({ onStepChange }) => {
             placeholderValue="비밀번호 확인"
             value={passwordConfirm}
             onChange={(e) => dispatch(setPasswordConfirm(e.target.value))}
+            readOnly={Boolean(location.state?.password)}
           />
           <InputCheck valid={password === passwordConfirm}>
             √ 비밀번호 동일
@@ -140,7 +159,7 @@ const SignupBox = styled.div`
   margin: 50px auto;
 `;
 
-const InputCheck = styled.div<{ valid: boolean }>`
+const InputCheck = styled.div<{ valid: boolean}>`
   font-size: 11px;
   margin-left: 10px;
   margin-bottom: 5px;

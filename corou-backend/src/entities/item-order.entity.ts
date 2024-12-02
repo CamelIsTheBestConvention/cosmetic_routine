@@ -1,8 +1,8 @@
 import 'reflect-metadata';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
 import { Address } from './address.entity';
-// import { OrderDetail } from './order-detail.entity';
+import { OrderDetail } from './order-detail.entity';
 
 @Entity('item_order')
 export class ItemOrder {
@@ -31,4 +31,7 @@ export class ItemOrder {
     @ManyToOne(() => Address)
     @JoinColumn({ name: 'address_key' })
     address!: Address;
+
+    @OneToMany(() => OrderDetail, orderDetail => orderDetail.item_order)
+    order_details!: OrderDetail[];
 }

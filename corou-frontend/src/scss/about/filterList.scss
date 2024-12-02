@@ -1,8 +1,8 @@
 .filterListWrapper {
   width: 100%;
   margin-top: 20px;
+  min-height: 78vh;
   position: relative;
-  //   background-color: aqua;
 }
 
 .filterBtn {
@@ -12,6 +12,7 @@
   margin-left: auto;
   margin-right: 20px;
   font-size: 12px;
+  margin-bottom: 10px;
 
   div {
     margin-right: 10px;
@@ -26,8 +27,14 @@
 .itemListWrapper {
   width: 90%;
   margin: 0 auto;
-  padding: 20px 0;
-  //   background-color: aliceblue;
+  padding: 20px 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    cursor: pointer;
+    background-color: #ffeffd;
+  }
 }
 
 .itemListTitle {
@@ -49,7 +56,7 @@
 
 .itemListSecondTitle {
   width: 95%;
-  margin: 0 auto;
+  margin: 5px 0 0 0;
   display: flex;
   font-size: 14px;
   font-weight: bold;
@@ -72,18 +79,22 @@
 }
 
 .contentImg {
-  width: 45%;
+  width: 140px;
   height: 140px;
   border: 3px solid #ffa4e4;
   border-radius: 13px;
   margin-right: 20px;
+
   img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 9px;
   }
 }
 
 .contentInfo {
-  width: 70%;
+  width: 60%;
   height: 140px;
 
   span {
@@ -92,14 +103,16 @@
   }
 
   .selectFilter {
-    display: flex;
-    font-size: 14px;
-    margin-top: 5px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    font-size: 13px;
     color: #848484;
+    margin: 5px 0 0 0;
 
     div {
       border: 1px solid #c9c9c9;
-      padding: 0 10px;
       border-radius: 10px;
       margin-right: 5px;
     }
@@ -108,7 +121,7 @@
 
 .contentTag {
   width: 100%;
-  margin-top: 40px;
+  margin-top: 30px;
 
   ul {
     display: flex;
@@ -142,22 +155,23 @@
   border-radius: 50%;
   background-color: #ffa4e4;
   position: sticky;
-  float: right;
-  margin-right: 3%;
-  bottom: 10%;
+  bottom: 100px;
+  margin-top: 20px;
+  margin-left: 80%;
   font-size: 65px;
   color: white;
   cursor: pointer;
   opacity: 0.8;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   &:hover {
     opacity: 1;
   }
 
   span {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: translateY(-15%);
+    transform: translate(3%, -8%);
   }
 }

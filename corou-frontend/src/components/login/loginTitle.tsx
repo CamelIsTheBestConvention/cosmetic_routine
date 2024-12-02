@@ -1,13 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import "../../scss/login/loginTitle.scss";
+import MainLogo from "../common/mainLogo";
 
 const LoginTitle: React.FC = () => {
   return (
     <>
       <div className="loginTitleWrapper">
-        <div className="logo">corou</div>
+        <MainLogo />
         <div className="catchphrase">
-          <span>캐치프레이즈 여기 넣어주세요.</span>
-          <span>데일리 루틴 짱짱맨</span>
+          <span>건강한 피부가 최고의 기초입니다.</span>
+          <span>당신의 루틴은 무엇인가요?</span>
         </div>
       </div>
     </>

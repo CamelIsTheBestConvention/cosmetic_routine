@@ -1,16 +1,16 @@
 export const options = [
-  "여드름",
   "아토피",
+  "여드름",
   "민감성",
-  "저항성",
+  "홍조",
+  "각질",
+  "속건조",
+  "남성",
+  "여성",
   "10대",
   "20대",
   "30대",
   "40대+",
-  "모닝",
-  "나이트",
-  "남성",
-  "여성",
 ];
 
 export const items = [
@@ -23,6 +23,7 @@ export const items = [
     price: 999999,
     rating: 4.9,
     reviews: 1192,
+    isLiked: false,
   },
   {
     title: "피부 탄력을 증가시키는 제품",
@@ -33,6 +34,7 @@ export const items = [
     price: 750000,
     rating: 4.7,
     reviews: 980,
+    isLiked: true,
   },
   {
     title: "모공을 관리하는 루틴",
@@ -43,6 +45,7 @@ export const items = [
     price: 850000,
     rating: 4.8,
     reviews: 1030,
+    isLiked: false,
   },
 ];
 
@@ -86,4 +89,41 @@ export const animals = [
   "도마뱀",
   "코뿔소",
   "하마",
+];
+
+export const categoryFilters = [
+  "로션",
+  "크림",
+  "토너",
+  "에센스",
+  "앰플",
+  "선크림",
+  "린스",
+  "파우더",
+  "립밤",
+];
+
+export const skinFilters = ["건성", "지성", "중성", "복합성", "수부지"];
+
+export const problemFilters = [
+  "아토피",
+  "여드름",
+  "민감성",
+  "홍조",
+  "각질",
+  "속건조",
+];
+
+export const routineFilters = [
+  "건성",
+  "중성",
+  "지성",
+  "복합성",
+  "수부지",
+  "아토피",
+  "여드름",
+  "민감성",
+  "홍조",
+  "각질",
+  "속건조",
 ];

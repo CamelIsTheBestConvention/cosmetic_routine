@@ -3,12 +3,17 @@ import styled from "styled-components";
 interface CommonInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
 }
 
-const CommonTextarea: React.FC<CommonInputProps> = ({ value, onChange }) => {
+const CommonTextarea: React.FC<CommonInputProps> = ({
+  value,
+  onChange,
+  onBlur,
+}) => {
   return (
     <>
-      <Textarea value={value} onChange={onChange} />
+      <Textarea value={value} onChange={onChange} onBlur={onBlur} />
     </>
   );
 };

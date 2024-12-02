@@ -1,9 +1,15 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const RankingMainFilter: React.FC = () => {
-  const [select, setSelect] = useState<string>("");
+interface RankingMainFilterProps {
+  select: string;
+  setSelect: (filter: string) => void;
+}
 
+const RankingMainFilter: React.FC<RankingMainFilterProps> = ({
+  select,
+  setSelect,
+}) => {
   const handleSelect = (filter: string) => {
     setSelect(filter);
   };
@@ -24,10 +30,10 @@ const RankingMainFilter: React.FC = () => {
           피부별
         </FilterItem>
         <FilterItem
-          isSelected={select === "age"}
-          onClick={() => handleSelect("age")}
+          isSelected={select === "problem"}
+          onClick={() => handleSelect("problem")}
         >
-          연령대별
+          트러블별
         </FilterItem>
       </RankingMainFilterWrapper>
     </>
@@ -46,5 +52,6 @@ const RankingMainFilterWrapper = styled.div`
 
 const FilterItem = styled.div<{ isSelected: boolean }>`
   cursor: pointer;
+  color: ${({ isSelected }) => (isSelected ? "#fd73d4" : "black")};
   font-weight: ${({ isSelected }) => (isSelected ? "bold" : "normal")};
 `;

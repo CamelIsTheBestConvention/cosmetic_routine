@@ -4,36 +4,36 @@ import { options } from "../../data/Data";
 
 interface OtherFilterProps {
   onCheckedChange: (checkedItems: number[]) => void;
+  selectedFilters: number[];
 }
 
-const OtherFilter: React.FC<OtherFilterProps> = ({ onCheckedChange }) => {
-  const [checkedItems, setCheckedItems] = useState<number[]>([]);
-
+const OtherFilter: React.FC<OtherFilterProps> = ({
+  onCheckedChange,
+  selectedFilters,
+}) => {
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
+    let updatedItems;
 
-    if (checkedItems.includes(value)) {
-      const updatedItems = checkedItems
-        .filter((item) => item !== value)
-        .sort((a, b) => a - b);
-      setCheckedItems(updatedItems);
-      onCheckedChange(updatedItems);
+    if (selectedFilters.includes(value)) {
+      updatedItems = selectedFilters.filter((item) => item !== value);
     } else {
-      const updatedItems = [...checkedItems, value].sort((a, b) => a - b);
-      setCheckedItems(updatedItems);
-      onCheckedChange(updatedItems);
+      updatedItems = [...selectedFilters, value];
     }
+
+    // 부모에게 업데이트된 상태 전달
+    onCheckedChange(updatedItems);
   };
 
   return (
     <>
       <FilterWrapper>
         {options.map((option, index) => (
-          <Label key={index} isChecked={checkedItems.includes(index + 1)}>
+          <Label key={index} isChecked={selectedFilters.includes(index + 6)}>
             <input
               type="checkbox"
-              value={index + 1}
-              checked={checkedItems.includes(index + 1)}
+              value={index + 6}
+              checked={selectedFilters.includes(index + 6)}
               onChange={handleCheckboxChange}
             />
             {option}

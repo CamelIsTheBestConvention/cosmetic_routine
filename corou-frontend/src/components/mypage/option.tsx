@@ -1,22 +1,61 @@
 import styled from "styled-components";
 import SettingBox from "./settingBox";
+import { useNavigate } from "react-router-dom";
 
 const Option: React.FC = () => {
+  const navigate = useNavigate();
+  const token = sessionStorage.getItem("authToken");
+
+  const isTokenCheck = () => {
+    return token !== null;
+  };
+
+  const handleOrderList = () => {
+    if (isTokenCheck()) {
+      navigate("/mypage/orderList");
+    } else {
+      alert("로그인 후 이용해 주세요.");
+      navigate("/login");
+    }
+  };
+
+  const handleSetAddress = () => {
+    if (isTokenCheck()) {
+      navigate("/mypage/setAddress");
+    } else {
+      alert("로그인 후 이용해 주세요.");
+      navigate("/login");
+    }
+  };
+
+  const handleNotice = () => {
+    navigate("/mypage/notice");
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+
+    navigate("/login");
+  };
+
+  const handleNotAccess = () => {
+    alert("접근할 수 없습니다.");
+  };
+
   return (
     <>
       <OptionWrapper>
         <SettingWrapper1>
-          <SettingBox name="주문 내역" />
-          <SettingBox name="취소/반품/교환 내역" />
-          <SettingBox name="나의 맞춤 정보" />
+          <SettingBox name="주문 내역" onClick={handleOrderList} />
+          <SettingBox name="배송지 관리" onClick={handleSetAddress} />
         </SettingWrapper1>
         <SettingWrapper2>
-          <SettingBox name="고객센터" />
-          <SettingBox name="1:1 문의 내역" />
-          <SettingBox name="상품 문의 내역" />
-          <SettingBox name="공지사항" />
+          <SettingBox name="고객센터" onClick={handleNotAccess} />
+          <SettingBox name="1:1 문의 내역" onClick={handleNotAccess} />
+          <SettingBox name="상품 문의 내역" onClick={handleNotAccess} />
+          <SettingBox name="공지사항" onClick={handleNotice} />
         </SettingWrapper2>
-        <Logout>로그아웃</Logout>
+        {token && <Logout onClick={handleLogout}>로그아웃</Logout>}
       </OptionWrapper>
     </>
   );

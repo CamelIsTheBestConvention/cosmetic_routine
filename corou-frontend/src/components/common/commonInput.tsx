@@ -5,6 +5,9 @@ interface CommonInputProps {
   placeholderValue: string;
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  ref?: React.Ref<HTMLInputElement>;
+  readOnly?: boolean;
 }
 
 const CommonInput: React.FC<CommonInputProps> = ({
@@ -12,14 +15,20 @@ const CommonInput: React.FC<CommonInputProps> = ({
   placeholderValue,
   value,
   onChange,
+  onBlur,
+  ref,
+  readOnly,
 }) => {
   return (
     <>
       <Input
+        ref={ref}
         type={typeValue}
         placeholder={placeholderValue}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
+        readOnly={readOnly}
       />
     </>
   );
@@ -34,4 +43,8 @@ const Input = styled.input`
   margin-bottom: 10px;
   font-size: 14px;
   outline: none;
+  color: ${(props) => (props.readOnly ? "#a3a3a3" : "black")};
+  background-color: ${(props) => (props.readOnly ? "#f0f0f0" : "white")};
+  border-color: ${(props) =>
+    props.readOnly ? "gray" : "rgba(255, 164, 228, 0.5)"};
 `;

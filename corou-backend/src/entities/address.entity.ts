@@ -9,6 +9,9 @@ export class Address {
     address_key!: number;
 
     @Column({ type: 'varchar', length: 255 })
+    address_name!: string;
+
+    @Column({ type: 'varchar', length: 255 })
     name!: string;
 
     @Column({ type: 'varchar', length: 255 })
@@ -29,7 +32,6 @@ export class Address {
     @Column({ type: 'varchar', length: 1 })
     is_default!: 'Y' | 'N';
 
-    @ManyToOne(() => User)
-    @JoinColumn({ name: 'user_key' })
+    @ManyToOne(() => User, user => user.addresses)
     user!: User;
 }

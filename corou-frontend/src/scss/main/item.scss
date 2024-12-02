@@ -19,6 +19,13 @@
   border-radius: 15px;
   width: 74px;
   height: 74px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+  }
 }
 
 .itemInfo {

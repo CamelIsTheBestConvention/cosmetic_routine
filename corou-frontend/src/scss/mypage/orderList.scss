@@ -1,0 +1,96 @@
+.orderListWrapper {
+  width: 90%;
+  margin: 0 auto;
+
+  .orderListFilter {
+    width: 90%;
+    margin: 0 auto 20px auto;
+    border-bottom: 1px solid #ffa4e4;
+
+    div {
+      width: 80%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-around;
+      font-weight: 700;
+
+      p {
+        cursor: pointer;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .orderListContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+
+    &:hover {
+      background-color: #fdeef9;
+      cursor: pointer;
+    }
+
+    .orderListBox {
+      width: 90%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+
+      .boxTitle {
+        width: 100%;
+        font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+        margin-bottom: 10px;
+
+        span {
+          &:nth-child(2) {
+            color: #aeaeae;
+            cursor: pointer;
+          }
+        }
+      }
+      .boxContent {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+
+        div {
+          &:nth-child(1) {
+            width: 84px;
+            height: 84px;
+            border: 3px solid rgba(255, 164, 228, 0.5);
+            border-radius: 13px;
+            margin-right: 10px;
+
+            img {
+              width: 100%;
+              height: 100%;
+              border-radius: 10px;
+              object-fit: cover;
+            }
+          }
+
+          &:nth-child(2) {
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+
+            span {
+              font-size: 16px;
+              color: #848484;
+            }
+          }
+        }
+      }
+    }
+  }
+}

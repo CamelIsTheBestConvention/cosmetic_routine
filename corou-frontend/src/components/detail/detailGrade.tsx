@@ -1,57 +1,116 @@
+import { useEffect, useState } from "react";
 import ReviewPoint from "../common/reviewPoint";
+import axios from "axios";
+import styled from "styled-components";
 
-interface routineObject {
-  id: number;
-  brand: string;
-  name: string;
-  size: number;
-  price: number;
-  itemImg: string;
+interface ItemData {
+  average_rating: number;
+  brand_name: string;
+  category: string;
+  description: string;
+  item_key: number;
+  item_name: string;
+  item_price: number;
+  volume: number;
+}
+
+interface routineList {
+  description: string;
+  item_key: number;
+  routine_key: number;
+  step_name: string;
+  step_number: number;
 }
 
 interface detailGradeData {
   routineGrade: number;
-  routineList: routineObject[];
+  routineList: routineList[];
+  routineName: string;
 }
 
 const DetailGrade: React.FC<detailGradeData> = ({
   routineGrade,
   routineList,
+  routineName,
 }) => {
-  const hasRoutine = routineList && routineList.length > 0;
+  const hasRoutine = routineList;
+  const [itemData, setItemData] = useState<ItemData[]>([]);
+  const backPort = process.env.REACT_APP_BACKEND_PORT;
+
+  const fetchFindItem = async (item_key: number) => {
+    try {
+      const response = await axios.get(`${backPort}/api/item/key/${item_key}`);
+      console.log("아이템 잘 받아오는지 데이터", response.data);
+
+      return response.data;
+    } catch (error) {
+      console.error("아이템 가져오는 중 에러 발생", error);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const fetchAllItemData = async () => {
+      const promises = routineList.map((routine) =>
+        fetchFindItem(routine.item_key)
+      );
+      const results = await Promise.all(promises);
+      setItemData(results.filter((item) => item !== null));
+    };
+
+    if (routineList.length > 0) {
+      fetchAllItemData();
+    }
+  }, [routineList]);
 
   return (
     <>
       <div className="detailGradeWrapper">
         <div className="detailGradeTitle">
           <div>
-            <span>취침 전 : {routineGrade}단계 루틴</span>
-            <span>2/{routineGrade} 제품 보유중</span>
+            <span>
+              {routineName} : {routineGrade}단계 루틴
+            </span>
+            {/* <span>0/{routineGrade} 제품 보유중</span> */}
           </div>
-          <div>
+          {/* <div>
             <span>보유중인 제품 제외하기</span>
             <input type="checkbox" />
-          </div>
+          </div> */}
         </div>
         <div className="detailGradeItem">
-          {hasRoutine ? (
-            <div className="detailGradeBox">
-              <span>1단계:세안</span>
-              <div className="detailItemInfo">
-                <div>
-                  <img src={routineList[0].itemImg} alt="" />
-                </div>
-                <div>
-                  <span>{routineList[0].brand}</span>
+          {hasRoutine && routineList.length > 0 ? (
+            routineList.map((routine, index) => {
+              const item = itemData[index];
+              return (
+                <div className="detailGradeBox" key={index}>
                   <span>
-                    {routineList[0]?.name} & {routineList[0]?.size}
+                    {routine.step_number}단계: {routine.step_name}
                   </span>
-                  <span>₩ {routineList[0]?.price}</span>
-                  <ReviewPoint />
+                  <div className="detailItemInfo">
+                    <div>
+                      <img
+                        src={`/assets/item/${item?.item_key}.jpg`}
+                        alt={item?.item_name}
+                      />
+                    </div>
+                    <div>
+                      <span>{item?.brand_name}</span>
+                      <span>{`${item?.item_name} / ${item?.volume}ml`}</span>
+                      <span>{`₩ ${item?.item_price.toLocaleString()}`}</span>
+                      <ReviewPoint />
+                    </div>
+                  </div>
+                  <span>설명 :</span>
+                  <ItemDescription style={{ margin: "10px 0" }}>
+                    {routine.description}
+                  </ItemDescription>
+                  {/* <div className="detailItemEffect">
+                    제품 효능 박스(일단 보류)
+                  </div> */}
                 </div>
-              </div>
-              <div className="detailItemEffect">제품 효능 박스(일단 보류)</div>
-            </div>
+              );
+            })
           ) : (
             <div>루틴 정보가 없습니다.</div>
           )}
@@ -61,3 +120,13 @@ const DetailGrade: React.FC<detailGradeData> = ({
   );
 };
 export default DetailGrade;
+
+const ItemDescription = styled.div`
+  width: 95%;
+  margin: 0 auto 10px auto;
+  height: 100px;
+  border: 3px solid #ffa4e4;
+  border-radius: 12px;
+  padding: 5px;
+  font-size: 17px;
+`;
