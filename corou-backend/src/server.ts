@@ -22,6 +22,8 @@ const allowedOrigins = [
   "http://corou-client.s3-website.ap-northeast-2.amazonaws.com/",
   "https://d2lyohpia77fn1.cloudfront.net/",
   "http://localhost:3001",
+  "https://corou.shop",
+  "https://www.corou.shop",
 ];
 
 app.use(
