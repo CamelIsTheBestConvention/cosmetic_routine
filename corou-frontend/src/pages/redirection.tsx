@@ -65,6 +65,7 @@ const Redirection: React.FC = () => {
               state: {
                 email: data.email,
                 password: data.password,
+                pageNum: 2,
               },
             });
           }

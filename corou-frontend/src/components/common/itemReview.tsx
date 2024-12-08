@@ -204,7 +204,7 @@ const ItemReview: React.FC<ReviewProps> = ({ item_key }) => {
                       />
                     ))}
                   </Stars>
-                  <span>formatDate({review?.review_at})</span>
+                  <span>{formatDate(review?.review_at)}</span>
                 </ReviewContentTitle>
                 <ReviewContentContent>
                   {review.review_content}

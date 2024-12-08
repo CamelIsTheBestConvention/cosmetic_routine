@@ -1,12 +1,12 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import AboutHeader from "../components/common/aboutHeader";
 import MainFooter from "../components/common/mainFooter";
 import BuyBtn from "../components/mart/buyBtn";
-import styled from "styled-components";
 import CertItem from "../components/mart/certItem";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { setSelectAddress } from "../redux/slice/addressSlice";
 
 interface itemData {
@@ -148,7 +148,10 @@ const Cert: React.FC<totalPriceData> = () => {
 
   const onOverlay = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    console.log("Overlay clicked, but modal should not close.");
+  };
+
+  const handleAddressPage = () => {
+    navigate("/mypage/setAddress");
   };
 
   return (
@@ -156,24 +159,32 @@ const Cert: React.FC<totalPriceData> = () => {
       {isModalOpen && <Overlay onClick={onOverlay} />}
       <AboutHeader Title="주문서" onBack={handleBack} />
       <CertWrapper>
-        <AddressBox>
-          <AddressBoxTitle>
-            <h3>{selectAddress?.address_name}</h3>
-            <span onClick={handleAddressModalOpen}>배송지 변경</span>
-          </AddressBoxTitle>
-          <AddressBoxContent>
-            <span>{selectAddress?.name}</span>
-            <span>
-              {selectAddress?.addr}({selectAddress?.zip})
-            </span>
-            <span>{selectAddress?.addr_detail}</span>
-            <span>{selectAddress?.tel}</span>
-            <span>{selectAddress?.request}</span>
-            {selectAddress?.is_default === "Y" && (
-              <DefaultAddr>기본 배송지</DefaultAddr>
-            )}
-          </AddressBoxContent>
-        </AddressBox>
+        {!selectAddress ? (
+          <NotAddress>
+            <span>배송지가 설정되지 않았습니다.</span>
+            <span>마이페이지로 이동하시겠습니까?</span>
+            <button onClick={handleAddressPage}>이동</button>
+          </NotAddress>
+        ) : (
+          <AddressBox>
+            <AddressBoxTitle>
+              <h3>{selectAddress?.address_name}</h3>
+              <span onClick={handleAddressModalOpen}>배송지 변경</span>
+            </AddressBoxTitle>
+            <AddressBoxContent>
+              <span>{selectAddress?.name}</span>
+              <span>
+                {selectAddress?.addr}({selectAddress?.zip})
+              </span>
+              <span>{selectAddress?.addr_detail}</span>
+              <span>{selectAddress?.tel}</span>
+              <span>{selectAddress?.request}</span>
+              {selectAddress?.is_default === "Y" && (
+                <DefaultAddr>기본 배송지</DefaultAddr>
+              )}
+            </AddressBoxContent>
+          </AddressBox>
+        )}
         <div>
           <h3>주문 상품 {totalQuantity}개</h3>
           {cartList.map((cartItem: cartItem) => (
@@ -288,4 +299,34 @@ const Overlay = styled.div`
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
+`;
+
+const NotAddress = styled.div`
+  width: 95%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+
+  span {
+    text-align: center;
+  }
+
+  button {
+    width: 50%;
+    margin: 10px auto;
+    background-color: #ff5cd0;
+    border: none;
+    padding: 13px 0;
+    border-radius: 13px;
+    font-size: 13px;
+    color: white;
+
+    &:hover {
+      background-color: #fd39c6;
+      cursor: pointer;
+    }
+  }
 `;

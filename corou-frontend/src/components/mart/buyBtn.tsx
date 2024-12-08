@@ -63,6 +63,7 @@ const BuyBtn: React.FC<totalPriceData> = ({
 }) => {
   const navigate = useNavigate();
   console.log("제품 리스트", cartList);
+  console.log(selectAddress);
 
   useEffect(() => {
     const loadIMPScript = () => {
@@ -91,6 +92,12 @@ const BuyBtn: React.FC<totalPriceData> = ({
   }, []);
 
   const handlePayment = async () => {
+    if (!selectAddress) {
+      alert("배송지가 설정되지 않았습니다. 배송지 페이지로 이동합니다.");
+      navigate("/mypage/setAddress");
+      return;
+    }
+
     const { IMP } = window as any; // 타입스크립트에서 window 객체를 사용하는 방법
     const clientKey = process.env.REACT_APP_PORTONE_CLIENT_KEY;
     const backPort = process.env.REACT_APP_BACKEND_PORT;
@@ -209,39 +216,39 @@ const BuyBtnWrapper = styled.div`
   }
 `;
 
-const BuyCheck = styled.div`
-  width: 100%;
+// const BuyCheck = styled.div`
+//   width: 100%;
 
-  label {
-    display: flex;
+//   label {
+//     display: flex;
 
-    input[type="checkbox"] {
-      appearance: none; /* 기본 체크박스 스타일 제거 */
-      width: 15px;
-      height: 15px;
-      border: 1px solid lightgray;
-      cursor: pointer;
-      margin-right: 10px;
+//     input[type="checkbox"] {
+//       appearance: none; /* 기본 체크박스 스타일 제거 */
+//       width: 15px;
+//       height: 15px;
+//       border: 1px solid lightgray;
+//       cursor: pointer;
+//       margin-right: 10px;
 
-      &:checked {
-        background-color: rgba(255, 164, 228, 0.5);
-        border-color: rgba(255, 164, 228, 0.5);
-      }
+//       &:checked {
+//         background-color: rgba(255, 164, 228, 0.5);
+//         border-color: rgba(255, 164, 228, 0.5);
+//       }
 
-      &:checked::after {
-        content: "✓";
-        display: block;
-        color: black;
-        text-align: center;
-        line-height: 13px;
-        font-size: 15px;
-      }
-    }
+//       &:checked::after {
+//         content: "✓";
+//         display: block;
+//         color: black;
+//         text-align: center;
+//         line-height: 13px;
+//         font-size: 15px;
+//       }
+//     }
 
-    span {
-      font-size: 14px;
-      line-height: 1.5;
-      color: #848484;
-    }
-  }
-`;
+//     span {
+//       font-size: 14px;
+//       line-height: 1.5;
+//       color: #848484;
+//     }
+//   }
+// `;
