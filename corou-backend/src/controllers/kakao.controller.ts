@@ -14,7 +14,7 @@ export class KakaoController {
   constructor(
     private userService: UserService,
     private kakaoService: KakaoService
-  ) {}
+  ) { }
 
   async requestToken(req: Request, res: Response): Promise<void> {
     const { code } = req.body;
@@ -29,7 +29,7 @@ export class KakaoController {
 
   async kakaoLogin(req: Request, res: Response): Promise<void> {
     const { code } = req.body; // 클라이언트로부터 받은 인가 코드
-
+    console.log("@123 does it get here")
     try {
       // 1. 인가 코드로 토큰 요청
       const token = await this.kakaoService.requestToken(code);

@@ -13,7 +13,6 @@ export class TagService {
     async createTag(tag_name: string): Promise<number> {
         const tagExists = await this.tagRepository.findOne({ where: { tag_name } })
         if (tagExists) {
-            console.log(tagExists);
             return tagExists.tag_key;
         } else {
             const newTag = this.tagRepository.create({

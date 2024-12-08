@@ -159,7 +159,7 @@ const SignupBox = styled.div`
   margin: 50px auto;
 `;
 
-const InputCheck = styled.div<{ valid: boolean }>`
+const InputCheck = styled.div<{ valid: boolean}>`
   font-size: 11px;
   margin-left: 10px;
   margin-bottom: 5px;

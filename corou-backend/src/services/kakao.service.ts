@@ -1,6 +1,6 @@
 import { Repository, DataSource } from "typeorm";
 import { REPOSITORY_TOKENS } from "../config/constants";
-import { UserService } from "../services/user.service";
+import { UserService } from "./user.service";
 import { injectable, inject } from "tsyringe";
 import { kakaoClient } from "../config/kakao.config";
 import axios from 'axios';
@@ -14,7 +14,6 @@ export class KakaoService {
 
     async requestToken(code: any): Promise<any> {
         try {
-            console.log("코드 받아와지는지", code);
             const response = await kakaoClient.post(`/oauth/token`, null, {
                 params: {
                     grant_type: "authorization_code",

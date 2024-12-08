@@ -85,7 +85,6 @@ export class AddressService {
     }
     console.log(address.user)
     if (is_default === "Y") {
-      console.log('in default change')
       await this.addressRepository.update(
         { user: { user_key }, is_default: "Y" },
         { is_default: "N" }

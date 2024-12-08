@@ -22,7 +22,6 @@ interface routineItem {
   tags: string[];
   routine_skin_relations: skinRelations[];
 }
-
 const TopRoutineBox: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -32,7 +31,7 @@ const TopRoutineBox: React.FC = () => {
   const backPort = process.env.REACT_APP_BACKEND_PORT;
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect(() =>{
     const fetchRoutines = async () => {
       try {
         const response = await axios.get(`${backPort}/api/routine`);
