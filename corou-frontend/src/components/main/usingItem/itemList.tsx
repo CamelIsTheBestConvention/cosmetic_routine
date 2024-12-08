@@ -1,8 +1,8 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Item from "./item";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 interface ItemProps {
   average_rating: number;
@@ -11,6 +11,8 @@ interface ItemProps {
   item_key: number;
   item_name: string;
   item_price: number;
+  brand_name: string;
+  volume: number;
 }
 
 const ItemList: React.FC = () => {

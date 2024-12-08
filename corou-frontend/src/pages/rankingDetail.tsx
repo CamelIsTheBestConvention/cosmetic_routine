@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import MainFooter from "../components/common/mainFooter";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
-import ItemReview from "../components/common/itemReview";
-import ItemBtnBox from "../components/ranking/itemBtnBox";
+import styled from "styled-components";
 import AboutHeader from "../components/common/aboutHeader";
+import ItemReview from "../components/common/itemReview";
+import MainFooter from "../components/common/mainFooter";
+import ItemBtnBox from "../components/ranking/itemBtnBox";
 
 interface ItemDetails {
   average_rating: number;
@@ -63,7 +63,7 @@ const RankingDetail: React.FC<ItemDetails> = () => {
             <ItemDescription>{itemDetails.description}</ItemDescription>
             <ItemPrice>
               <span>정가</span>
-              <span>{itemDetails.item_price}원 / 50ml</span>
+              <span>{itemDetails.item_price.toLocaleString()}원 / 50ml</span>
             </ItemPrice>
             {/* <ItemEffect>제품 효과 박스</ItemEffect> */}
           </ItemInfo>

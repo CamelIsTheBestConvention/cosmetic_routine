@@ -1,8 +1,7 @@
-import styled from "styled-components";
-import ReviewPoint from "../common/reviewPoint";
-import ItemBox from "./itemBox";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import notRanking from "../../img/notRanking.png";
+import ItemBox from "./itemBox";
 
 interface itemProps {
   average_rating: number;
@@ -55,5 +54,5 @@ export default RankingItem;
 const RankingItemWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
-  padding: 20px 0;
+  /* padding: 20px 0; */
 `;

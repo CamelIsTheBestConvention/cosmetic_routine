@@ -1,5 +1,5 @@
-import ReviewPoint from "../common/reviewPoint";
 import "../../scss/ranking/itemBox.scss";
+import ReviewPoint from "../common/reviewPoint";
 
 interface ItemBoxProps {
   item: {
@@ -34,7 +34,8 @@ const ItemBox: React.FC<ItemBoxProps> = ({ item, rank, onClick }) => {
             </span>
             <ReviewPoint />
             <span className="itemPrice">
-              정가 <span>{item?.item_price}원</span>/{item?.volume}ml
+              정가 <span>{item?.item_price.toLocaleString()}원</span>/
+              {item?.volume}ml
             </span>
           </div>
         </div>

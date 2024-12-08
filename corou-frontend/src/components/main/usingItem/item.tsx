@@ -7,6 +7,8 @@ interface ItemProps {
   item_key: number;
   item_name: string;
   item_price: number;
+  brand_name: string;
+  volume: number;
 }
 
 interface ItemComponentProps {
@@ -16,6 +18,8 @@ interface ItemComponentProps {
 }
 
 const Item: React.FC<ItemComponentProps> = ({ item, rank, onClick }) => {
+  console.log(item);
+
   return (
     <>
       <div className="itemWrapper" onClick={onClick}>
@@ -27,9 +31,11 @@ const Item: React.FC<ItemComponentProps> = ({ item, rank, onClick }) => {
           />
         </div>
         <div className="itemInfo">
-          <p>브랜드</p>
-          <p>{item?.item_name} & 용량</p>
-          <p>₩ {item?.item_price}</p>
+          <p>{item?.brand_name}</p>
+          <p>
+            {item?.item_name} & {item?.volume}ml
+          </p>
+          <p>₩ {item?.item_price.toLocaleString()}</p>
         </div>
       </div>
     </>
