@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 interface routineData {
@@ -17,6 +18,7 @@ const MainHeader: React.FC = () => {
   const [routineData, setRoutineData] = useState<routineData[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const backPort = process.env.REACT_APP_BACKEND_PORT;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRoutineData = async (query: string) => {
@@ -42,6 +44,10 @@ const MainHeader: React.FC = () => {
     setSearchQuery(e.target.value);
   };
 
+  const handleRoutineClick = (routineKey: number) => {
+    navigate(`/routine/${routineKey}`);
+  };
+
   return (
     <>
       <SearchWrapper>
@@ -56,7 +62,10 @@ const MainHeader: React.FC = () => {
         {searchQuery.trim().length > 0 && routineData.length > 0 && (
           <SearchResults>
             {routineData.map((item) => (
-              <div key={item.routine_key}>
+              <div
+                key={item.routine_key}
+                onClick={() => handleRoutineClick(item.routine_key)}
+              >
                 <h3>{item.routine_name}</h3>
                 <span>{item.user.username}님의 루틴</span>
                 <span>₩{item.price_total}</span>
@@ -121,6 +130,11 @@ const SearchResults = styled.div`
     border-bottom: 2px solid rgba(255, 164, 228, 0.5);
     /* border-radius: 12px; */
     padding: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(255, 215, 243, 0.5);
+    }
 
     h3 {
       margin: 0;
